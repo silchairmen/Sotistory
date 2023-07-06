@@ -1,9 +1,11 @@
 package com.soti.sotistory.member.entity;
 
 import com.soti.sotistory.member.constant.Role;
+import com.soti.sotistory.member.dto.MemberDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -51,17 +53,21 @@ public class Member {
     private Role role;
 
     //추 후 추가 필요
-//    public static Member createMember(MemberDto memberDto, PasswordEncoder passwordEncoder){
-//        Member member = new Member();
-//        member.setName(memberDto.getName());
-//        member.setEmail(memberDto.getEmail());
-//        member.setAddress(memberDto.getAddress());
-//
-//        String password = passwordEncoder.encode(memberDto.getPassword());
-//
-//        member.setPassword(password);
-//        member.setRole(Role.USER);
-//
-//        return member;
-//    }
+    public static Member createMember(MemberDto memberDto, PasswordEncoder passwordEncoder){
+        Member member = new Member();
+        member.setName(memberDto.getName());
+        member.setNickname(memberDto.getNickname());
+        member.setStuNum(memberDto.getStunum());
+        member.setJoinYear(memberDto.getJoinyear());
+        member.setInterests(memberDto.getInterests());
+        member.setEmail(memberDto.getEmail());
+        member.setAddress(memberDto.getAddress());
+
+        String password = passwordEncoder.encode(memberDto.getPassword());
+
+        member.setPassword(password);
+        member.setRole(Role.USER);
+
+        return member;
+    }
 }

@@ -52,13 +52,13 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    //추 후 추가 필요
+    //멤버 생성 초기 로직, 기본적으로 USER 권한을 가짐
     public static Member createMember(MemberDto memberDto, PasswordEncoder passwordEncoder){
         Member member = new Member();
         member.setName(memberDto.getName());
         member.setNickname(memberDto.getNickname());
-        member.setStuNum(memberDto.getStunum());
-        member.setJoinYear(memberDto.getJoinyear());
+        member.setStuNum(memberDto.getStuNum());
+        member.setJoinYear(memberDto.getJoinYear());
         member.setInterests(memberDto.getInterests());
         member.setEmail(memberDto.getEmail());
         member.setAddress(memberDto.getAddress());

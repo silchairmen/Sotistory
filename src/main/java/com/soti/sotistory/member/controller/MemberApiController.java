@@ -1,18 +1,12 @@
 package com.soti.sotistory.member.controller;
 
-import com.soti.sotistory.member.dto.JoinResponseDto;
-import com.soti.sotistory.member.dto.LoginResponseDto;
+import com.soti.sotistory.member.dto.StatusResponseDto;
 import com.soti.sotistory.member.dto.MemberDto;
 import com.soti.sotistory.member.entity.Member;
-import com.soti.sotistory.member.repository.MemberRepository;
 import com.soti.sotistory.member.service.MemberAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,26 +23,25 @@ public class MemberApiController {
     private final MemberAuthService memberAuthService;
 
     //로그인
-//    @PostMapping("/login")
-//    public ResponseEntity<LoginResponseDto> memberLoginApi(@RequestParam String email,
-//                                                           @RequestParam String password){
-//
-//        //로그인 검증
-//        try{
-//            memberAuthService.loginMember(email, password, passwordEncoder);
-//        } catch (IllegalStateException e){
-//
-//        }
-//    }
+    @GetMapping("/login/success")
+    public StatusResponseDto memberApiLoginSuccess(){
+        return new StatusResponseDto(200, "Login success");
+    }
+
+    //로그인 에러 핸들링
+    @GetMapping("/login/error")
+    public StatusResponseDto memberApiLoginError(){
+        return new StatusResponseDto(500, "아이디 혹은 비밀번호를 확인해 주세요");
+    }
 
 
 
     //Join 시도
     @PostMapping(value = "/join")
-    public JoinResponseDto memberJoinApi(@Valid MemberDto memberDto,
-                                                         BindingResult bindingResult){
+    public StatusResponseDto memberJoinApi(@Valid MemberDto memberDto,
+                                           BindingResult bindingResult){
 
-        JoinResponseDto joinResponseDto = new JoinResponseDto();
+        StatusResponseDto joinResponseDto = new StatusResponseDto();
 
         log.info("User Try to Join -> data={}", memberDto);
 

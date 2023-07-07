@@ -33,12 +33,12 @@ public class MemberDto {
     @NotEmpty(message = "학번은 필수 입력 항목입니다.")
     @Length(min = 9,max = 9,message = "학번은 12글자 입니다..")
     @Pattern(regexp = "^[0-9]+$", message = "숫자만 입력해주세요.")
-    private String stunum;
+    private String stuNum;
 
     //기수
     @NotEmpty(message = "기수는 필수 입력 항목입니다.")
     @Pattern(regexp = "^[0-9]+$", message = "숫자만 입력해주세요.")
-    private String joinyear;
+    private String joinYear;
 
     //가입 이메일
     @NotEmpty(message = "이메일은 필수 입력 항목입니다.")

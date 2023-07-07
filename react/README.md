@@ -14,3 +14,4 @@
 10. Semantic-ui-css (v2.5.0)
 11. Semantic-ui-react (v2.1.4)
 12. @mui/material (v5.13.5)
+13. @ant-design/icons (v5.1.4)

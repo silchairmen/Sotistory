@@ -1,7 +1,0 @@
-export const SET_SEARCH_KEYWORD = 'SET_SERACH_KEYWORD';
-export const CLEAR_SEARCH_KEYWORD = 'CLEAR_SEARCH_KEYWORD';
-export const SEARCH_POSTS = 'SEARCH_POSTS';
-export const SEARCH_TYPE = 'SEARCH_TYPE';
-export const PAGE_TOTAL = 'PAGE_TOTAL';
-export const PAGE_INDEX = 'PAGE_INDEX';
-export const MENU_ITEM = "MENU_ITEM";

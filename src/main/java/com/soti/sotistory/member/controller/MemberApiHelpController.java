@@ -26,8 +26,9 @@ public class MemberApiHelpController {
     //이메일 검증 로직
     @PostMapping(value = "/check_email")
     public StatusResponseDto checkEmail(@RequestParam(name = "email") String email){
-        Member member = new Member();
-        member.setEmail(email);
+        Member member = Member.builder()
+                        .email(email)
+                        .build();
 
 
         try{
@@ -44,8 +45,9 @@ public class MemberApiHelpController {
     //닉네임 검증 로직
     @PostMapping(value = "/check_nickname")
     public StatusResponseDto checkNickname(@RequestParam(name = "nickname") String nickName){
-        Member member = new Member();
-        member.setNickname(nickName);
+        Member member = Member.builder()
+                .nickname(nickName).build();
+
 
         try{
             memberAuthService.checkNicknameDuplicateMember(member);

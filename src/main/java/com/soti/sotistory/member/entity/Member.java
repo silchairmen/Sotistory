@@ -2,16 +2,17 @@ package com.soti.sotistory.member.entity;
 
 import com.soti.sotistory.member.constant.Role;
 import com.soti.sotistory.member.dto.MemberDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "members")
-@Getter @Setter
+@Builder
+@Getter
+@NoArgsConstructor // 매개변수가 없는 기본 생성자 추가
+@AllArgsConstructor // 모든 필드를 가지는 생성자 추가
 @ToString
 public class Member {
 
@@ -19,7 +20,7 @@ public class Member {
 
     @Id
     @Column(name = "member_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     //이름
@@ -50,24 +51,5 @@ public class Member {
 
     //직급
     @Enumerated(EnumType.STRING)
-    private Role role;
-
-    //멤버 생성 초기 로직, 기본적으로 USER 권한을 가짐
-    public static Member createMember(MemberDto memberDto, PasswordEncoder passwordEncoder){
-        Member member = new Member();
-        member.setName(memberDto.getName());
-        member.setNickname(memberDto.getNickname());
-        member.setStuNum(memberDto.getStuNum());
-        member.setJoinYear(memberDto.getJoinYear());
-        member.setInterests(memberDto.getInterests());
-        member.setEmail(memberDto.getEmail());
-        member.setAddress(memberDto.getAddress());
-
-        String password = passwordEncoder.encode(memberDto.getPassword());
-
-        member.setPassword(password);
-        member.setRole(Role.USER);
-
-        return member;
-    }
+    @Builder.Default private Role role = Role.USER;
 }

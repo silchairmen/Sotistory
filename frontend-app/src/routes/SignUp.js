@@ -98,7 +98,7 @@ export default function SignUp() {
       formData.append('password', password);
   
       // 회원가입 요청 보내기
-      const response = await axios.post('http://192.168.0.12:8989/signUp', formData);
+      const response = await axios.post('http://localhost:8080/api/member/join', formData);
   
       // 응답 처리
       if (response.status === 200) {

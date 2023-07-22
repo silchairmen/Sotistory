@@ -22,20 +22,20 @@ public class MemberAuthService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
 
-    //login method
-    // 로그인 메서드
-    public Member loginMember(String email, String password, PasswordEncoder passwordEncoder) {
-        Member member = memberRepository.findByEmail(email);
-        if (member == null || !member.getPassword().equals(passwordEncoder.encode(password))) {
-            throw new IllegalArgumentException("이메일 혹은 비밀번호가 틀렸습니다.");
-        }
-
-        return member;
-    }
+//    //login method
+//    // 로그인 메서드
+//    public Member loginMember(String email, String password, PasswordEncoder passwordEncoder) {
+//        Member member = memberRepository.findByEmail(email);
+//        if (member == null || !member.getPassword().equals(passwordEncoder.encode(password))) {
+//            throw new IllegalArgumentException("이메일 혹은 비밀번호가 틀렸습니다.");
+//        }
+//
+//        return member;
+//    }
 
 
     //join method
-    public Member joinMember(Member member){
+    public Member joinMember(Member member) {
         checkEmailDuplicateMember(member);
         checkNicknameDuplicateMember(member);
         return memberRepository.save(member);
@@ -44,14 +44,14 @@ public class MemberAuthService implements UserDetailsService {
     public void checkEmailDuplicateMember(Member member){
         Member findMember = memberRepository.findByEmail(member.getEmail());
         if(findMember != null){
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            throw new IllegalStateException("이미 존재하는 이메일입니다.");
         }
     }
 
     public void checkNicknameDuplicateMember(Member member){
         Member findMember = memberRepository.findByNickname(member.getNickname());
         if(findMember != null){
-            throw new IllegalStateException("이미 존재하는 닉네임 입니다");
+            throw new IllegalStateException("이미 존재하는 닉네임입니다.");
         }
     }
 
@@ -65,7 +65,6 @@ public class MemberAuthService implements UserDetailsService {
         if(member==null){
             throw new UsernameNotFoundException(email);
         }
-
 
         //유저정보에 이메일과 password, role을 넣어서 념겨줌, role은 Spring Security에서 필요한 부분임.
         return User.builder()

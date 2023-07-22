@@ -43,7 +43,7 @@ public class MemberApiController {
 
         StatusResponseDto joinResponseDto = new StatusResponseDto();
 
-        log.info("User Try to Join -> data={}", memberDto);
+        log.info("User Try to Join -> data={}", memberDto.toString());
 
         //파라미터 에러 검증
         if(bindingResult.hasErrors()){
@@ -56,7 +56,17 @@ public class MemberApiController {
 
         //정상 가입일 경우 정상 응답
         try{
-            Member member = Member.createMember(memberDto, passwordEncoder);
+            Member member = Member.builder()
+                    .name(memberDto.getName())
+                    .nickname(memberDto.getNickname())
+                    .stuNum(memberDto.getStuNum())
+                    .joinYear(memberDto.getJoinYear())
+                    .email(memberDto.getEmail())
+                    .password(passwordEncoder.encode(memberDto.getPassword()))
+                    .address(memberDto.getAddress())
+                    .interests(memberDto.getInterests())
+                    .build();
+
             memberAuthService.joinMember(member);
 
             joinResponseDto.setStatus(200);

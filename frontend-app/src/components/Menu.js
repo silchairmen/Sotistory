@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import '../css/commena.css';
+import logo from '../img/logo.png';
 
 const Menu = (props) => {
   return (
@@ -13,7 +14,7 @@ const Menu = (props) => {
             </a>
           </li>
           <li>
-            <a href="/Board" onClick={props.toggleMenu}>
+            <a href="/FreeBoard" onClick={props.toggleMenu}>
               Board
             </a>
           </li>
@@ -33,7 +34,6 @@ const Menu = (props) => {
             </a>
           </li>
         </ul>
-        <SocialLinks />
       </div>
     </div>
   );
@@ -44,22 +44,20 @@ const Nav = (props) => {
     <React.Fragment>
       <nav id="navbar">
         <div className="nav-wrapper">
-          <p className="brand">
-            SOTI
-          </p>
+          <img src={logo} alt='bg' width="80px" />
           <a
             onClick={props.toggleMenu}
             className={props.showMenu === 'active' ? 'menu-button active' : 'menu-button'}
           >
             <span />
           </a>
-        </div>
+        </div>  
       </nav>
     </React.Fragment>
   );
 };
 
-const SocialLinks = (props) => {
+/*const SocialLinks = (props) => {
   return (
     <div className="social">
       <a
@@ -92,7 +90,7 @@ const SocialLinks = (props) => {
       </a>
     </div>
   );
-};
+}; */
 
 const MenuExampleSizeLarge = () => {
   const [menuState, setMenuState] = useState(false);

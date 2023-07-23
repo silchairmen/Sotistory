@@ -13,9 +13,9 @@ function BoardList({ userId, id, title }) {
   return (
       <tbody>
         <tr>
-          <Td>No.{id}</Td>
+          <Td>No.{id}</Td>  
           <Td>
-            <Link to={`/board/${id}`}><FontColor>{title}</FontColor></Link>
+            <Link to={`/FreeBoard/${id}`}><FontColor>{title}</FontColor></Link>
           </Td>
           <td style={{textAlign:"center"}}>{userId}</td>
         </tr>

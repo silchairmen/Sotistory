@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import './intro.css';
-import Home from '../../Home/Home';
+import Home from '../Home/Home';
 import { useState ,useEffect} from 'react';
 
 const Index = () => {
@@ -63,9 +63,9 @@ const Index = () => {
     <div>
       {isIntroVisible ? (
         <section id='loader' className="loader">
-          <span className="loader__text"><span>Developer,</span></span>
-          <span className="loader__text"><span>designer</span></span>
-          <span className="loader__text"><span>& runner.</span></span>
+          <span className="loader__text"><span>우석대학교</span></span>
+          <span className="loader__text"><span>정보보안학과</span></span>
+          <span className="loader__text"><span>동아리</span></span>
           <div className="loader__slice"></div>
           <div className="loader__slice"></div>
           <div className="loader__slice"></div>

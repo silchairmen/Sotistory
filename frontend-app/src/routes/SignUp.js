@@ -49,6 +49,7 @@ export default function SignUp() {
     address: '',
     zonecode: '',
   });
+  const [senddata,setSendData] = React.useState("");
   const [checked, setChecked] = React.useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = React.useState("");
   const navigate = useNavigate();
@@ -96,16 +97,18 @@ export default function SignUp() {
       formData.append('joinYear', joinYear);
       formData.append('email', email);
       formData.append('password', password);
-  
+      formData.append('interrest',interests);
+      formData.append('address',selectedAddress.address);
       // 회원가입 요청 보내기
-      const response = await axios.post('http://localhost:8080/api/member/join', formData);
-  
+      const response = await axios.post('http://192.168.0.12:8989/signUp', formData);
+      
       // 응답 처리
       if (response.status === 200) {
+        setSendData(response.message);
         setShowSuccessAlert('success');
         // ... (성공 처리)
       } else {
-        console.log(response.status);
+        setSendData("Error"+response.status+response.message);
         setShowSuccessAlert('error');
         return 0;
         // ... (에러 처리)
@@ -125,7 +128,7 @@ export default function SignUp() {
 
   // 각 입력 필드에 대한 정규식 패턴 설정
   const regEmail =
-    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;   //정규식 검사 숫자,영문 소,대문자 특문 -,_,. 사용가능 이후는 기본 이메일과 동일
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;   //정규식 검사 숫자,영문 소,대문자 특문 -,_,. 사용가능 이후는 기본 이메일과 동일
   const regName = /^[가-힣]+$/; // 한글만 사용가능
   const regNickname = /^[0-9a-zA-Z\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF\-_]+$/;
   const regStuNum = /^[0-9]+$/; // 숫자 사용가능
@@ -150,6 +153,9 @@ export default function SignUp() {
 
   const [password, setPassword] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
+
+  const [interests,setInterests] = React.useState('');
+
 
   // 입력 필드 값이 변경될 때마다 정규식 검사를 수행하고 에러 상태 업데이트
   const handleNameChange = (e) => {
@@ -181,21 +187,18 @@ export default function SignUp() {
     setPassword(e.target.value);
     setPasswordError(!regPassword.test(e.target.value));
   };
+  const handleInterestsChange = (e) => {
+    setInterests(e.target.value);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
 
     // 체크박스가 체크되지 않았으면 경고창 표시
     if (!checked) {
       alert('Please check the agreement.'); // 경고창 띄우기
       return; // 함수 실행 중단
     }
-
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
   };
 
   return (
@@ -213,12 +216,12 @@ export default function SignUp() {
                 {/* 성공 알림 표시 */}
       {showSuccessAlert === "success" && (
         <Alert severity="success" sx={{ mt: 2 }}>
-          회원가입이 성공적으로 완료되었습니다!
+          {senddata}
         </Alert>
       )}
       {showSuccessAlert === "error" && (
         <Alert severity="error" sx={{ mt: 2 }}>
-          입력 값을 확인해주세요. 모든 필수 입력 항목을 작성해주세요.
+          {senddata}
         </Alert>
       )}
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -315,7 +318,6 @@ export default function SignUp() {
           <Grid item xs={12}>
             <TextField
               inputMode="numeric"
-              pattern="[0-9]*"
               required
               fullWidth
               name="password"
@@ -341,9 +343,11 @@ export default function SignUp() {
                   rows={4}
                   name="interests"
                   label="관심 분야"
+                  value={interests}
                   type="interests"
                   id="interests"
                   autoComplete="new-interests"
+                  onChange={handleInterestsChange}
                 />
               </Grid>
               {/* 주소 입력란 */}

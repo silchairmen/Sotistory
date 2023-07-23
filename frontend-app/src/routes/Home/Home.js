@@ -5,6 +5,7 @@ import Mainslide from "./Mainslide";
 import Dreamhack from "./Dreamhack";
 const Background = styled.div`
   width:100%;
+  background-color:white;
 `
 const Home = () => {
 

@@ -1,7 +1,7 @@
 import Board from "../../components/board/Board"
 
-const FreeBoard = (a,b,c) => {
-    return <Board/>;
+const FreeBoard = () => {
+    return <Board address="https://jsonplaceholder.typicode.com/posts/"/>;
 }
 
 

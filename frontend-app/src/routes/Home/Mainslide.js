@@ -1,9 +1,9 @@
 import Carousel from 'react-material-ui-carousel';
 import { Paper } from '@mui/material';
-import back1 from '../img/background.jpg';
-import back2 from '../img/background2.jpg';
-import back3 from '../img/background3.jpg';
-import back4 from '../img/background4.jpg';
+import back1 from '../../img/test1.jpg';
+import back2 from '../../img/test2.jpg';
+import back3 from '../../img/background3.jpg';
+import back4 from '../../img/background4.jpg';
 import styled from 'styled-components';
 
 const itemq = [

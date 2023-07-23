@@ -7,7 +7,11 @@ import Search from "../Search";
 import Loading from "../../img/loading.gif"; // Import the Loading component
 import styled from "styled-components";
 
-
+const H1 = styled.h1`
+  font-size:40px;
+  padding-top:80px;
+  padding-bottom:100px;
+`;
 const Table = styled.table`
   width: 70vw;
   height: 100vh;
@@ -24,21 +28,22 @@ const ContainerFragment = styled.div`
   background-color:whitesmoke;
 `
 
-const Board = () => {
+const Board = ({address}) => {
   const [boardData, setBoardData] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const loaddata=useSelector(state => state.search.keyword);
   const loadtype=useSelector(state => state.search.type);
-  
+  console.log(address);
+
   useEffect(() => {
     getBoard();
-  }, []);
+  }, [address]);
 
   const getBoard = async () => {
     try {
-      const resp = await axios.get("https://jsonplaceholder.typicode.com/posts/");
+      const resp = await axios.get(address);
       setBoardData(resp.data);
       setLoading(false); // Set loading to false after data is fetched
     } catch (error) {
@@ -61,6 +66,9 @@ const Board = () => {
         <img src={Loading} alt="Loading"h/>
       ) : (
         <ContainerFragment>
+          <div>
+            <H1>자유 게시판</H1>
+          </div>
           <select value={limit} onChange={handleLimitChange}>
             <option value="10">10</option>
             <option value="15">15</option>

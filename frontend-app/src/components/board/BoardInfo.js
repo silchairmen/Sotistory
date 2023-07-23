@@ -20,6 +20,8 @@ const Body=styled.div`
   align-items:center;
   background-position:center;
   border-radius: 5px;
+  padding-top: 15%;
+  padding-bottom: 8%;
 `
 const Footer=styled.div`
   padding:15px;
@@ -33,14 +35,14 @@ const Footer=styled.div`
 const UserId=styled.div`
   align-items:center;
 `
-function Boardinfo() {
+function Boardinfo({address}) {
   const [boardInfo, setBoardInfo] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const resp = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+        const resp = await fetch(`${address}${id}`);
         const data = await resp.json();
         setBoardInfo(data);
       } catch (error) {

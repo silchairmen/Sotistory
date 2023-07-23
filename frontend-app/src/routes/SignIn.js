@@ -12,7 +12,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import axios from 'axios'
+import Alert from '@mui/material/Alert'
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -31,17 +32,90 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const [showSuccessAlert, setShowSuccessAlert] = React.useState("");
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    if (
+      !email ||
+      !password
+    ) {
+      setShowSuccessAlert('error');
+      return;
+    }
+  
+    // 정규식 체크
+    if (
+      emailError ||
+      passwordError
+    ) {
+      setShowSuccessAlert('error');
+      return;
+    }
+    try{
+      const data = new FormData(event.currentTarget);
+    
+      data.append('email',email);
+      data.append('password',password);
+
+      // 회원가입 요청 보내기
+      const response = await axios.post('http://192.168.0.12:8989/signIn', data);
+            // 응답 처리
+      if (response.status === 200) {
+        setSendData(response.message);
+        setShowSuccessAlert('success');
+        // ... (성공 처리)
+      } else {
+        setSendData(response.message);
+        setShowSuccessAlert('error');
+        return 0;
+        // ... (에러 처리)
+      }
+    } catch (error) {
+      console.log("오류");
+      setShowSuccessAlert('error');
+      return 0;
+      // ... (요청 실패 처리)
+    }
+    }
+    
+    
+  
+  
+  const regEmail =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;   //정규식 검사 숫자,영문 소,대문자 특문 -,_,. 사용가능 이후는 기본 이메일과 동일
+  const regPassword = /^[0-9a-zA-Z!@#$%^&*]+$/; // 특수문자, 영문 대소문자, 숫자 사용가능
+
+  const [email, setEmail] = React.useState('');
+  const [emailError, setEmailError] = React.useState(false);
+
+  const [password, setPassword] = React.useState('');
+  const [passwordError, setPasswordError] = React.useState(false);
+
+  const [senddata,setSendData]= React.useState("");
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setEmailError(!regEmail.test(e.target.value));
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setPasswordError(!regPassword.test(e.target.value));
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
+                {/* 성공 알림 표시 */}
+                {showSuccessAlert === "success" && (
+        <Alert severity="success" sx={{ mt: 2 }}>
+          {senddata}
+        </Alert>
+      )}
+      {showSuccessAlert === "error" && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {senddata}
+        </Alert>
+      )}
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -75,24 +149,34 @@ export default function SignIn() {
               Sign in
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
+            <TextField
+              required
+              fullWidth
+              name="email"
+              label="이메일 주소"
+              id="email"
+              autoComplete="email"
+              value={email}
+              onChange={handleEmailChange}
+              error={emailError}
+              helperText={emailError ? '올바른 이메일 형식이 아닙니다.' : ''}
+            />
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="비밀번호"
                 type="password"
                 id="password"
+                onChange={handlePasswordChange}
+                value={password}
+                error={passwordError}
+                helperText={
+                passwordError
+                  ? '특수문자, 영문 대소문자, 숫자만 사용 가능합니다.'
+                  : ''
+              }
                 autoComplete="current-password"
               />
               <FormControlLabel

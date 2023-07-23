@@ -63,13 +63,15 @@ class PostServiceTest {
     void createPostTest(){
         //given
         Long authorId = member.getId();
+        String memberNickname = member.getNickname();
         String title = "테스트 제목";
         String content = "테스트 내용";
         PostType postType = PostType.NORMAL;
 
         PostDto postDto = new PostDto();
         postDto.setAuthorId(authorId);
-        postDto.setCategory(category);
+        postDto.setAuthor(memberNickname);
+        postDto.setCategoryName(category.getCategoryName());
         postDto.setTitle(title);
         postDto.setContent(content);
         postDto.setPostType(postType);
@@ -79,7 +81,7 @@ class PostServiceTest {
 
         //then
         assertEquals(postDto.getAuthorId(), createdPost.getAuthor().getId());
-        assertEquals(postDto.getCategory().getId(), createdPost.getCategory().getId());
+        assertEquals(postDto.getCategoryName(), createdPost.getCategory().getCategoryName());
         assertEquals(postDto.getTitle(), createdPost.getTitle());
         assertEquals(postDto.getContent(), createdPost.getContent());
         assertEquals(postDto.getPostType(), createdPost.getPostType());
@@ -93,15 +95,15 @@ class PostServiceTest {
     @DisplayName("글 생성 TASK 2 > 비밀 글 생성")
     void createSecretPostTest() {
         // Arrange
-        Long authorId = member.getId();
+        String memberNickname = member.getNickname();
         String title = "테스트 제목";
         String content = "테스트 내용";
         PostType postType = PostType.HIDDEN;
         String postPassword = "비밀번호";
 
         PostDto postDto = new PostDto();
-        postDto.setAuthorId(authorId);
-        postDto.setCategory(category);
+        postDto.setAuthor(memberNickname);
+        postDto.setCategoryName(category.getCategoryName());
         postDto.setTitle(title);
         postDto.setContent(content);
         postDto.setPostType(postType);
@@ -112,8 +114,8 @@ class PostServiceTest {
 
 
         //then
-        assertEquals(postDto.getAuthorId(), createdPost.getAuthor().getId());
-        assertEquals(postDto.getCategory().getId(), createdPost.getCategory().getId());
+        assertEquals(postDto.getAuthor(), createdPost.getAuthor().getNickname());
+        assertEquals(postDto.getCategoryName(), createdPost.getCategory().getCategoryName());
         assertEquals(postDto.getTitle(), createdPost.getTitle());
         assertEquals(postDto.getContent(), createdPost.getContent());
         assertEquals(postDto.getPostType(), createdPost.getPostType());
@@ -122,8 +124,8 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("글 생성 실패 TASK 1 > 없는 ID")
-    void createSecretPostTestWithoutPassword() {
+    @DisplayName("글 생성 실패 TASK 1 > 작성자 조회 결과가 없는 ID")
+    void createSecretPostWithoutPasswordTest() {
         // given
         Long authorId = 1231313L;
         String title = "테스트 제목";
@@ -133,13 +135,60 @@ class PostServiceTest {
 
         PostDto postDto = new PostDto();
         postDto.setAuthorId(authorId);
-        postDto.setCategory(category);
+        postDto.setCategoryName(category.getCategoryName());
         postDto.setTitle(title);
         postDto.setContent(content);
         postDto.setPostType(postType);
         postDto.setPostPassword(postPassword);
 
         // when //then
-        assertThrows(IllegalArgumentException.class, () -> postService.createPost(postDto));
+        assertThrows(IllegalArgumentException.class,
+                () -> postService.createPost(postDto));
+    }
+
+    @Test
+    @DisplayName("글 생성 실패 TASK 2 > 게시판 ID가 없는 게시물 생성")
+    void createPostWithWrongPostIdTest(){
+        // given
+        Long authorId = 1231313L;
+        String title = "테스트 제목";
+        String content = "테스트 내용";
+        PostType postType = PostType.HIDDEN;
+        String postPassword = "비밀번호";
+
+        PostDto postDto = new PostDto();
+        postDto.setAuthorId(authorId);
+        postDto.setCategoryName(category.getCategoryName());
+        postDto.setTitle(title);
+        postDto.setContent(content);
+        postDto.setPostType(postType);
+        postDto.setPostPassword(postPassword);
+
+        // when //then
+        assertThrows(IllegalArgumentException.class,
+                () -> postService.createPost(postDto));
+    }
+
+    @Test
+    @DisplayName("글생성 실패 TASK 3 > 존재하지 않는 게시판에 글 작성")
+    void createPostWithWrongPostCategoryTest(){
+        // given
+        Long authorId = 1231313L;
+        String title = "테스트 제목";
+        String content = "테스트 내용";
+        PostType postType = PostType.HIDDEN;
+        String postPassword = "비밀번호";
+
+        PostDto postDto = new PostDto();
+        postDto.setAuthorId(authorId);
+        postDto.setCategoryName("category1234");
+        postDto.setTitle(title);
+        postDto.setContent(content);
+        postDto.setPostType(postType);
+        postDto.setPostPassword(postPassword);
+
+        // when //then
+        assertThrows(IllegalArgumentException.class,
+                () -> postService.createPost(postDto));
     }
 }

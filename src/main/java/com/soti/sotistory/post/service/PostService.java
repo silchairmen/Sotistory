@@ -21,16 +21,20 @@ public class PostService {
 
     public Post createPost(PostDto postDto) {
         //사용자 검증
-        Member author = memberRepository.findById(postDto.getAuthorId())
-                .orElseThrow(() -> new IllegalArgumentException("인증되지 않은 사용자입니다."));
+        Member author = memberRepository.findByNickname(postDto.getAuthor());
+        if (author == null) {
+            throw new IllegalArgumentException("인증되지 않은 사용자입니다.");
+        }
 
         //카테고리 검증
-        Category categoryId = categoryRepository.findById(postDto.getCategory().getId())
+        Category category = categoryRepository.findById(categoryRepository.
+                        findByCategoryName(postDto.getCategoryName())
+                        .getId())
                 .orElseThrow(() -> new IllegalArgumentException("카테고리 정보가 존재하지 않습니다."));
 
         Post.PostBuilder postBuilder = Post.builder()
                 .author(author)
-                .category(categoryId)
+                .category(category)
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
                 .postType(postDto.getPostType());
@@ -46,4 +50,6 @@ public class PostService {
 
         return postRepository.save(post);
     }
+
+
 }

@@ -12,6 +12,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+
+/**
+ * 스프링 시큐리티 설정 저장소
+ * API 형식으로 작동하게 설계
+ * */
+
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -35,6 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/members/logout"))
                 .logoutSuccessUrl("/")
                 .deleteCookies();
+
+        http.cors();
     }
 
     @Bean

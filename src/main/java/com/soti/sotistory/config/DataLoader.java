@@ -8,6 +8,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+/**
+ * 데이터 로더
+ * 게시판에서 freeboard, questions 필드를 생성함
+ *
+ * */
+
+
 @Configuration
 public class DataLoader {
 

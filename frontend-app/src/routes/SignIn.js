@@ -58,7 +58,7 @@ export default function SignIn() {
       data.append('password',password);
 
       // 회원가입 요청 보내기
-      const response = await axios.post('http://192.168.0.12:8989/signIn', data);
+      const response = await axios.post('http://localhost:8080/api/member/login', data, {withCredentials: true});
             // 응답 처리
       if (response.status === 200) {
         setSendData(response.message);

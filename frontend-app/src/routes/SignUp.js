@@ -104,17 +104,17 @@ export default function SignUp() {
       
       // 응답 처리
       if (response.status === 200) {
-        setSendData(response.message);
+        setSendData(response.data.message);
         setShowSuccessAlert('success');
         // ... (성공 처리)
       } else {
-        setSendData("Error"+response.status+response.message);
+        setSendData("Error: "+response.data.message);
         setShowSuccessAlert('error');
         return 0;
         // ... (에러 처리)
       }
     } catch (error) {
-      console.log("오류");
+      alert("오류");
       setShowSuccessAlert('error');
       return 0;
       // ... (요청 실패 처리)

@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import '../css/commen.css';
-
 const slideWidth = 30;
 
 const _items = [
@@ -122,17 +121,22 @@ const History = () => {
         if (idx < activeIdx) prevClick(activeIdx - idx);
         if (idx > activeIdx) nextClick(idx - activeIdx);
     };
-
-    React.useEffect(() => {
+    useEffect(() => {
+        const navbar = document.querySelector('#navbar');
+        if (navbar) {
+          navbar.classList.add('bg-gogo');
+        }
+      }, []);
+    useEffect(() => {
         if (isTicking) sleep(300).then(() => setIsTicking(false));
     }, [isTicking]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setActiveIdx((length - (items[0] % length)) % length) // prettier-ignore
     }, [items]);
 
     return (
-        <div className='hall'>
+        <div className='hall' style={{ paddingTop: '70px' }}>
         <div className='content-top'>
             <h2>Hall of fame</h2>
             <p>SOTI의 구성원을 소개합니다</p>

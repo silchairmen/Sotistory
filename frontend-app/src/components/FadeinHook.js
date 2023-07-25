@@ -1,5 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react';
-//https://github.com/jus0k/scroll-hooks
+//https://github.com/jus0k/scroll-hooks 주소
 const useScrollFadeIn = (direction = 'up', duration = 1, delay = 0) => {
   const element = useRef();
 
@@ -17,7 +17,6 @@ const useScrollFadeIn = (direction = 'up', duration = 1, delay = 0) => {
         return;
     }
   };
-
   const onScroll = useCallback(
     ([entry]) => {
       const { current } = element;

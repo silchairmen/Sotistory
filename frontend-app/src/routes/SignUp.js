@@ -13,6 +13,7 @@ import DaumPostcode from 'react-daum-postcode';
 import Alert from '@mui/material/Alert';
 import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
+import { useEffect } from 'react';
 
 function Address({ onSelectAddress }) {
   const handleComplete = (data) => {
@@ -52,8 +53,16 @@ export default function SignUp() {
   const [senddata,setSendData] = React.useState("");
   const [checked, setChecked] = React.useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = React.useState("");
+  const getRegexErrorMessage = (isValid, errorMessage) => {
+    return isValid ? '' : errorMessage;
+  };
   const navigate = useNavigate();
-
+  useEffect(()=>{
+    const navbar = document.querySelector('#navbar');
+    if (navbar) {
+      navbar.classList.add('bg-gogo');
+    }
+  })
   const handleSignUp = async (event) => {
     event.preventDefault();
   
@@ -133,7 +142,7 @@ export default function SignUp() {
   const regNickname = /^[0-9a-zA-Z\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF\-_]+$/;
   const regStuNum = /^[0-9]+$/; // 숫자 사용가능
   const regJoinYear = /^[0-9]+$/; // 숫자 사용가능
-  const regPassword = /^[0-9a-zA-Z!@#$%^&*]+$/; // 특수문자, 영문 대소문자, 숫자 사용가능
+  const regPassword = /^[0-9a-zA-Z!@#$%^&*.]+$/; // 특수문자, 영문 대소문자, 숫자 사용가능
 
   // 각 입력 필드의 상태와 에러 메시지를 관리하는 state
   const [name, setName] = React.useState('');
@@ -200,7 +209,40 @@ export default function SignUp() {
       return; // 함수 실행 중단
     }
   };
+  const CheckNickName = async () => {
+    try {
+      const Data = new FormData();
+      Data.append('nickname', nickname);
+      const resp = await axios.post('http://localhost:8080/api/member/help/check_nickname', Data);
+      if (resp.status === 200) {
+        setNicknameErrorText(resp.data.message);
+        setNicknameErrorText(""); // 검사 성공 시 에러 메시지 초기화
+      } else {
+        setNicknameErrorText(resp.data.message); // 검사 실패 시 에러 메시지 설정
+      }
+    } catch (error) {
+      setNicknameErrorText("오류");
+    }
+  };
+  
+  const CheckEmail = async () => {
+    try {
+      const Data = new FormData();
+      Data.append('email', email);
+      const resp = await axios.post('http://localhost:8080/api/member/help/check_email', Data);
+      if (resp.status === 200) {
+        setEmailErrorText(resp.data.message);
+        setEmailErrorText(""); // 검사 성공 시 에러 메시지 초기화
+      } else {
+        setEmailErrorText(resp.data.message); // 검사 실패 시 에러 메시지 설정
+      }
+    } catch (error) {
+      setEmailErrorText("오류");
+    }
+  };
 
+  const [emailErrorText,setEmailErrorText] = React.useState("");
+  const [nicknameErrorText,setNicknameErrorText] = React.useState("");
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -226,6 +268,44 @@ export default function SignUp() {
       )}
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
+            {/* 이메일 주소 입력란 */}
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name="email"
+              label="이메일 주소"
+              id="email"
+              autoComplete="email"
+              value={email}
+              onChange={handleEmailChange}
+              error={emailError}
+              helperText={getRegexErrorMessage(!emailError, '올바른 이메일 형식이 아닙니다.')+(emailErrorText ? emailErrorText :'')}
+              onBlur={()=> CheckEmail}
+            />
+          </Grid>
+          
+          {/* 비밀번호 입력란 */}
+          <Grid item xs={12}>
+            <TextField
+              inputMode="numeric"
+              required
+              fullWidth
+              name="password"
+              label="비밀번호"
+              type="password"
+              id="password"
+              autoComplete="new-password"
+              value={password}
+              onChange={handlePasswordChange}
+              error={passwordError}
+              helperText={
+                passwordError
+                  ? '특수문자, 영문 대소문자, 숫자만 사용 가능합니다.'
+                  : ''
+              }
+            />
+          </Grid>
           {/* 이름 입력란 */}
           <Grid item xs={12}>
             <TextField
@@ -242,7 +322,6 @@ export default function SignUp() {
               helperText={nameError ? '한글만 사용 가능합니다.' : ''}
             />
           </Grid>
-
           {/* 닉네임 입력란 */}
           <Grid item xs={12}>
             <TextField
@@ -257,10 +336,12 @@ export default function SignUp() {
               onChange={handleNicknameChange}
               error={nicknameError}
               helperText={
-                nicknameError
-                  ? '한글,영문 대소문자, 특수문자(-, _),숫자만 사용 가능합니다.'
-                  : ''
+                getRegexErrorMessage(
+                  !nicknameError,
+                  '한글,영문 대소문자, 특수문자(-, _),숫자만 사용 가능합니다.'
+                ) + (nicknameErrorText ? nicknameErrorText : '')
               }
+              onBlur={()=> CheckNickName}
             />
           </Grid>
 
@@ -298,43 +379,6 @@ export default function SignUp() {
             />
           </Grid>
 
-          {/* 이메일 주소 입력란 */}
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="email"
-              label="이메일 주소"
-              id="email"
-              autoComplete="email"
-              value={email}
-              onChange={handleEmailChange}
-              error={emailError}
-              helperText={emailError ? '올바른 이메일 형식이 아닙니다.' : ''}
-            />
-          </Grid>
-
-          {/* 비밀번호 입력란 */}
-          <Grid item xs={12}>
-            <TextField
-              inputMode="numeric"
-              required
-              fullWidth
-              name="password"
-              label="비밀번호"
-              type="password"
-              id="password"
-              autoComplete="new-password"
-              value={password}
-              onChange={handlePasswordChange}
-              error={passwordError}
-              helperText={
-                passwordError
-                  ? '특수문자, 영문 대소문자, 숫자만 사용 가능합니다.'
-                  : ''
-              }
-            />
-          </Grid>
               {/* 관심 분야 입력란 */}
               <Grid item xs={12} mt={5}>
                 <TextField

@@ -6,6 +6,7 @@ import SignUp from "./routes/SignUp";
 import History from "./routes/History";
 import { Layout } from 'antd';
 import Intro from './routes/intro/index';
+import BoardEditor from "./components/board/BoardEditor";
 
 const { Content } = Layout;
 const contentStyle = {
@@ -29,6 +30,7 @@ function Body() {
             <Route path="/SignIn" element={<Content style={contentStyle}><SignIn /></Content>} />
             <Route path="/SignUp" element={<Content style={contentStyle}><SignUp /></Content>} />
             <Route path="/History" element={<History />} />
+            <Route path="/FreeBoard/edit/:id" element={<Content style={contentStyle}><BoardEditor/></Content>} />
             <Route path="/" element={<Content style={contentStyle}><Intro /></Content>} />
           </Routes>
         </div>

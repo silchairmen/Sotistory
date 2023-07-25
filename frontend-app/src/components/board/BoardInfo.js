@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+
 const Board=styled.div`
   background-color:black;
   padding:15px;
@@ -65,6 +66,13 @@ function Boardinfo({address}) {
       <Body>
       <h3>{boardInfo.body}</h3>
       </Body>
+      <button ><Link to={{pathname:`/FreeBoard/edit/${id}`,state:{id: id}}}>
+        글 수정
+      </Link>
+      </button>
+      <button>
+        글 삭제
+      </button>
       <Footer>
         <UserId>
           <h3>유저 이름 </h3>

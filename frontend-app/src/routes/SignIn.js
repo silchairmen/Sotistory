@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios'
 import Alert from '@mui/material/Alert'
+import styled from 'styled-components';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -33,6 +34,12 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [showSuccessAlert, setShowSuccessAlert] = React.useState("");
+  React.useEffect(()=>{
+    const navbar = document.querySelector('#navbar');
+    if (navbar) {
+      navbar.classList.add('bg-gogo');
+    }
+  })
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (
@@ -78,7 +85,15 @@ export default function SignIn() {
     }
     }
     
+    const StyledDiv = styled.div`
+    @media screen and (min-width: 601px) and (max-width: 700px) {
+      padding-top: 57px
+    }
     
+    @media screen and (min-width: 900px) {
+      padding-top: 68px;
+    }
+    `;
   
   
   const regEmail =
@@ -104,6 +119,7 @@ export default function SignIn() {
   };
 
   return (
+    <StyledDiv>
     <ThemeProvider theme={defaultTheme}>
                 {/* 성공 알림 표시 */}
                 {showSuccessAlert === "success" && (
@@ -209,5 +225,6 @@ export default function SignIn() {
         </Grid>
       </Grid>
     </ThemeProvider>
+    </StyledDiv>
   );
 }

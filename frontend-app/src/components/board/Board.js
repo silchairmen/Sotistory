@@ -26,6 +26,7 @@ const Table = styled.table`
 `;
 const ContainerFragment = styled.div`
   background-color:whitesmoke;
+  padding-top: 70px;
 `
 
 const Board = ({address}) => {
@@ -39,6 +40,10 @@ const Board = ({address}) => {
 
   useEffect(() => {
     getBoard();
+    const navbar = document.querySelector('#navbar');
+    if (navbar) {
+      navbar.classList.add('bg-gogo');
+    }
   }, [address]);
 
   const getBoard = async () => {

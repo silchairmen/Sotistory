@@ -6,10 +6,15 @@ import com.soti.sotistory.post.constant.PostType;
 import com.soti.sotistory.post.dto.PostDto;
 import com.soti.sotistory.post.entity.Category;
 import com.soti.sotistory.post.entity.Post;
+import com.soti.sotistory.post.exception.PostNotFoundException;
 import com.soti.sotistory.post.repository.CategoryRepository;
 import com.soti.sotistory.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor //생성자 주입
@@ -51,5 +56,35 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    //게시글 전부 조회
+    public Page<Post> getAllPost(Pageable pageable){
+        return postRepository.findAll(pageable);
+    }
 
+    //특정 게시물 조회 (id 조회)
+    public Post getPostById(Long id) {
+        Optional<Post> postOptional = postRepository.findById(id);
+
+        if (postOptional.isPresent()) {
+            return postOptional.get();
+        } else {
+            throw new PostNotFoundException("Post not found with ID: " + id);
+        }
+    }
+
+    //게시물 수정
+    public Post editPost(Long id, PostDto postDto) {
+        // 기존 게시글 조회
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException("해당 게시글이 없습니다."));
+
+        // Post 객체 수정
+        try {
+            post.update(postDto.getTitle(), postDto.getContent(), postDto.getPostType(), postDto.getPostPassword());
+        } catch (Exception e) {
+            throw new RuntimeException("게시글 수정에 실패하였습니다.");
+        }
+
+        return postRepository.save(post);
+    }
 }

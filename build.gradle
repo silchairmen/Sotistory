@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.ResolveMainClassName
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.13'
@@ -51,6 +53,44 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
+
+//리엑트 설정
+def reactAppDir = "$projectDir/frontend-app"
+
+sourceSets {
+	main {
+		resources {
+			srcDirs = ["$projectDir/src/main/resources"]
+		}
+	}
+}
+
+processResources {
+	dependsOn "copyReactFile"
+}
+
+task installReact(type: Exec) {
+	workingDir "$reactAppDir"
+	inputs.dir "$reactAppDir"
+	group = BasePlugin.BUILD_GROUP
+
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')){
+		commandLine "npm.cmd", "run-script", "build"
+	} else{
+		commandLine "npm", "run-script", "build"
+	}
+}
+
+task copyReactFile(type: Copy){
+	dependsOn "buildReact"
+	from "$reactAppDir/build"
+	into "$buildDir/resources/main/static"
+}
+
+bootJar {
+
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

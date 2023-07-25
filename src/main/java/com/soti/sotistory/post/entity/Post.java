@@ -47,4 +47,13 @@ public class Post extends BaseTimeEntity {
     //댓글
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
+
+
+    // update 메서드 추가
+    public void update(String title, String content, PostType postType, String postPassword) {
+        this.title = title;
+        this.content = content;
+        this.postType = postType;
+        this.postPassword = postPassword;
+    }
 }

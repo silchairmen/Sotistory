@@ -1,16 +1,16 @@
 package com.soti.sotistory.post.dto;
 
-import com.soti.sotistory.member.entity.Member;
+
 import com.soti.sotistory.post.constant.PostType;
-import com.soti.sotistory.post.entity.Category;
+import com.soti.sotistory.post.entity.Comment;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter @Setter
@@ -34,4 +34,6 @@ public class PostDto {
     //Length 어노테이션은 null값을 테스트 하지 않기 때문에 무조건 필요한 것은 아니다.
     @Length(min = 4, max = 20, message = "비밀번호는 4글자 이상 20글자 이하로 설정해 주세요")
     private String postPassword;
+
+    private List<Comment> comments = new ArrayList<>();
 }

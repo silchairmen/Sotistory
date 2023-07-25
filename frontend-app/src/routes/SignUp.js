@@ -281,7 +281,7 @@ export default function SignUp() {
               onChange={handleEmailChange}
               error={emailError}
               helperText={getRegexErrorMessage(!emailError, '올바른 이메일 형식이 아닙니다.')+(emailErrorText ? emailErrorText :'')}
-              onBlur={()=> CheckEmail}
+              onBlur={CheckEmail}
             />
           </Grid>
           
@@ -341,7 +341,7 @@ export default function SignUp() {
                   '한글,영문 대소문자, 특수문자(-, _),숫자만 사용 가능합니다.'
                 ) + (nicknameErrorText ? nicknameErrorText : '')
               }
-              onBlur={()=> CheckNickName}
+              onBlur={CheckNickName}
             />
           </Grid>
 

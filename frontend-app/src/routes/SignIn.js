@@ -61,11 +61,11 @@ export default function SignIn() {
       const response = await axios.post('http://localhost:8080/api/member/login', data, {withCredentials: true});
             // 응답 처리
       if (response.status === 200) {
-        setSendData(response.message);
+        setSendData(response.data.message);
         setShowSuccessAlert('success');
         // ... (성공 처리)
       } else {
-        setSendData(response.message);
+        setSendData(response.data.message);
         setShowSuccessAlert('error');
         return 0;
         // ... (에러 처리)

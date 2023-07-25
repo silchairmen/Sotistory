@@ -36,7 +36,6 @@ const Board = ({address}) => {
   const [limit, setLimit] = useState(10);
   const loaddata=useSelector(state => state.search.keyword);
   const loadtype=useSelector(state => state.search.type);
-  console.log(address);
 
   useEffect(() => {
     getBoard();

@@ -113,11 +113,11 @@ export default function SignUp() {
       
       // 응답 처리
       if (response.status === 200) {
-        setSendData(response.data.message);
+        setSendData(response.data[0].message);
         setShowSuccessAlert('success');
         // ... (성공 처리)
       } else {
-        setSendData("Error: "+response.data.message);
+        setSendData("Error: "+response.data[0].message);
         setShowSuccessAlert('error');
         return 0;
         // ... (에러 처리)
@@ -215,10 +215,10 @@ export default function SignUp() {
       Data.append('nickname', nickname);
       const resp = await axios.post('http://localhost:8080/api/member/help/check_nickname', Data);
       if (resp.status === 200) {
-        setNicknameErrorText(resp.data.message);
+        setNicknameErrorText(resp.data[0].message);
         setNicknameErrorText(""); // 검사 성공 시 에러 메시지 초기화
       } else {
-        setNicknameErrorText(resp.data.message); // 검사 실패 시 에러 메시지 설정
+        setNicknameErrorText(resp.data[0].message); // 검사 실패 시 에러 메시지 설정
       }
     } catch (error) {
       setNicknameErrorText("오류");
@@ -231,10 +231,10 @@ export default function SignUp() {
       Data.append('email', email);
       const resp = await axios.post('http://localhost:8080/api/member/help/check_email', Data);
       if (resp.status === 200) {
-        setEmailErrorText(resp.data.message);
+        setEmailErrorText(resp.data[0].message);
         setEmailErrorText(""); // 검사 성공 시 에러 메시지 초기화
       } else {
-        setEmailErrorText(resp.data.message); // 검사 실패 시 에러 메시지 설정
+        setEmailErrorText(resp.data[0].message); // 검사 실패 시 에러 메시지 설정
       }
     } catch (error) {
       setEmailErrorText("오류");

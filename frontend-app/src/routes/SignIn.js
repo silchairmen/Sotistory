@@ -68,11 +68,11 @@ export default function SignIn() {
       const response = await axios.post('http://localhost:8080/api/member/login', data, {withCredentials: true});
             // 응답 처리
       if (response.status === 200) {
-        setSendData(response.data.message);
+        setSendData(response.data[0].message);
         setShowSuccessAlert('success');
         // ... (성공 처리)
       } else {
-        setSendData(response.data.message);
+        setSendData(response.data[0].message);
         setShowSuccessAlert('error');
         return 0;
         // ... (에러 처리)
@@ -84,16 +84,6 @@ export default function SignIn() {
       // ... (요청 실패 처리)
     }
     }
-    
-    const StyledDiv = styled.div`
-    @media screen and (min-width: 601px) and (max-width: 700px) {
-      padding-top: 57px
-    }
-    
-    @media screen and (min-width: 900px) {
-      padding-top: 68px;
-    }
-    `;
   
   
   const regEmail =
@@ -119,7 +109,6 @@ export default function SignIn() {
   };
 
   return (
-    <StyledDiv>
     <ThemeProvider theme={defaultTheme}>
                 {/* 성공 알림 표시 */}
                 {showSuccessAlert === "success" && (
@@ -225,6 +214,5 @@ export default function SignIn() {
         </Grid>
       </Grid>
     </ThemeProvider>
-    </StyledDiv>
   );
 }

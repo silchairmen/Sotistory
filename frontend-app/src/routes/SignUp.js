@@ -211,33 +211,35 @@ export default function SignUp() {
   };
   const CheckNickName = async () => {
     try {
-      const Data = new FormData();
-      Data.append('nickname', nickname);
-      const resp = await axios.post('http://localhost:8080/api/member/help/check_nickname', Data);
+      const Data1 = new FormData();
+      Data1.append('nickname', nickname);
+      const resp = await axios.post('http://localhost:8080/api/member/help/check_nickname', Data1);
       if (resp.status === 200) {
         setNicknameErrorText(resp.data[0].message);
         setNicknameErrorText(""); // 검사 성공 시 에러 메시지 초기화
+        setNicknameError(false);
       } else {
         setNicknameErrorText(resp.data[0].message); // 검사 실패 시 에러 메시지 설정
+        setNicknameError(true);
       }
     } catch (error) {
-      setNicknameErrorText("오류");
     }
   };
   
   const CheckEmail = async () => {
     try {
-      const Data = new FormData();
-      Data.append('email', email);
-      const resp = await axios.post('http://localhost:8080/api/member/help/check_email', Data);
+      const Data2 = new FormData();
+      Data2.append('email', email);
+      const resp = await axios.post('http://localhost:8080/api/member/help/check_email', Data2);
       if (resp.status === 200) {
         setEmailErrorText(resp.data[0].message);
         setEmailErrorText(""); // 검사 성공 시 에러 메시지 초기화
+        setEmailError(false);
       } else {
         setEmailErrorText(resp.data[0].message); // 검사 실패 시 에러 메시지 설정
+        setEmailError(true);
       }
     } catch (error) {
-      setEmailErrorText("오류");
     }
   };
 

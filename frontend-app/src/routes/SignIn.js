@@ -119,7 +119,6 @@ export default function SignIn() {
   };
 
   return (
-    <StyledDiv>
     <ThemeProvider theme={defaultTheme}>
                 {/* 성공 알림 표시 */}
                 {showSuccessAlert === "success" && (
@@ -225,6 +224,5 @@ export default function SignIn() {
         </Grid>
       </Grid>
     </ThemeProvider>
-    </StyledDiv>
   );
 }

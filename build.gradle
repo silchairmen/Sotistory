@@ -26,8 +26,6 @@ configurations {
 
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.testng:testng:7.1.0'
     compileOnly 'org.projectlombok:lombok'
@@ -37,11 +35,12 @@ dependencies {
 	//DB
 	implementation("org.mariadb.jdbc:mariadb-java-client:2.1.2")
 
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//	runtimeOnly 'mysql:mysql-connector-java'
+
+
 	//devtools
 	implementation 'org.springframework.boot:spring-boot-devtools'
-
-	//layout dep
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
 	//springSecurity
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -55,36 +54,45 @@ dependencies {
 }
 
 //리엑트 설정
-def reactAppDir = "$projectDir/frontend-app"
+def frontendDir = "$projectDir/frontend-app"
 
 sourceSets {
 	main {
-		resources {
-			srcDirs = ["$projectDir/src/main/resources"]
+		resources { srcDirs = ["$projectDir/src/main/resources"]
 		}
 	}
 }
 
-processResources {
-	dependsOn "copyReactFile"
-}
+processResources { dependsOn "copyReactBuildFiles" }
 
 task installReact(type: Exec) {
-	workingDir "$reactAppDir"
-	inputs.dir "$reactAppDir"
+	workingDir "$frontendDir"
+	inputs.dir "$frontendDir"
 	group = BasePlugin.BUILD_GROUP
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+		commandLine "npm.cmd", "audit", "fix"
+		commandLine 'npm.cmd', 'install' }
+	else {
+		commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
+	}
+}
 
-	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')){
+task buildReact(type: Exec) {
+	dependsOn "installReact"
+	workingDir "$frontendDir"
+	inputs.dir "$frontendDir"
+	group = BasePlugin.BUILD_GROUP
+	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
 		commandLine "npm.cmd", "run-script", "build"
-	} else{
+	} else {
 		commandLine "npm", "run-script", "build"
 	}
 }
 
-task copyReactFile(type: Copy){
+task copyReactBuildFiles(type: Copy) {
 	dependsOn "buildReact"
-	from "$reactAppDir/build"
-	into "$buildDir/resources/main/static"
+	from "$frontendDir/build"
+	into "$projectDir/src/main/resources/static"
 }
 
 bootJar {

@@ -1,10 +1,8 @@
-import gsap from 'gsap';
 import Home from '../Home/Home';
 import { useState ,useEffect} from 'react';
 import VideoPlayer from '../../components/viewvideos';
 
 const Index = () => {
-  const introTl = gsap.timeline();
   const [isIntroVisible, setIsIntroVisible] = useState(true);
   useEffect(() => {
 
@@ -16,7 +14,7 @@ const Index = () => {
       handleButtonClick();
     }, 2000);
 
-    return () => (clearTimeout(timer),clearTimeout(erase));
+    return () => (clearTimeout(timer) ,clearTimeout(erase));
   }, []);
 
   const handleButtonClick = () => {

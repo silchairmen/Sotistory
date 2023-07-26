@@ -1,20 +1,9 @@
-import React, { useState } from 'react';
-import ReactDOM from "react-dom";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 import App from "./App";
-import { Provider } from "react-redux";
-import { createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import rootReducer from "./redux/rootReducer";
-const store = createStore(rootReducer, composeWithDevTools());
 
 
-
-ReactDOM.render(
-  <Provider store={store}>  
-      <App />
-  </Provider>
-  ,
-  document.getElementById("root")
-);
-
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<App/>);
 

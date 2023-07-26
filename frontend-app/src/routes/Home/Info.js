@@ -1,59 +1,98 @@
+/* eslint-disable no-undef */
 import React from "react";
-import useScrollFadeIn from "../../components/FadeinHook";
-import styled from 'styled-components';
+import "../../css/style.css";
+import Logo from "../../img/logo.png";
+import Fade from "react-reveal/Fade"
 
 
-const Container = styled.div`
-  justify-content: center;
-  position: relative;
-  align-items: center;
-  display: flex;
-  background-color:black;
-  color:white;
-  height: 60vh; /* 뷰포트의 높이에 맞추려면 100vh로 설정 */
-  width: 100%;
-`;
+const timelineData = [
+  {
+    text: 'SOTI 창설',
+    date: '2023-04-18',
+    category: {
+    tag: 'birthday!',
+    color: 'black'
+    },
+  },
+  {
+  text: 'SOTI WEB HACKING CHALLANGE 1th Start',
+  date: '2023-05-18',
+  category: {
+  tag: 'CLUB FINALTEST',
+  color: '#e17b77'
+    },
+  },
+{
+  text: 'Join 2023 CODEGATE as "삼례를 아시나요"',
+  date: '2023-06-18',
+  category: {
+  tag: 'CODEGATE',
+  color: '#1DA1F2'
+  },
+},
+{
+  text:'SOTI Start Web, System hacking education',
+  date: '2023-07-10',
+  category: {
+  tag: 'Education',
+  color: '#018f69'
+  }
+  },
+  {
+  text: 'SOTI join the wori bank web hacking challange as team Sotistory"',
+  date: '2023-08-07',
+  category: {
+  tag: 'Penetration test',
+  color: 'orange'
+  },
+  }
+] 
 
-const Content = styled.div`
-  border-radius: 15px;
-  padding: 20px;
-  width: 30%;
-  height: 30vh;
-  position: relative;
-`;
-const H1 = styled.h1`
-  text-align:middle;
-  position: absolute;
-  left:150px;
-  font-size:50px;
-  padding-right: 200px;
-`;
-const Paragraph = styled.p`
-text-align:left;
-font-size:30px;
-`;
-const Info = () => {
-  const animatedItem = {
-    0: useScrollFadeIn('down', 1, 0),
-    1: useScrollFadeIn('down', 1, 1),
-    2: useScrollFadeIn('up', 1, 1.3),
-    3: useScrollFadeIn('up', 1, 1.4),
-    4: useScrollFadeIn('down', 1.2, 0)
-  };
-  
-  return(
-    <Container>
-      
-      <H1 {...animatedItem[0]}>What is SOTI?</H1>
-      <br />
-      <Content {...animatedItem[1]}>
-        <Paragraph >S ecurity</Paragraph>
-        <Paragraph >O ver</Paragraph>
-        <Paragraph >T echnology</Paragraph>
-        <Paragraph >I nformation</Paragraph>
-      </Content>
-    </Container>
-  );
-}
+const TimelineItem = ({ data}) => (
+  <Fade bottom >
+  <div className="timeline-item">
+  <div className="timeline-item-content">
+  <span className="tag" style={{ background: data.category.color }}>
+  {data.category.tag}
+  </span>
+  <time>{data.date}</time>
+  <p>{data.text}</p>
+    <span className="circle" />
+  </div>
+</div>
+  </Fade> );
 
+const Timeline = () => {
+
+  return (
+  <div >
+  <div className="timeline-container">
+  {timelineData.map((data, idx) => (
+  <TimelineItem data={data} key={idx} />
+  ))}
+  </div>
+  </div>
+);
+} 
+
+export const Info = () => {
+  return (
+<div className="main-div">
+  <div className="div-1" >
+  <Fade bottom >
+  <img className="kakaotalk" alt="SotiLogo" src={Logo} />
+  </Fade>
+  <div className="security-over" >
+  <Fade bottom >
+  <h3><span>S</span>ecurity</h3>
+  <h3><span>O</span>f</h3>
+  <h3><span>T</span>echnology</h3>
+  <h3><span>I</span>nformation</h3>
+  </Fade>
+  </div>
+  <Timeline />
+  </div>
+</div>
+);
+}; 
 export default Info;

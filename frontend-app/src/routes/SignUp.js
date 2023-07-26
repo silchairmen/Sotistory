@@ -53,9 +53,12 @@ export default function SignUp() {
   const [senddata,setSendData] = React.useState("");
   const [checked, setChecked] = React.useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = React.useState("");
-  const getRegexErrorMessage = (isValid, errorMessage) => {
-    return isValid ? '' : errorMessage;
-  };
+  const [emailRegexError, setEmailRegexError] = React.useState(false);
+  const [emailduplicationError, setEmailDuplicationError] = React.useState(false);
+  const [nickNameRegexError, setNickNameRegexError] = React.useState(false);
+  const [nickNameduplicationError, setNickNameDuplicationError] = React.useState(false);
+
+
   const navigate = useNavigate();
   useEffect(()=>{
     const navbar = document.querySelector('#navbar');
@@ -76,24 +79,24 @@ export default function SignUp() {
       !password
     ) {
       setShowSuccessAlert('error');
+      setSendData("필수 항목을 모두 입력해주세요.")
       return;
     }
   
     // 정규식 체크
     if (
       nameError ||
-      nicknameError ||
       stuNumError ||
       joinYearError ||
-      emailError ||
       passwordError
     ) {
       setShowSuccessAlert('error');
+      setSendData("입력 규칙에 맞게 기입해주세요.")
       return;
     }
   
     if (!checked) {
-      alert('개인정보 제공 동의를 체크해주세요.');
+      alert('개인정보 제공 및 활용 동의를 체크해주세요.');
       return;
     }
   
@@ -110,14 +113,19 @@ export default function SignUp() {
       formData.append('address',selectedAddress.address);
       // 회원가입 요청 보내기
       const response = await axios.post('http://localhost:8080/api/member/join', formData);
-      
+      if (nickNameduplicationError||emailduplicationError){
+        setSendData("중복되는 입력값이 있습니다.");
+        setShowSuccessAlert('error');
+        return 0;
+      }
+
       // 응답 처리
-      if (response.status === 200) {
-        setSendData(response.data[0].message);
+      if (response.data.status === 200) {
+        setSendData(response.data.message);
         setShowSuccessAlert('success');
         // ... (성공 처리)
       } else {
-        setSendData("Error: "+response.data[0].message);
+        setSendData("Error: "+response.data.message);
         setShowSuccessAlert('error');
         return 0;
         // ... (에러 처리)
@@ -139,17 +147,16 @@ export default function SignUp() {
   const regEmail =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;   //정규식 검사 숫자,영문 소,대문자 특문 -,_,. 사용가능 이후는 기본 이메일과 동일
   const regName = /^[가-힣]+$/; // 한글만 사용가능
-  const regNickname = /^[0-9a-zA-Z\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF\-_]+$/;
-  const regStuNum = /^[0-9]+$/; // 숫자 사용가능
+  const regNickname = /^[0-9a-zA-Z\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF\-_]{3,20}$/;
+  const regStuNum = /^[0-9]{9}$/; //숫자 9자리 제한
   const regJoinYear = /^[0-9]+$/; // 숫자 사용가능
-  const regPassword = /^[0-9a-zA-Z!@#$%^&*.]+$/; // 특수문자, 영문 대소문자, 숫자 사용가능
+  const regPassword = /^[0-9a-zA-Z!@#$%^&*.]{8,}$/; // 특수문자, 영문 대소문자, 숫자 사용가능 최소 8자리 이상
 
   // 각 입력 필드의 상태와 에러 메시지를 관리하는 state
   const [name, setName] = React.useState('');
   const [nameError, setNameError] = React.useState(false);
 
   const [nickname, setNickname] = React.useState('');
-  const [nicknameError, setNicknameError] = React.useState(false);
 
   const [stuNum, setStuNum] = React.useState('');
   const [stuNumError, setStuNumError] = React.useState(false);
@@ -158,7 +165,6 @@ export default function SignUp() {
   const [joinYearError, setJoinYearError] = React.useState(false);
 
   const [email, setEmail] = React.useState('');
-  const [emailError, setEmailError] = React.useState(false);
 
   const [password, setPassword] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -174,7 +180,6 @@ export default function SignUp() {
 
   const handleNicknameChange = (e) => {
     setNickname(e.target.value);
-    setNicknameError(!regNickname.test(e.target.value));
   };
 
   const handleStuNumChange = (e) => {
@@ -189,7 +194,6 @@ export default function SignUp() {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    setEmailError(!regEmail.test(e.target.value));
   };
 
   const handlePasswordChange = (e) => {
@@ -214,37 +218,39 @@ export default function SignUp() {
       const Data1 = new FormData();
       Data1.append('nickname', nickname);
       const resp = await axios.post('http://localhost:8080/api/member/help/check_nickname', Data1);
-      if (resp.status === 200) {
-        setNicknameErrorText(resp.data[0].message);
-        setNicknameErrorText(""); // 검사 성공 시 에러 메시지 초기화
-        setNicknameError(false);
-      } else {
-        setNicknameErrorText(resp.data[0].message); // 검사 실패 시 에러 메시지 설정
-        setNicknameError(true);
-      }
-    } catch (error) {
-    }
-  };
-  
-  const CheckEmail = async () => {
-    try {
-      const Data2 = new FormData();
-      Data2.append('email', email);
-      const resp = await axios.post('http://localhost:8080/api/member/help/check_email', Data2);
-      if (resp.status === 200) {
-        setEmailErrorText(resp.data[0].message);
-        setEmailErrorText(""); // 검사 성공 시 에러 메시지 초기화
-        setEmailError(false);
-      } else {
-        setEmailErrorText(resp.data[0].message); // 검사 실패 시 에러 메시지 설정
-        setEmailError(true);
+      if (resp.data.status === 200) {
+        setNickNameDuplicationError(false);
+      } else if(resp.data.status === 500){
+        setNickNameDuplicationError(true);
       }
     } catch (error) {
     }
   };
 
-  const [emailErrorText,setEmailErrorText] = React.useState("");
-  const [nicknameErrorText,setNicknameErrorText] = React.useState("");
+  const   CheckEmail = async () => {
+    try {
+      const Data2 = new FormData();
+      Data2.append('email', email);
+      const resp = await axios.post('http://localhost:8080/api/member/help/check_email', Data2);
+      if (resp.data.status === 200) {
+        setEmailDuplicationError(false);
+      } else if(resp.data.status === 500){
+        setEmailDuplicationError(true);
+      }
+    } catch (error) {
+    }
+  };
+  const handleBlurEmail = async (e) => {
+    await CheckEmail();
+    setEmail(e.target.value);
+    setEmailRegexError(!regEmail.test(e.target.value));
+  };
+  const handleBlurNickname= async (e)=>{
+    await CheckNickName();
+    setNickname(e.target.value);
+    setNickNameRegexError(!regNickname.test(e.target.value));
+
+  }
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -271,21 +277,30 @@ export default function SignUp() {
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
             {/* 이메일 주소 입력란 */}
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="email"
-              label="이메일 주소"
-              id="email"
-              autoComplete="email"
-              value={email}
-              onChange={handleEmailChange}
-              error={emailError}
-              helperText={getRegexErrorMessage(!emailError, '올바른 이메일 형식이 아닙니다.')+(emailErrorText ? emailErrorText :'')}
-              onBlur={CheckEmail}
-            />
-          </Grid>
+              <Grid item xs={12}>
+                <TextField
+                    required
+                    fullWidth
+                    name="email"
+                    label="이메일 주소"
+                    id="email"
+                    autoComplete="email"
+                    autoFocus
+                    value={email}
+                    onChange={handleEmailChange}
+                    error={emailRegexError||emailduplicationError}
+                    helperText={
+                      (emailRegexError && emailduplicationError)
+                          ? "올바른 이메일 형식이 아닙니다.\n중복된 이메일입니다."
+                          : emailRegexError
+                              ? "올바른 이메일 형식이 아닙니다."
+                              : emailduplicationError
+                                  ? "중복된 이메일입니다."
+                                  : ""
+                    }
+                    onBlur={handleBlurEmail}
+                />
+              </Grid>
           
           {/* 비밀번호 입력란 */}
           <Grid item xs={12}>
@@ -303,7 +318,7 @@ export default function SignUp() {
               error={passwordError}
               helperText={
                 passwordError
-                  ? '특수문자, 영문 대소문자, 숫자만 사용 가능합니다.'
+                  ? '특수문자, 영문 대소문자, 숫자 사용가능 최소 8자리 이상'
                   : ''
               }
             />
@@ -317,7 +332,6 @@ export default function SignUp() {
               fullWidth
               id="name"
               label="이름"
-              autoFocus
               value={name}
               onChange={handleNameChange}
               error={nameError}
@@ -333,17 +347,19 @@ export default function SignUp() {
               fullWidth
               id="nickname"
               label="닉네임"
-              autoFocus
               value={nickname}
               onChange={handleNicknameChange}
-              error={nicknameError}
+              error={nickNameRegexError||nickNameduplicationError}
               helperText={
-                getRegexErrorMessage(
-                  !nicknameError,
-                  '한글,영문 대소문자, 특수문자(-, _),숫자만 사용 가능합니다.'
-                ) + (nicknameErrorText ? nicknameErrorText : '')
+                (nickNameRegexError && nickNameduplicationError)
+                    ? "닉네임은 영어,한글,특수문자(-_)만 입력 가능합니다.\n중복된 닉네임입니다."
+                    : nickNameRegexError
+                        ? "닉네임은 영어,한글,특수문자(-_)만 입력 가능합니다."
+                        : nickNameduplicationError
+                            ? "중복된 닉네임입니다."
+                            : ""
               }
-              onBlur={CheckNickName}
+              onBlur={handleBlurNickname}
             />
           </Grid>
 
@@ -356,11 +372,10 @@ export default function SignUp() {
               fullWidth
               id="stuNum"
               label="학번"
-              autoFocus
               value={stuNum}
               onChange={handleStuNumChange}
               error={stuNumError}
-              helperText={stuNumError ? '숫자만 사용 가능합니다.' : ''}
+              helperText={stuNumError ? '특수문자없이 학번만 입력하세요.' : ''}
             />
           </Grid>
 
@@ -373,7 +388,6 @@ export default function SignUp() {
               fullWidth
               id="joinYear"
               label="기수"
-              autoFocus
               value={joinYear}
               onChange={handleJoinYearChange}
               error={joinYearError}
@@ -417,7 +431,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="개인정보 제공 동의"
+                  label="개인정보 제공 및 활용 동의"
                   // 체크박스 상태를 checked 상태에 연결
                   checked={checked}
                   onChange={(e) => setChecked(e.target.checked)}

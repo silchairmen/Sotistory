@@ -3,6 +3,11 @@ import Footer from "./Footer";
 import Body from "./Body";
 import { Fragment } from "react";
 import styled from 'styled-components';
+import { Provider } from 'react-redux';
+import rootReducer from "./redux/rootReducer";
+import { createStore } from 'redux';
+
+const store = createStore(rootReducer);
 
 const Background = styled.div`
   background-color:white ;
@@ -13,6 +18,7 @@ const Background = styled.div`
 `;
 function App() {
   return (
+    <Provider store={store}>
     <Background>
         <Fragment>
             <Header />
@@ -20,6 +26,7 @@ function App() {
             <Footer />
         </Fragment>
     </Background>
+    </Provider>
   );
 }
 

@@ -14,7 +14,13 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios'
 import Alert from '@mui/material/Alert'
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
+const StyledSignUpWrapper = styled('div')({
+  marginTop: '57px',
+});
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -34,7 +40,7 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [showSuccessAlert, setShowSuccessAlert] = React.useState("");
-  React.useEffect(()=>{
+  useEffect(()=>{
     const navbar = document.querySelector('#navbar');
     if (navbar) {
       navbar.classList.add('bg-gogo');
@@ -64,15 +70,17 @@ export default function SignIn() {
       data.append('email',email);
       data.append('password',password);
 
-      // 회원가입 요청 보내기
       const response = await axios.post('http://localhost:8080/api/member/login', data, {withCredentials: true});
             // 응답 처리
-      if (response.status === 200) {
-        setSendData(response.data[0].message);
+      if (response.data.status === 200) {
+        setSendData(response.data.message);
         setShowSuccessAlert('success');
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
         // ... (성공 처리)
-      } else {
-        setSendData(response.data[0].message);
+      } else if(response.data.status === 500){
+        setSendData(response.data.message);
         setShowSuccessAlert('error');
         return 0;
         // ... (에러 처리)
@@ -84,11 +92,11 @@ export default function SignIn() {
       // ... (요청 실패 처리)
     }
     }
-  
-  
+
+
   const regEmail =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;   //정규식 검사 숫자,영문 소,대문자 특문 -,_,. 사용가능 이후는 기본 이메일과 동일
-  const regPassword = /^[0-9a-zA-Z!@#$%^&*]+$/; // 특수문자, 영문 대소문자, 숫자 사용가능
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;   //정규식 검사 숫자,영문 소,대문자 특문 -,_,. 사용가능 이후는 기본 이메일과 동일
+  const regPassword = /^[0-9a-zA-Z!@#$%^&*.]{8,}$/; // 특수문자, 영문 대소문자, 숫자 사용가능 최소 8자리 이상
 
   const [email, setEmail] = React.useState('');
   const [emailError, setEmailError] = React.useState(false);
@@ -98,6 +106,8 @@ export default function SignIn() {
 
   const [senddata,setSendData]= React.useState("");
 
+  const navigate = useNavigate();
+  
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     setEmailError(!regEmail.test(e.target.value));
@@ -110,16 +120,17 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-                {/* 성공 알림 표시 */}
-                {showSuccessAlert === "success" && (
-        <Alert severity="success" sx={{ mt: 2 }}>
-          {senddata}
-        </Alert>
+      <StyledSignUpWrapper>
+      {/* 성공 알림 표시 */}
+      {showSuccessAlert === "success" && (
+          <Alert severity="success" sx={{ mt: 2 }}>
+            {senddata}
+          </Alert>
       )}
       {showSuccessAlert === "error" && (
-        <Alert severity="error" sx={{ mt: 2 }}>
-          {senddata}
-        </Alert>
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {senddata}
+          </Alert>
       )}
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
@@ -213,6 +224,7 @@ export default function SignIn() {
           </Box>
         </Grid>
       </Grid>
+      </StyledSignUpWrapper> 
     </ThemeProvider>
   );
 }

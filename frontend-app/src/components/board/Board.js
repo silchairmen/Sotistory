@@ -67,7 +67,7 @@ const Board = ({address}) => {
   return (
     <ContainerFragment>
       {loading ? ( // Display Loading component if loading is true
-        <img src={Loading} alt="Loading"h/>
+        <img src={Loading} alt="Loading"/>
       ) : (
         <ContainerFragment>
           <div>

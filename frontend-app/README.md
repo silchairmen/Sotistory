@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+# soti_page
+=======
 ![header](https://capsule-render.vercel.app/api?type=soft&color=auto&height=50&section=header&text=soti%20page&fontSize=24)
 
 # 요구 사항
@@ -10,3 +13,4 @@
 6. React-redux (v8.1.1)
 7. Redux (v4.2.1)
 8. Redux-devtools-extension (v2.13.9)
+>>>>>>> test3

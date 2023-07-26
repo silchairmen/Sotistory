@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,23 +8,24 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+
 import '../css/commena.css';
 import logo from '../img/logo.png';
+
 const pages = ['FreeBoard', 'History'];
 const login=['SignUp', 'SignIn']
 
-function MenuExampleSizeLarge() {
 
+
+function MenuExampleSizeLarge() {
   useEffect(() => {
     const navbar = document.querySelector('#navbar');
     const handleScroll = (e) => {
       const scrollPos = document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollPos + 105 >= window.innerHeight) {
+      if (scrollPos + 100 >= window.innerHeight) {
         navbar.classList.add('bg-active');
       } else {
         navbar.classList.remove('bg-active');
@@ -37,22 +38,27 @@ function MenuExampleSizeLarge() {
     };
   }, []);
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  // anchorElNav 변수를 초기화
+const [anchorElNav, setAnchorElNav] = useState(null);
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+// handleOpenNavMenu 함수 정의
+const handleOpenNavMenu = (event) => {
+  setAnchorElNav(event.currentTarget);
+};
+
+// handleCloseNavMenu 함수 정의
+const handleCloseNavMenu = () => {
+  setAnchorElNav(null);
+};
+
 
   return (
     <AppBar id="navbar" position="fixed" color='transparent'elevation={0}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <img src={logo} alt="SOTI" width='50px' sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
+       <img src={logo}  width="45px" alt="SOTI" style={{display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+        <Typography
             variant="h6"
             noWrap
             component="a"
@@ -69,7 +75,6 @@ function MenuExampleSizeLarge() {
           >
             SOTI
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -90,9 +95,9 @@ function MenuExampleSizeLarge() {
                 }
               }}
             >
-
               <MenuIcon />
             </IconButton>
+
             <Menu
               id="menu-appbar brand"
               anchorEl={anchorElNav}
@@ -113,36 +118,25 @@ function MenuExampleSizeLarge() {
               }}
             >
               {pages.map((page) => (
-              <MenuItem key={page} component="a" href={`/${page}`} onClick={handleCloseNavMenu}>
+              <MenuItem key={page} component="a" onClick={() => {
+                  alert(`로그인이 필요한 서비스 입니다.`);
+                  handleCloseNavMenu();
+                }}>
               <Typography textAlign="center">{page}</Typography>
               </MenuItem>
               ))}
             </Menu>
           </Box>
-          <Typography
-            variant="h5"
-            component="a"
-            href="/"
-            sx={{
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'Helvetica Neue, sans-serif',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'white',
-              textDecoration: 'none',
-              alignItems: "center"
-            }}
-          >
-            SOTI
-          </Typography>
+          
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' , fontFamily: 'Helvetica Neue, sans-serif'}}
-                href={`/${page}`}
+                onClick={() => {
+                  alert(`로그인이 필요한 서비스 입니다.`);
+                  handleCloseNavMenu();
+                }}
+                sx={{ color: 'white', display: 'block' , fontFamily: 'Helvetica Neue, sans-serif'}}
               >
                 {page}
               </Button>
@@ -153,7 +147,7 @@ function MenuExampleSizeLarge() {
               <Button
                 key={item}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
+                sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
                 href={`/${item}`}
               >
                 {item}
@@ -171,14 +165,28 @@ function MenuExampleSizeLarge() {
                 boxShadow: 'none !important'
               },
               boxShadow: 'none' }}
+              href={`/SignIn`}
             >
-              LOGIN
+            SignIn
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => console.log('onclick')}
+              sx={{ margin: 1, bgcolor: 'transparent', color: 'white',  ':hover': {
+                backgroundColor: 'transparent !important',
+                boxShadow: 'none !important'
+              },
+              boxShadow: 'none' }}
+              href={`/SignUp`}
+            >
+            SignUp
             </Button>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
-}
+};
 
 export default MenuExampleSizeLarge;

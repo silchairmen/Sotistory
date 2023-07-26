@@ -1,11 +1,11 @@
 import Carousel from 'react-material-ui-carousel';
 import { Paper } from '@mui/material';
-import back1 from '../../img/test1.jpg';
-import back2 from '../../img/test2.jpg';
-import back3 from '../../img/background3.jpg';
-import back4 from '../../img/background4.jpg';
+import back1 from '../../img/back1.jpg';
+import back2 from '../../img/back2.jpg';
+import back3 from '../../img/back3.jpg';
+import back4 from '../../img/back4.jpg';
 import styled from 'styled-components';
-import {useEffect,useState} from 'react';
+
 const itemq = [
   {
     image: back1,
@@ -18,7 +18,8 @@ const itemq = [
   },
   {
     image: back4,
-}];
+  },
+];
 
 const Carouselstyle = styled.div`
   .carousel-container {
@@ -54,6 +55,28 @@ const Carouselstyle = styled.div`
     backface-visibility: hidden;
   }
 
+  .carousel-container .main_image_text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .carousel-container .main_image_text2 {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    transition: opacity 0.5s ease-in-out;
+  }
+
+
   .carousel-container .CarouselButton {
     display: none;
   }
@@ -64,21 +87,9 @@ const Carouselstyle = styled.div`
 `;
 
 const Mainslide = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, [])
-
   return (
     <Carouselstyle>
-      <Carousel
-        className="carousel-container"
-        interval={4000}
-        zIndex={1}
-        autoPlay
-        animation={mounted && 'fade'}
-      >
+      <Carousel className="carousel-container" interval={2000} zIndex={1} autoPlay>
         {itemq.map((item, index) => (
           <Item key={index} item={item} />
         ))}
@@ -86,7 +97,6 @@ const Mainslide = () => {
     </Carouselstyle>
   );
 };
-
 
 const Item = ({ item }) => {
   return (

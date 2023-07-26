@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
 
 const BoardEditor = () => {
     const modules = {
@@ -54,12 +53,9 @@ const BoardEditor = () => {
         height: '419px',
         background: 'white',
     };
-    const location = useLocation();
     const [boardText,setBoardText]= useState("");
     const [boardTitle,setBoardTitle]= useState("");
-    const [id,setId]=useState("");
     const getBoard = async () => {
-        //setId(location.state.id);
         try {
             const resp = await axios.get(`https://jsonplaceholder.typicode.com/posts/1`);
             setBoardText(resp.data.body);
@@ -74,7 +70,6 @@ const BoardEditor = () => {
 
     useEffect(()=>{
         getBoard();
-        console.log(id);
         const navbar = document.querySelector('#navbar');
         if (navbar) {
             navbar.classList.add('bg-gogo');

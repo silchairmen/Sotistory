@@ -51,12 +51,12 @@ a {
 
 .carousel__slide-item {
   display: inline-block;
-  height: 30rem;
+  height: 15rem;
   margin: 0;
   padding: 1rem;
   position: absolute;
   transition: all 0.3s;
-  width: 30rem;
+  width: 15rem;
 }
 
 .carousel__slide-item-img-link {
@@ -89,6 +89,7 @@ a {
 .carousel__slide-item-img-link:hover::after {
   opacity: 1;
 }
+
 .carousel__slide-item-img-link:hover img {
   transform: scale(1.3);
 }

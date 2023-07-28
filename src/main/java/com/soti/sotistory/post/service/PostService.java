@@ -13,11 +13,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor //생성자 주입
+@Transactional
 public class PostService {
 
     private final PostRepository postRepository;
@@ -86,5 +89,20 @@ public class PostService {
         }
 
         return postRepository.save(post);
+    }
+
+    public Post deletePost(Long id, String nickname) {
+        Post post = postRepository.findById(id).orElse(null);
+
+        if (post == null) {
+            throw new EntityNotFoundException("글을 찾을 수 없습니다.");
+        }
+
+        if (!post.getAuthor().getNickname().equals(nickname)) {
+            throw new IllegalArgumentException("글 작성자만 글을 삭제할 수 있습니다.");
+        }
+
+        postRepository.deleteById(id);
+        return post;
     }
 }

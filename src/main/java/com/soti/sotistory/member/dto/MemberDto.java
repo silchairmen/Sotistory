@@ -26,12 +26,12 @@ public class MemberDto {
 
     //닉네임
     @NotEmpty(message = "닉네임은 필수 입력 항목입니다.")
-    @Length(min = 4,max = 20,message = "닉네임은 최소 4글자, 최대 20글자입니다.")
+    @Length(min = 3,max = 20,message = "닉네임은 최소 3글자, 최대 20글자입니다.")
     private String nickname;
 
     //학번
     @NotEmpty(message = "학번은 필수 입력 항목입니다.")
-    @Length(min = 9,max = 9,message = "학번은 12글자 입니다..")
+    @Length(min = 9,max = 9,message = "학번은 9글자 입니다..")
     @Pattern(regexp = "^[0-9]+$", message = "숫자만 입력해주세요.")
     private String stuNum;
 

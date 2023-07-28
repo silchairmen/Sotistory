@@ -1,13 +1,13 @@
 package com.soti.sotistory.member.service;
 
+import com.soti.sotistory.config.CustomUser;
 import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,15 +62,15 @@ public class MemberAuthService implements UserDetailsService {
         Member member = memberRepository.findByEmail(email);
 
         //유저가 없다면 email로 UsernameNotFoundException을 날림
-        if(member==null){
+        if (member == null) {
             throw new UsernameNotFoundException(email);
         }
 
         //유저정보에 이메일과 password, role을 넣어서 념겨줌, role은 Spring Security에서 필요한 부분임.
-        return User.builder()
-                .username(member.getEmail())
-                .password(member.getPassword())
-                .roles(member.getRole().toString())
-                .build();
+        return new CustomUser(
+                member.getEmail(),
+                member.getPassword(),
+                AuthorityUtils.createAuthorityList(member.getRole().toString()),
+                member.getNickname());
     }
 }

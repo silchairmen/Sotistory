@@ -72,12 +72,20 @@ public class MemberApiController {
             joinResponseDto.setStatus(200);
             joinResponseDto.setMessage("계정 생성 완료");
 
+            log.info("회원가입 성공\n" +
+                    "이름 : {}\n" +
+                    "학번 : {}\n" +
+                    "이메일 : {}" ,member.getName(), member.getStuNum(), member.getEmail());
+
             return joinResponseDto;
 
         //로직 검증에 실패하였거나 db단에서 문제가 생겼을 경우
         } catch (IllegalStateException e){
             joinResponseDto.setStatus(500);
             joinResponseDto.setMessage(e.getMessage());
+
+            log.error("회원가입 도중 문제 발생.\n" +
+                    "회원 가입 정보 : {}", memberDto.toString());
 
             return joinResponseDto;
         }

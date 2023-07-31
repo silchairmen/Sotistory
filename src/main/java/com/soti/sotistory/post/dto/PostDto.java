@@ -23,7 +23,6 @@ public class PostDto {
     @NotEmpty(message = "내용을 입력해 주세요")
     private String content;
 
-    @NotNull(message = "작성자 정보를 전달해 주세요")
     private String author;
 
     private String categoryName;

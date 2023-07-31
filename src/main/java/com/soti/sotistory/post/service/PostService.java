@@ -49,6 +49,11 @@ public class PostService {
 
         // postType이 "HIDDEN"인 경우에만 postPassword를 설정
         if (postDto.getPostType() == PostType.HIDDEN) {
+
+            if (postDto.getPostPassword() == null){
+                throw new IllegalArgumentException("비밀 글에는 비밀번호를 작성해 주세요");
+            }
+
             postBuilder.postType(postDto.getPostType());
             postBuilder.postPassword(postDto.getPostPassword());
         }

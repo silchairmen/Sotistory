@@ -8,6 +8,7 @@ import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.member.service.MemberAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,20 @@ import javax.validation.Valid;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberApiController {
+
+    //세션 검증
+    @GetMapping("/validate")
+    public ResponseEntity<MemberResponseDto> validateSession(){
+
+        try {
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String nickname = ((CustomUser) userDetails).getNickname();
+
+            return ResponseEntity.ok().body(MemberResponseDto.builder().status(200).message(nickname).build());
+        } catch (Exception e){
+            return ResponseEntity.ok().body(MemberResponseDto.builder().status(203).message("세션이 유효하지 않습니다.").build());
+        }
+    }
 
     //Autowired
     private final PasswordEncoder passwordEncoder;

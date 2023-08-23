@@ -13,6 +13,7 @@
     padding-bottom:100px;
   `;
 
+  
   const Table = styled.table`
     width: 70vw;
     height: 100vh;

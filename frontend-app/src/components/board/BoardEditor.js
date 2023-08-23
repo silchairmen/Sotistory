@@ -66,6 +66,7 @@ const BoardEditor = () => {
         }
     };
 
+    
     useEffect(() => {
         getBoard();
         const navbar = document.querySelector('#navbar');

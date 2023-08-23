@@ -112,7 +112,7 @@ export default function SignUp() {
       formData.append('interrest',interests);
       formData.append('address',selectedAddress.address);
       // 회원가입 요청 보내기
-      const response = await axios.post('http://localhost:8080/api/member/join', formData);
+      const response = await axios.post('http://localhost:80/api/member/join', formData);
       if (nickNameduplicationError||emailduplicationError){
         setSendData("중복되는 입력값이 있습니다.");
         setShowSuccessAlert('error');
@@ -120,7 +120,7 @@ export default function SignUp() {
       }
 
       // 응답 처리
-      if (response.data.status === 200) {
+      if (response.data.status === 300) {
         setSendData(response.data.message);
         setShowSuccessAlert('success');
         // ... (성공 처리)
@@ -217,7 +217,7 @@ export default function SignUp() {
     try {
       const Data1 = new FormData();
       Data1.append('nickname', nickname);
-      const resp = await axios.post('http://localhost:8080/api/member/help/check_nickname', Data1);
+      const resp = await axios.post('http://localhost:80/api/member/help/check_nickname', Data1);
       if (resp.data.status === 200) {
         setNickNameDuplicationError(false);
       } else if(resp.data.status === 500){
@@ -231,7 +231,7 @@ export default function SignUp() {
     try {
       const Data2 = new FormData();
       Data2.append('email', email);
-      const resp = await axios.post('http://localhost:8080/api/member/help/check_email', Data2);
+      const resp = await axios.post('http://localhost:80/api/member/help/check_email', Data2);
       if (resp.data.status === 200) {
         setEmailDuplicationError(false);
       } else if(resp.data.status === 500){

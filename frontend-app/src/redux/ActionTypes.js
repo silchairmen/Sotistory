@@ -5,3 +5,4 @@ export const SEARCH_TYPE = 'SEARCH_TYPE';
 export const PAGE_TOTAL = 'PAGE_TOTAL';
 export const PAGE_INDEX = 'PAGE_INDEX';
 export const MENU_ITEM = "MENU_ITEM";
+export const SESSION_TOKEN = "SESSION_TOKEN";

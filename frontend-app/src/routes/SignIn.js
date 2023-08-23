@@ -70,9 +70,9 @@ export default function SignIn() {
       data.append('email',email);
       data.append('password',password);
 
-      const response = await axios.post('http://localhost:8080/api/member/login', data, {withCredentials: true});
+      const response = await axios.post('http://localhost:80/api/member/login', data, {withCredentials: true});
             // 응답 처리
-      if (response.data.status === 200) {
+      if (response.data.status === 300) {
         setSendData(response.data.message);
         setShowSuccessAlert('success');
         setTimeout(() => {
@@ -105,6 +105,7 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
 
   const [senddata,setSendData]= React.useState("");
+  const [loginToken,setLoginToken] = React.useState("");
 
   const navigate = useNavigate();
   

@@ -16,24 +16,21 @@ const contentStyle = {
   color: '#000',
   width: '100%',
   height: '100%',
-
 };
 
 function Body() {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Layout>
-        <div>
           <Routes>
-            {/*<Route path="/FreeBoard" element={<Content style={contentStyle}><FreeBoard /></Content>} />*/}
-            {/*<Route path="/FreeBoard/:id" element={<Content style={contentStyle}><FreeBoardInfo /></Content>} />*/}
+            <Route path="/FreeBoard" element={<Content style={contentStyle}><FreeBoard /></Content>} />
+            <Route path="/FreeBoard/:id" element={<Content style={contentStyle}><FreeBoardInfo /></Content>} />
             <Route path="/SignIn" element={<Content style={contentStyle}><SignIn /></Content>} />
             <Route path="/SignUp" element={<Content style={contentStyle}><SignUp /></Content>} />
-            {/*<Route path="/History" element={<History />} />*/}
-            {/*<Route path="/FreeBoard/edit/:id" element={<Content style={contentStyle}><BoardEditor/></Content>} />*/}
+            <Route path="/History" element={<History />} />
+            <Route path="/FreeBoard/edit/:id" element={<Content style={contentStyle}><BoardEditor/></Content>} />
             <Route path="/" element={<Content style={contentStyle}><Intro /></Content>} />
           </Routes>
-        </div>
       </Layout>
     </BrowserRouter>
   );

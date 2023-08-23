@@ -1,7 +1,7 @@
 import { SESSION_TOKEN} from './ActionTypes';
 
 const initialState = {
-  session: false,
+  session: true,
 };
 
 const sessionReducer = (state = initialState, action) => {

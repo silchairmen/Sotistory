@@ -15,50 +15,66 @@ import Avatar from '@mui/material/Avatar';
 import '../css/commena.css';
 import logo from '../img/logo.png';
 import photo from '../img/myphoto.jpg';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+
 const pages = ['FreeBoard', 'History'];
 const login=['SignUp', 'SignIn']
 const settings = ['MyPage','Logout'];
 
 
 function MenuExampleSizeLarge() {
-
+  //login 여부 확인
+  const [nickname,setNickname] = useState("");
+  const [auth, setAuth] = useState(true);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const sessionCheck=useSelector((state)=> state.session.session);
   useEffect(() => {
+    setAuth(sessionCheck);
     const navbar = document.querySelector('#navbar');
     const handleScroll = (e) => {
       const scrollPos = document.documentElement.scrollTop || document.body.scrollTop;
       if (scrollPos + 100 >= window.innerHeight) {
         navbar.classList.add('bg-active');
       } else {
-        navbar.classList.remove('bg-active');
+        navbar.classList.remove('bg-active'); 
       }
     };
-    
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+
+    async function findNickname(){
+      try{
+        const response = await axios.get('http://localhost:80/api/member/validate', {withCredentials: true});
+        if(response.data.status === 200){
+          setNickname(response.data.message);
+        }
+      }catch{
+        alert("error");
+      }
+    }
+    
+    findNickname();
   }, []);
-//login 여부 확인
-const [auth, setAuth] = useState(true);
-const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+
   // anchorElNav 변수를 초기화
-const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
 
 // handleOpenNavMenu 함수 정의
-const handleOpenNavMenu = (event) => {
-  setAnchorElNav(event.currentTarget);
-};
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
 
 // handleCloseNavMenu 함수 정의
-const handleCloseNavMenu = () => {
-  setAnchorElNav(null);
-};
-const handleOpenUserMenu = (event) => {
-  setAnchorElUser(event.currentTarget);
-};
-const handleCloseUserMenu = () => {
-  setAnchorElUser(null);
-};
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
 
   return (
@@ -205,7 +221,7 @@ const handleCloseUserMenu = () => {
                   borderColor: 'white'
                   // 다른 스타일 속성들을 추가로 지정할 수 있습니다.
                 }}/>
-                <p className='nick'>chpchpe</p>
+                <p className='nick'>{nickname}</p>
               </IconButton>
             </Tooltip>
             <Menu

@@ -65,7 +65,7 @@ const handleCloseUserMenu = () => {
     <AppBar id="navbar" position="fixed" color='transparent'elevation={0}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-       <img src={logo}  width="45px" alt="SOTI" style={{display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+        <img src={logo}  width="45px" alt="SOTI" style={{display: { xs: 'none', md: 'flex' }, mr: 1 }} />
         <Typography
             variant="h6"
             noWrap

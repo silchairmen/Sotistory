@@ -55,26 +55,29 @@ const BoardEditor = () => {
     };
     const [boardText,setBoardText]= useState("");
     const [boardTitle,setBoardTitle]= useState("");
-    const getBoard = async () => {
-        try {
-            const resp = await axios.get(`https://jsonplaceholder.typicode.com/posts/1`);
-            setBoardText(resp.data.body);
-            setBoardTitle(resp.data.title);
-        } catch (error) {
-            console.error("Error fetching board data:", error);
-        }
 
 
-    };
+    useEffect(() => {
+        const getBoard = async () => {
+            try {
+                const resp = await axios.get(`https://jsonplaceholder.typicode.com/posts/1`);
+                setBoardText(resp.data.body);
+                setBoardTitle(resp.data.title);
+            } catch (error) {
+                console.error("Error fetching board data:", error);
+            }
+        };
 
-
-    useEffect(()=>{
         getBoard();
+        
         const navbar = document.querySelector('#navbar');
         if (navbar) {
             navbar.classList.add('bg-gogo');
         }
-    },[])
+    }, []);
+    const handleTitleChange=(e)=>{
+        setBoardTitle(e.target.value);
+    }
     return (
         <Background>
             <MainHeader>
@@ -82,10 +85,12 @@ const BoardEditor = () => {
             </MainHeader>
             <EditorForm>
                 <input type='checkbox' name="SecretCheck" value="SecretCheck"/>비밀 글
-                <select name="boardname" class="select">
+                <select name="boardname" className="select">
                     <option disabled selected>FreeBoard</option>
                 </select>
-                <TextField placeholder="제목을 입력해주세요." value={boardTitle} />
+                <div>
+                <TextField placeholder="제목을 입력해주세요." value={boardTitle} onChange={handleTitleChange}/>
+                </div>
                 <button>작성</button>
                 <ReactQuill modules={modules}
                     theme='snow'

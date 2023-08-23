@@ -9,18 +9,19 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-
+import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem';
-
+import Avatar from '@mui/material/Avatar';
 import '../css/commena.css';
 import logo from '../img/logo.png';
-
+import photo from '../img/myphoto.jpg';
 const pages = ['FreeBoard', 'History'];
 const login=['SignUp', 'SignIn']
-
+const settings = ['MyPage','Logout'];
 
 
 function MenuExampleSizeLarge() {
+
   useEffect(() => {
     const navbar = document.querySelector('#navbar');
     const handleScroll = (e) => {
@@ -37,8 +38,9 @@ function MenuExampleSizeLarge() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-
+//login 여부 확인
+const [auth, setAuth] = useState(true);
+const [anchorElUser, setAnchorElUser] = React.useState(null);
   // anchorElNav 변수를 초기화
 const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -50,6 +52,12 @@ const handleOpenNavMenu = (event) => {
 // handleCloseNavMenu 함수 정의
 const handleCloseNavMenu = () => {
   setAnchorElNav(null);
+};
+const handleOpenUserMenu = (event) => {
+  setAnchorElUser(event.currentTarget);
+};
+const handleCloseUserMenu = () => {
+  setAnchorElUser(null);
 };
 
 
@@ -118,10 +126,7 @@ const handleCloseNavMenu = () => {
               }}
             >
               {pages.map((page) => (
-              <MenuItem key={page} component="a" onClick={() => {
-                  alert(`로그인이 필요한 서비스 입니다.`);
-                  handleCloseNavMenu();
-                }}>
+              <MenuItem key={page} component="a" href={`/${page}`} onClick={handleCloseNavMenu}>
               <Typography textAlign="center">{page}</Typography>
               </MenuItem>
               ))}
@@ -132,27 +137,31 @@ const handleCloseNavMenu = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={() => {
-                  alert(`로그인이 필요한 서비스 입니다.`);
-                  handleCloseNavMenu();
-                }}
+                onClick={handleCloseNavMenu}
                 sx={{ color: 'white', display: 'block' , fontFamily: 'Helvetica Neue, sans-serif'}}
+                href={`/${page}`}
               >
                 {page}
               </Button>
             ))}
           </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {login.map((item) => (
+          {!auth && (
+            <>          
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Button
-                key={item}
                 onClick={handleCloseNavMenu}
                 sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
-                href={`/${item}`}
+                href={`/SignIn`}
               >
-                {item}
+                SignIn
               </Button>
-            ))}
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
+                href={`/SignUp`}
+              >
+                SignUp
+              </Button>
           </Box>
 
           <Box sx={{ display: { xs: 'flex', md: 'none', flexGrow: 1 }, justifyContent: 'flex-end'}}>
@@ -183,6 +192,82 @@ const handleCloseNavMenu = () => {
             SignUp
             </Button>
           </Box>
+          </>
+          )}
+
+          {auth&&(
+            <>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Tooltip>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src={photo}   sx={{
+                  border: '2px solid',
+                  borderColor: 'white'
+                  // 다른 스타일 속성들을 추가로 지정할 수 있습니다.
+                }}/>
+                <p className='nick'>chpchpe</p>
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+
+          <Box sx={{ display: { xs: 'flex', md: 'none', flexGrow: 1 }, justifyContent: 'flex-end'}}>
+          <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src={photo} sx={{
+                  border: '2px solid',
+                  borderColor: 'white'
+                  // 다른 스타일 속성들을 추가로 지정할 수 있습니다.
+                }} />
+                <p className='nick2'>chpchpe</p>
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          </>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

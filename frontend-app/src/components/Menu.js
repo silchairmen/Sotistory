@@ -49,13 +49,12 @@ function MenuExampleSizeLarge() {
           setNickname(response.data.message);
         }
       }catch{
-        alert("error");
+        //alert("error");
       }
     }
     
     findNickname();
   }, []);
-
 
   // anchorElNav 변수를 초기화
   const [anchorElNav, setAnchorElNav] = useState(null);

@@ -39,13 +39,21 @@ const timelineData = [
   }
   },
   {
-  text: 'SOTI join the wori bank web hacking challange as team Sotistory"',
+  text: 'SOTI join the wori bank web hacking challange as team Sotistory',
   date: '2023-08-07',
   category: {
   tag: 'Penetration test',
   color: 'orange'
   },
-  }
+  },
+  {
+    text: 'SOTI won the wori bank web hacking challange Encouragement Award',
+    date: '2023-09-14',
+    category: {
+    tag: 'Award',
+    color: 'black'
+    },
+    }
 ] 
 
 const TimelineItem = ({ data}) => (

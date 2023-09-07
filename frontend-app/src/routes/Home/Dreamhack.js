@@ -15,13 +15,16 @@ const Content = styled.div`
   background-color: white;
   border-radius: 15px;
   padding: 20px;
-  width: 50vw;
-  min-width: 320px;
-  height: 80vh;
+  width: 100%;
+  height: 100vh;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* 화면 너비가 768px 이하일 때 스타일 변경 */
+  @media (max-width: 768px) {
+    height: auto; /* 높이를 자동으로 조절하여 내용에 따라 늘어나도록 설정 */
+    padding: 10px; /* 패딩을 줄임 */
 `;
 
 const fadeInFromLeft = keyframes`

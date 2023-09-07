@@ -1,178 +1,207 @@
 import * as React from 'react';
+import { useEffect,useState} from 'react';
+import styled from 'styled-components';
 import '../css/commen.css';
-
-const slideWidth = 30;
-
-const _items = [
-    {
-        player: {
-            title: 'Efren Reyes',
-            desc: 'Known as "The Magician", Efren Reyes is well regarded by many professionals as the greatest all around player of all time.',
-            image: 'https://i.postimg.cc/RhYnBf5m/er-slider.jpg',
-        },
-    },
-    {
-        player: {
-            title: "Ronnie O'Sullivan",
-            desc: "Ronald Antonio O'Sullivan is a six-time world champion and is the most successful player in the history of snooker.",
-            image: 'https://i.postimg.cc/qBGQNc37/ro-slider.jpg',
-        },
-    },
-    {
-        player: {
-            title: 'Shane Van Boening',
-            desc: 'The "South Dakota Kid" is hearing-impaired and uses a hearing aid, but it has not limited his ability.',
-            image: 'https://i.postimg.cc/cHdMJQKG/svb-slider.jpg',
-        },
-    },
-    {
-        player: {
-            title: 'Mike Sigel',
-            desc: 'Mike Sigel or "Captain Hook" as many like to call him is an American professional pool player with over 108 tournament wins.',
-            image: 'https://i.postimg.cc/C12h7nZn/ms-1.jpg',
-        },
-    },
-    {
-        player: {
-            title: 'Willie Mosconi',
-            desc: 'Nicknamed "Mr. Pocket Billiards," Willie Mosconi was among the first Billiard Congress of America Hall of Fame inductees.',
-            image: 'https://i.postimg.cc/NfzMDVHP/willie-mosconi-slider.jpg',
-        },
-    },
-];
-
-const length = _items.length;
-_items.push(..._items);
-
-const sleep = (ms = 0) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
-const createItem = (position, idx) => {
-    const item = {
-        styles: {
-            transform: `translateX(${position * slideWidth}rem)`,
-        },
-        player: _items[idx].player,
-    };
-
-    switch (position) {
-        case length - 1:
-        case length + 1:
-            item.styles = {...item.styles, filter: 'grayscale(1)'};
-            break;
-        case length:
-            break;
-        default:
-            item.styles = {...item.styles, opacity: 0};
-            break;
-    }
-
-    return item;
-};
-
-const CarouselSlideItem = ({pos, idx, activeIdx}) => {
-    const item = createItem(pos, idx, activeIdx);
-
-    return (
-        <li className="carousel__slide-item" style={item.styles}>
-            <div className="carousel__slide-item-img-link">
-                <img src={item.player.image} alt={item.player.title} />
-            </div>
-            <div className="carousel-slide-item__body">
-                <h4>{item.player.title}</h4>
-                <p>{item.player.desc}</p>
-            </div>
-        </li>
-    );
-};
-
-const keys = Array.from(Array(_items.length).keys());
+import hoho from '../img/history.jpg';
+const Body = styled.div`
+	overflow:hidden;
+	font-family: 'Roboto', serif;
+	background: linear-gradient(135deg, black, #220033);
+	`
 
 const History = () => {
-    const [items, setItems] = React.useState(keys);
-    const [isTicking, setIsTicking] = React.useState(false);
-    const [activeIdx, setActiveIdx] = React.useState(0);
-    const bigLength = items.length;
 
-    const prevClick = (jump = 1) => {
-        if (!isTicking) {
-            setIsTicking(true);
-            setItems((prev) => {
-                return prev.map((_, i) => prev[(i + jump) % bigLength]);
-            });
-        }
-    };
-
-    const nextClick = (jump = 1) => {
-        if (!isTicking) {
-            setIsTicking(true);
-            setItems((prev) => {
-                return prev.map(
-                    (_, i) => prev[(i - jump + bigLength) % bigLength],
-                );
-            });
-        }
-    };
-
-    const handleDotClick = (idx) => {
-        if (idx < activeIdx) prevClick(activeIdx - idx);
-        if (idx > activeIdx) nextClick(idx - activeIdx);
-    };
-
-    
-  React.useEffect(() => {
-    const navbar = document.querySelector('#navbar');
-    if (navbar) {
-      navbar.classList.add('bg-gogo');
-    }
-  },[]);
-    React.useEffect(() => {
-        if (isTicking) sleep(300).then(() => setIsTicking(false));
-    }, [isTicking]);
-
-    React.useEffect(() => {
-        setActiveIdx((length - (items[0] % length)) % length) // prettier-ignore
-    }, [items]);
+	useEffect(()=>{
+		const navbar = document.querySelector('.footer');
+		if (navbar) {
+		  navbar.classList.add('bg-delete');
+		}
+	  })
+	useEffect(() => {
+		/*--------------------
+		Vars
+		--------------------*/
+		let progress = 50;
+		let startX = 0;
+		let active = 0;
+		let isDown = false;
+	
+		/*--------------------
+		Contants
+		--------------------*/
+		const speedWheel = 0.02;
+		const speedDrag = -0.1;
+	
+		  /*--------------------
+		  Get Z
+		  --------------------*/
+		const getZindex = (array, index) => array.map((_, i) => (index === i ? array.length : array.length - Math.abs(index - i)));
+	
+		  /*--------------------
+		  Items
+		  --------------------*/
+		const itemsData=document.querySelectorAll('.carousel-item');
+		const cursorsData=document.querySelectorAll('.cursor');
+	
+		const displayItems=(item,index)=>{
+			const zIndex=getZindex([...itemsData],active)[index];
+			item.style.setProperty('--zIndex',zIndex);
+			item.style.setProperty('--active',(index-active)/itemsData.length);
+		  };
+	
+		  /*--
+			Animate
+		  --------------------*/
+		  const animate=()=>{
+			progress=Math.max(0,Math.min(progress,100));
+			active=Math.floor(progress/100*(itemsData.length-1));
+		  itemsData.forEach((item,index)=>displayItems(item,index));
+		  };
+		  
+		   animate();
+	
+		   /*-- Click on Items --*/
+		   itemsData.forEach((item,i)=>{
+			 item.addEventListener('click',()=>{
+			   progress=(i/itemsData.length)*100+10;
+			   animate();
+			 });
+		   });
+	
+		   /*-- Handlers --*/
+	
+		   const handleWheel=(e)=>{
+			 const wheelProgress=e.deltaY*speedWheel;
+			 progress+=wheelProgress;
+			 animate();
+		   };
+	
+		   const handleMouseMove=(e)=>{
+			 if(e.type==='mousemove'){
+			   cursorsData.forEach(($cursor)=>{
+				 $cursor.style.transform=`translate(${e.clientX}px,${e.clientY}px)`;
+			   });
+			 }
+			 if(!isDown)return;
+	
+			const x=e.clientX||(e.touches&&e.touches[0].clientX)||0; 
+			const mouseProgress=(x-startX)*speedDrag; 
+			progress+=mouseProgress; 
+			startX=x; 
+			animate();  
+		   };
+	
+		   const handleMouseDown=(e)=>{
+			 isDown=true; 
+			 startX=e.clientX||(e.touches&& e.touches[0].clientX)||0; 
+		   };
+	
+		   const handleMouseUp=()=>{
+			 isDown=false;  
+		   };
+	
+		   /*-- Listeners --*/
+	
+		document.addEventListener('mousewheel',handleWheel);
+		document.addEventListener('mousedown',handleMouseDown);
+		document.addEventListener('mousemove',handleMouseMove);
+		document.addEventListener('mouseup',handleMouseUp);
+	
+		return () => {
+		   document.removeEventListener('mousewheel', handleWheel);
+		   document.removeEventListener('mousedown', handleMouseDown);
+		   document.removeEventListener('mousemove', handleMouseMove);
+		   document.removeEventListener('mouseup', handleMouseUp);	
+		};
+	 }, []);
 
     return (
-        <div className='hall' style={{marginTop:'70px'}}>
-        <div className='content-top'>
-            <h2>Hall of fame</h2>
-            <p>SOTI의 구성원을 소개합니다</p>
-        </div>
-        <div className="carousel__wrap">
-            <div className="carousel__inner">
-                <button className="carousel__btn carousel__btn--prev" onClick={() => prevClick()}>
-                    <i className="carousel__btn-arrow carousel__btn-arrow--left" />
-                </button>
-                <div className="carousel__container">
-                    <ul className="carousel__slide-list">
-                        {items.map((pos, i) => (
-                            <CarouselSlideItem
-                                key={i}
-                                idx={i}
-                                pos={pos}
-                                activeIdx={activeIdx}
-                            />
-                        ))}
-                    </ul>
-                </div>
-                <button className="carousel__btn carousel__btn--next" onClick={() => nextClick()}>
-                    <i className="carousel__btn-arrow carousel__btn-arrow--right" />
-                </button>
-                <div className="carousel__dots">
-                    {items.slice(0, length).map((pos, i) => (
-                        <button
-                            key={i}
-                            onClick={() => handleDotClick(i)}
-                            className={i === activeIdx ? 'dot active' : 'dot'}
-                        />
-                    ))}
-                </div>
-            </div>
-        </div>
-        </div>
+    <Body>
+    <div className="carousel">
+		<div className="carousel-item">
+		<div className="carousel-box">
+			<div className="title">Paris</div>
+			<div className="num">01</div>
+			<img src={hoho} alt=""  />
+		</div>
+	</div>
+
+	<div className="carousel-item">
+		<div className="carousel-box">
+			<div className="title">Warsaw</div>
+			<div className="num">02</div>
+			<img src="https://media.istockphoto.com/id/1150545984/it/foto/palazzo-moderno-di-lusso-con-piscina.jpg?s=612x612&w=0&k=20&c=Pbrai_VGc9tUviMCF1UaBErdS1YGyIVWsD29jzMZwTY="alt=""  />
+		</div>
+	</div>
+
+	<div className="carousel-item">
+		<div className="carousel-box">
+			<div className="title">Madrid</div>
+			<div className="num">03</div>
+			<img
+				src="https://media.istockphoto.com/id/1214351345/it/foto/guardando-direttamente-lo-skyline-del-quartiere-finanziario-nel-centro-di-londra-immagine-di.jpg?s=612x612&w=0&k=20&c=oNNbPzPvcQ-4RA6AeatNIxHQIafBiXmDRtUUY0Ska-I=" alt="" />
+		</div>
+	</div>
+
+	<div className="carousel-item">
+		<div className="carousel-box">
+			<div className="title">Sydney</div>
+			<div className="num">04</div>
+			<img src="https://media.istockphoto.com/id/904390980/it/foto/foto-di-architettura-contemporanea-astratta.jpg?s=612x612&w=0&k=20&c=_P4Wmx5nq5MeDuimpNklKCBlrLovmCyd9lfiMKeJZDs=" alt=""  />
+		</div>
+	</div>
+
+	<div className="carousel-item">
+		<div className="carousel-box">
+			<div className="title">Istanbul</div>
+			<div className="num">05</div>
+			<img src="https://media.istockphoto.com/id/130408311/it/foto/piscina-allesterno-della-casa-moderna-al-crepuscolo.jpg?s=612x612&w=0&k=20&c=ZoVjx7uDjoHKmpM1ayW6UR1SQOoYh_xx-QMG_qeOYs0=" alt="" />
+		</div>
+	</div>
+
+	<div className="carousel-item">
+		<div className="carousel-box">
+			<div className="title">Prague</div>
+			<div className="num">06</div>
+			<img src="https://media.istockphoto.com/id/1299954175/it/foto/villa-cubica-moderna.jpg?s=612x612&w=0&k=20&c=DhGhb3c1E3DW_fbrWJ_R_Zh0Lbwu6syFeRLsKlZ9no8=" alt="" />
+		</div>
+	</div>
+
+	<div className="carousel-item">
+		<div className="carousel-box">
+			<div className="title">Munich</div>
+			<div className="num">07</div>
+			<img src="https://media.istockphoto.com/id/926689776/it/foto/vista-ad-angolo-basso-dei-grattacieli-di-new-york.jpg?s=612x612&w=0&k=20&c=DmEB0Ty7ZwDnBoU5SuA8FNevOp4G1UcECw5aS4vA9A8=" alt="" />
+		</div>
+	</div>
+
+	<div className="carousel-item">
+		<div className="carousel-box">
+			<div className="title">Venice</div>
+			<div className="num">08</div>
+			<img src="https://media.istockphoto.com/id/1191376167/it/foto/villa-dellisola.jpg?s=612x612&w=0&k=20&c=PKslWo4FdbjinohKQlK_oWL34jqAsnzMTdy2bxEAf-I=" alt="" />
+		</div>
+	</div>
+
+	<div className="carousel-item">
+		<div className="carousel-box">
+			<div className="title">Oslo</div>
+			<div className="num">09</div>
+			<img src="https://media.istockphoto.com/id/184316397/it/foto/londra-edifici-aziendali.jpg?s=612x612&w=0&k=20&c=XqrRxEPzFnwRFk7PQrCiu9-FPfCTPyMe5BKKaxYXCs8=" alt="" />
+		</div>
+	</div>
+	<div className="carousel-item">
+		<div className="carousel-box">
+			<div className="title">London</div>
+			<div className="num">10</div>
+			<img src="https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0="alt=""  />
+		</div>
+	</div>
+</div>
+<div className='timeline'>
+	1기
+</div>
+     </Body>
     );
 };
 

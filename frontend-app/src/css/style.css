@@ -13,6 +13,7 @@ p {
     flex-direction: row;
     justify-content: center;
     position: relative;
+    height: auto;
     width: 100%;
   }
   
@@ -31,15 +32,15 @@ p {
   }
   
   
-.div-1 .kakaotalk {
-    height: 240px;
-    object-fit: cover;
+ .kakaotalk {
+    margin-top: 180px;
     position: relative;
-    width: 256px;
+    width: 200px;
   }
 
 
   .security-over {
+    margin-top: 90px;
     color: #ffffff;
     font-family: 'TTWanjunuricheR', sans-serif;
     font-size: 96px;
@@ -84,6 +85,7 @@ p {
     flex-direction: column;
     position: relative;
     margin: 40px 0;
+    margin-top: 50px;
 }
 
 .timeline-container::after {
@@ -176,7 +178,7 @@ p {
     font-size: 16px;
     line-height: 24px;
     margin: 15px 0;
-    max-width: 250px;
+    text-align: left;
 }
 
 .timeline-item-content a {

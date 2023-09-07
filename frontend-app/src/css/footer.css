@@ -1,0 +1,11 @@
+.footer {
+text-Align: center;
+color: white;
+background-Color: black;
+font-size: 1rem;
+padding: 15px;
+}
+
+.bg-delete{
+    display: none;
+}

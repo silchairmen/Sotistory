@@ -6,8 +6,13 @@ import styled from 'styled-components';
 import { Provider } from 'react-redux';
 import rootReducer from "./redux/rootReducer";
 import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
 
-const store = createStore(rootReducer);
+
+const store = createStore(rootReducer,composeWithDevTools());
+const persistor = persistStore(store);
 
 const Background = styled.div`
   background-color:white ;
@@ -19,13 +24,13 @@ const Background = styled.div`
 function App() {
   return (
     <Provider store={store}>
-    <Background>
-        <Fragment>
+        <Background>
+          <Fragment>
             <Header />
             <Body />
             <Footer />
-        </Fragment>
-    </Background>
+          </Fragment>
+        </Background>
     </Provider>
   );
 }

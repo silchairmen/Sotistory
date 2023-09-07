@@ -1,18 +1,24 @@
-import { SESSION_TOKEN} from './ActionTypes';
+import {LOGIN_SUCCESS} from './ActionTypes';
+import {LOGIN_FAILED} from './ActionTypes';
 
 const initialState = {
-  session: true,
+  session: false,
 };
 
 const sessionReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SESSION_TOKEN:
+    case LOGIN_SUCCESS:
       return {
         ...state,
-        session: action.payload,
+        session: true,
       };
+    case LOGIN_FAILED:
+      return {
+        ...state,
+        session: false,
+      }
     default:
-      return state;
+      return initialState;
   }
 };
 

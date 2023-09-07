@@ -10,16 +10,6 @@ const Body = styled.div`
 	`
 
 const History = () => {
-	const [currentSlide,setcurrentSlide] =useState(1);
-	const numSlides =3;
-
-	const nextSlide=() =>{
-		setcurrentSlide((prevSlide)=> (prevSlide + 1)% numSlides);
-	}
-
-	const prevSlide =() =>{
-		setcurrentSlide((prevSlide)=>(prevSlide-1+numSlides)% numSlides);
-	}
 
 	useEffect(()=>{
 		const navbar = document.querySelector('.footer');
@@ -40,23 +30,23 @@ const History = () => {
 		Contants
 		--------------------*/
 		const speedWheel = 0.02;
-		  const speedDrag = -0.1;
+		const speedDrag = -0.1;
 	
 		  /*--------------------
 		  Get Z
 		  --------------------*/
-		  const getZindex = (array, index) => array.map((_, i) => (index === i ? array.length : array.length - Math.abs(index - i)));
+		const getZindex = (array, index) => array.map((_, i) => (index === i ? array.length : array.length - Math.abs(index - i)));
 	
 		  /*--------------------
 		  Items
 		  --------------------*/
-		  const itemsData=document.querySelectorAll('.carousel-item');
-		  const cursorsData=document.querySelectorAll('.cursor');
+		const itemsData=document.querySelectorAll('.carousel-item');
+		const cursorsData=document.querySelectorAll('.cursor');
 	
-		  const displayItems=(item,index)=>{
-			  const zIndex=getZindex([...itemsData],active)[index];
-			  item.style.setProperty('--zIndex',zIndex);
-			  item.style.setProperty('--active',(index-active)/itemsData.length);
+		const displayItems=(item,index)=>{
+			const zIndex=getZindex([...itemsData],active)[index];
+			item.style.setProperty('--zIndex',zIndex);
+			item.style.setProperty('--active',(index-active)/itemsData.length);
 		  };
 	
 		  /*--
@@ -112,17 +102,17 @@ const History = () => {
 	
 		   /*-- Listeners --*/
 	
-		   document.addEventListener('mousewheel',handleWheel);
-		 document.addEventListener('mousedown',handleMouseDown);
-		 document.addEventListener('mousemove',handleMouseMove);
-		 document.addEventListener('mouseup',handleMouseUp);
+		document.addEventListener('mousewheel',handleWheel);
+		document.addEventListener('mousedown',handleMouseDown);
+		document.addEventListener('mousemove',handleMouseMove);
+		document.addEventListener('mouseup',handleMouseUp);
 	
-		 return () => {
+		return () => {
 		   document.removeEventListener('mousewheel', handleWheel);
 		   document.removeEventListener('mousedown', handleMouseDown);
 		   document.removeEventListener('mousemove', handleMouseMove);
 		   document.removeEventListener('mouseup', handleMouseUp);	
-		 };
+		};
 	 }, []);
 
     return (

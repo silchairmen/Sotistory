@@ -72,14 +72,13 @@ export default function SignIn() {
 
       const response = await axios.post('http://localhost:80/api/member/login', data, {withCredentials: true});
             // 응답 처리
-      if (response.data.status === 300) {
+      if (response.data.status === 200) {
         setSendData(response.data.message);
         setShowSuccessAlert('success');
         setTimeout(() => {
-          navigate('/');
+          window.location.replace('/');
         }, 1000);
-        // ... (성공 처리)
-      } else if(response.data.status === 500){
+      } else if(response.data.status === 203){
         setSendData(response.data.message);
         setShowSuccessAlert('error');
         return 0;
@@ -105,7 +104,6 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
 
   const [senddata,setSendData]= React.useState("");
-  const [loginToken,setLoginToken] = React.useState("");
 
   const navigate = useNavigate();
   

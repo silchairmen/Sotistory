@@ -15,6 +15,7 @@ const Background = styled.div`
     background-color: whitesmoke;
 `
 
+
 const MainHeader = styled.h1`
     font-size: 30px;
     padding-bottom: 30px;
@@ -80,7 +81,7 @@ const BoardEditor = () => {
         const contentState = ContentState.createFromText(boardText);
         const newEditorState = EditorState.createWithContent(contentState);
         setEditorState(newEditorState);
-      }, [boardText]);
+    }, [boardText]);
     
 
     const handleTitle = (e) => {
@@ -100,7 +101,7 @@ const BoardEditor = () => {
                 </select>
                 <TextField placeholder="제목을 입력해주세요." value={boardTitle} onChange={handleTitle}/>
                 <button>작성</button>
-                <Editorg
+                <Editor
                     wrapperClassName="wrapper-class"
                     editorClassName="editor"
                     toolbarClassName="toolbar-class"

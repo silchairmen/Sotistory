@@ -16,7 +16,9 @@ import '../css/commena.css';
 import logo from '../img/logo.png';
 import photo from '../img/myphoto.jpg';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import storageSession from 'redux-persist/lib/storage/session'
+import useCookie from 'react-cookie'
 
 const pages = ['FreeBoard', 'History'];
 const login=['SignUp', 'SignIn']
@@ -25,11 +27,22 @@ const settings = ['MyPage','Logout'];
 
 function MenuExampleSizeLarge() {
   //login 여부 확인
+  const sessionCheck=useSelector(state=> state.session.session);
   const [nickname,setNickname] = useState("");
-  const [auth, setAuth] = useState(true);
+  const [auth, setAuth] = useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const sessionCheck=useSelector((state)=> state.session.session);
+  const dispatch=useDispatch();
   useEffect(() => {
+    async function session(){
+      const response = await axios.get('http://localhost:80/api/member/validate', {withCredentials: true});
+      if(response.data.status === 200){
+        dispatch({type:"LOGIN_SUCCESS"});
+        
+      }else{
+        dispatch({type:"LOGIN_FAILED"});
+      }
+      }  
+    session();
     setAuth(sessionCheck);
     const navbar = document.querySelector('#navbar');
     const handleScroll = (e) => {
@@ -43,22 +56,23 @@ function MenuExampleSizeLarge() {
     window.addEventListener('scroll', handleScroll);
 
     async function findNickname(){
-      try{
         const response = await axios.get('http://localhost:80/api/member/validate', {withCredentials: true});
         if(response.data.status === 200){
           setNickname(response.data.message);
+        }else{
+          setAuth(false);
         }
-      }catch{
-        alert("error");
-      }
     }
-    
     findNickname();
-  }, []);
-
+    console.log(nickname);
+  },[]);
+  useEffect(()=>{
+    setAuth(sessionCheck);
+  },[sessionCheck])
 
   // anchorElNav 변수를 초기화
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const COOKIE_KEY = window.LOGIN_KEY
 
 // handleOpenNavMenu 함수 정의
   const handleOpenNavMenu = (event) => {

@@ -16,8 +16,7 @@ const Content = styled.div`
   border-radius: 15px;
   padding: 20px;
   width: 100%;
-  min-width: 800px;
-  height: 80vh;
+  height: 100vh;
   position: relative;
   display: flex;
   flex-direction: column;

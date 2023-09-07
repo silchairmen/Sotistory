@@ -100,7 +100,7 @@ const BoardEditor = () => {
                 </select>
                 <TextField placeholder="제목을 입력해주세요." value={boardTitle} onChange={handleTitle}/>
                 <button>작성</button>
-                <Editorg
+                <Editor
                     wrapperClassName="wrapper-class"
                     editorClassName="editor"
                     toolbarClassName="toolbar-class"

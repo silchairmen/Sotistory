@@ -19,8 +19,6 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const pages = ['FreeBoard', 'History'];
-const login=['SignUp', 'SignIn']
-const settings = ['MyPage','Logout'];
 
 
 function MenuExampleSizeLarge() {
@@ -73,6 +71,9 @@ function MenuExampleSizeLarge() {
   };
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+  const handleLogOut =() =>{
+    setAuth(false);
   };
 
 
@@ -239,11 +240,12 @@ function MenuExampleSizeLarge() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" href={`/MyPage`}>MyPage</Typography>
                 </MenuItem>
-              ))}
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={handleLogOut}>Logout</Typography>
+                </MenuItem>
             </Menu>
           </Box>
 
@@ -255,7 +257,7 @@ function MenuExampleSizeLarge() {
                   borderColor: 'white'
                   // 다른 스타일 속성들을 추가로 지정할 수 있습니다.
                 }} />
-                <p className='nick2'>chpchpe</p>
+                 <p className='nick2'>{nickname}</p>
               </IconButton>
             </Tooltip>
             <Menu
@@ -274,11 +276,12 @@ function MenuExampleSizeLarge() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" href={`/MyPage`}>MyPage</Typography>
                 </MenuItem>
-              ))}
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={handleLogOut}>Logout</Typography>
+                </MenuItem>
             </Menu>
           </Box>
           </>

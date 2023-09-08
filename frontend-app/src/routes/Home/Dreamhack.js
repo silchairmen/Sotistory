@@ -16,15 +16,11 @@ const Content = styled.div`
   border-radius: 15px;
   padding: 20px;
   width: 100%;
-  height: 100vh;
+  height: auto;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* 화면 너비가 768px 이하일 때 스타일 변경 */
-  @media (max-width: 768px) {
-    height: auto; /* 높이를 자동으로 조절하여 내용에 따라 늘어나도록 설정 */
-    padding: 10px; /* 패딩을 줄임 */
 `;
 
 const fadeInFromLeft = keyframes`
@@ -50,6 +46,15 @@ const Paragraph = styled.p`
   position: relative;
   //padding-left: 30px;
 `;
+const Image = styled.img`
+  width: 100%;
+  height: auto;
+  max-width: 40%; /* 이미지의 최대 너비를 100%로 설정 */
+  @media screen and (max-width: 768px) {
+     max-width:100%
+  }
+
+`;
 
 const Dreamhack = () => {
   const [showCheckmarks, setShowCheckmarks] = useState([false, false, false, false]);
@@ -74,7 +79,7 @@ const Dreamhack = () => {
     <Container>
       <Content {...animatedItem[0]}>
         <Paragraph>
-          <img src={dreamhackImage} alt="Dreamhack" />
+          <Image src={dreamhackImage} alt="Dreamhack" />
         </Paragraph>
         <h1 style={{fontSize:"30px"}}>Check Ranking</h1>
         {["DREAMHACK 현황", "SOTI 그룹 랭킹", "우석대학교 랭킹"].map((text, index) => (

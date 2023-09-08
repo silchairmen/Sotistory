@@ -4,6 +4,7 @@ import VideoPlayer from '../../components/viewvideos';
 
 const Index = () => {
   const [isIntroVisible, setIsIntroVisible] = useState(true);
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   useEffect(() => {
 
     
@@ -31,15 +32,15 @@ const Index = () => {
   
 
   return (
-    <div>
-      {isIntroVisible ? (
+    <>
+      {isIntroVisible && !isMobile ? (
         <section id='loader' className="loader">
           <VideoPlayer />
         </section>
       ) : (
         <Home />
       )}
-    </div>
+    </>
   );
 };
 

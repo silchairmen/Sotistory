@@ -4,6 +4,10 @@ import back1 from '../../img/back1.jpg';
 import back2 from '../../img/back2.jpg';
 import back3 from '../../img/back3.jpg';
 import back4 from '../../img/back4.jpg';
+import mback1 from '../../img/mback1.jpg';
+import mback2 from '../../img/mback2.jpg';
+import mback3 from '../../img/mback3.jpg';
+import mback4 from '../../img/mback4.jpg';
 import styled from 'styled-components';
 
 const itemq = [
@@ -18,6 +22,20 @@ const itemq = [
   },
   {
     image: back4,
+  },
+];
+const mitemq = [
+  {
+    image: mback1,
+  },
+  {
+    image: mback2,
+  },
+  {
+    image: mback3,
+  },
+  {
+    image: mback4,
   },
 ];
 
@@ -87,12 +105,19 @@ const Carouselstyle = styled.div`
 `;
 
 const Mainslide = () => {
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   return (
     <Carouselstyle>
-      <Carousel className="carousel-container" interval={2000} zIndex={1} autoPlay>
-        {itemq.map((item, index) => (
-          <Item key={index} item={item} />
-        ))}
+      <Carousel className="carousel-container" interval={4000} zIndex={1} autoPlay>
+      {isMobile ? (
+            mitemq.map((item, index) => (
+              <Item key={index} item={item} />
+            ))
+          ) : (
+            itemq.map((item, index) => (
+              <Item key={index} item={item} />
+            ))
+          )}
       </Carousel>
     </Carouselstyle>
   );

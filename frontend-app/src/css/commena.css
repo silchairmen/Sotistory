@@ -14,14 +14,16 @@ html, body {
   height: 100%;
 }
 
-a {
+
+
+.anker {
   color: #fafafa;
   font-size: 1.4rem;
   text-decoration: none;
   transition: 200ms;
 }
 
-a:hover{
+.anker:hover{
   color: #f300b4;
 }
 

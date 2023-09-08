@@ -81,8 +81,9 @@ function MenuExampleSizeLarge() {
     <AppBar id="navbar" position="fixed" color='transparent'elevation={0}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <img src={logo}  width="45px" alt="SOTI" style={{display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+        <img src={logo}  href="/" width="45px" alt="SOTI" style={{display: { xs: 'none', md: 'flex' }, mr: 1 }} />
         <Typography
+            className='anker'
             variant="h6"
             noWrap
             component="a"
@@ -90,6 +91,24 @@ function MenuExampleSizeLarge() {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
+              fontWeight: 700,
+              fontFamily: 'Helvetica Neue, sans-serif',
+              letterSpacing: '.3rem',
+              color: 'white',
+              textDecoration: 'none',
+            }}
+          >
+            SOTI
+          </Typography>
+          <Typography
+            className='anker'
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: 'flex', md: 'none' },
               fontWeight: 700,
               fontFamily: 'Helvetica Neue, sans-serif',
               letterSpacing: '.3rem',
@@ -142,7 +161,7 @@ function MenuExampleSizeLarge() {
               }}
             >
               {pages.map((page) => (
-              <MenuItem key={page} component="a" href={`/${page}`} onClick={handleCloseNavMenu}>
+              <MenuItem key={page} className='anker' component="a" href={`/${page}`} onClick={handleCloseNavMenu}>
               <Typography textAlign="center">{page}</Typography>
               </MenuItem>
               ))}
@@ -152,6 +171,7 @@ function MenuExampleSizeLarge() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
+                className='anker'
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{ color: 'white', display: 'block' , fontFamily: 'Helvetica Neue, sans-serif'}}
@@ -165,6 +185,7 @@ function MenuExampleSizeLarge() {
             <>          
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Button
+                className='anker'
                 onClick={handleCloseNavMenu}
                 sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
                 href={`/SignIn`}
@@ -172,6 +193,7 @@ function MenuExampleSizeLarge() {
                 SignIn
               </Button>
               <Button
+                className='anker'
                 onClick={handleCloseNavMenu}
                 sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
                 href={`/SignUp`}
@@ -182,6 +204,7 @@ function MenuExampleSizeLarge() {
 
           <Box sx={{ display: { xs: 'flex', md: 'none', flexGrow: 1 }, justifyContent: 'flex-end'}}>
             <Button
+              className='anker'
               variant="contained"
               size="small"
               onClick={() => console.log('onclick')}
@@ -195,6 +218,7 @@ function MenuExampleSizeLarge() {
             SignIn
             </Button>
             <Button
+              className='anker'
               variant="contained"
               size="small"
               onClick={() => console.log('onclick')}
@@ -277,7 +301,7 @@ function MenuExampleSizeLarge() {
               onClose={handleCloseUserMenu}
             >
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" href={`/MyPage`}>MyPage</Typography>
+                  <Typography textAlign="center" component="a" href={`/MyPage`} style={{ textDecoration: 'none', color:'black' }}>MyPage</Typography>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Typography textAlign="center" onClick={handleLogOut}>Logout</Typography>

@@ -18,8 +18,8 @@ import photo from '../img/myphoto.jpg';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import storageSession from 'redux-persist/lib/storage/session'
-import useCookie from 'react-cookie'
-
+import { useCookies } from 'react-cookie';
+import { Navigate } from 'react-router-dom';
 const pages = ['FreeBoard', 'History'];
 
 
@@ -70,7 +70,7 @@ function MenuExampleSizeLarge() {
 
   // anchorElNav 변수를 초기화
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const COOKIE_KEY = window.LOGIN_KEY
+  const [cookies, , removeCookie] = useCookies(['JSESSIONID']);
 
 // handleOpenNavMenu 함수 정의
   const handleOpenNavMenu = (event) => {
@@ -89,6 +89,10 @@ function MenuExampleSizeLarge() {
   };
   const handleLogOut =() =>{
     setAuth(false);
+    console.log(document.cookie);
+    removeCookie('JSESSIONID');
+    console.log(cookies);
+    window.location.reload();
   };
 
 
@@ -256,7 +260,12 @@ function MenuExampleSizeLarge() {
               onClose={handleCloseUserMenu}
             >
               <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" href={`/MyPage`}>MyPage</Typography>
+                  <Typography 
+                    textAlign="center" 
+                    Navigate={`/MyPage`}
+                  >
+                    MyPage
+                  </Typography>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Typography textAlign="center" onClick={handleLogOut}>Logout</Typography>
@@ -272,7 +281,7 @@ function MenuExampleSizeLarge() {
                   borderColor: 'white'
                   // 다른 스타일 속성들을 추가로 지정할 수 있습니다.
                 }} />
-                 <p className='nick2'>{nickname}</p>
+                  <p className='nick2'>{nickname}</p>
               </IconButton>
             </Tooltip>
             <Menu

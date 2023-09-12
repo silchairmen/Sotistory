@@ -16,7 +16,6 @@ import axios from 'axios'
 import Alert from '@mui/material/Alert'
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
 const StyledSignUpWrapper = styled('div')({
   marginTop: '57px',
@@ -104,8 +103,6 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
 
   const [senddata,setSendData]= React.useState("");
-
-  const navigate = useNavigate();
   
   const handleEmailChange = (e) => {
     setEmail(e.target.value);

@@ -6,6 +6,9 @@
   import Search from "../Search";
   import styled from "styled-components";
   import LoadingOverlay from 'react-loading-overlay';
+  import { Button } from "@mui/material";
+  import { useNavigate,useLocation } from "react-router-dom";
+
 
   const H1 = styled.h1`
     font-size:40px;
@@ -32,6 +35,8 @@
   `
 
   const Board = ({address}) => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const [boardData, setBoardData] = useState([]);
     const [loading, setLoading] = useState(true); // Add loading state
     const [page, setPage] = useState(1);
@@ -104,7 +109,16 @@
                     );
                   }
                 })}
+                
               </Table>
+              <Button
+          type="primary"
+          onClick={() => {
+            navigate(`${location.pathname}/edit/Post`) //여기 수정
+          }}
+        >
+          글 쓰기
+        </Button>
             </div>
             <footer>
               <Paginate page={page} limit={limit} total={boardData.length} setPage={setPage} />

@@ -7,7 +7,7 @@ import History from "./routes/History";
 import { Layout } from 'antd';
 import Intro from './routes/intro/index';
 import BoardEditor from "./components/board/BoardEditor";
-
+import MyPage from "./routes/MyPage"
 const { Content } = Layout;
 const contentStyle = {
   textAlign: 'center',
@@ -30,6 +30,7 @@ function Body() {
             <Route path="/History" element={<History />} />
             <Route path="/FreeBoard/edit/:id" element={<Content style={contentStyle}><BoardEditor/></Content>} />
             <Route path="/" element={<Content style={contentStyle}><Intro /></Content>} />
+            <Route path="/MyPage" element ={<Content style={contentStyle}><MyPage /></Content>} />
           </Routes>
       </Layout>
     </BrowserRouter>

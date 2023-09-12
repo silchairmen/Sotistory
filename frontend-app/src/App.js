@@ -9,6 +9,7 @@ import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
+import { CookiesProvider } from "react-cookie";
 
 
 const store = createStore(rootReducer,composeWithDevTools());
@@ -24,6 +25,7 @@ const Background = styled.div`
 function App() {
   return (
     <Provider store={store}>
+      <CookiesProvider>
         <Background>
           <Fragment>
             <Header />
@@ -31,6 +33,7 @@ function App() {
             <Footer />
           </Fragment>
         </Background>
+      </CookiesProvider>
     </Provider>
   );
 }

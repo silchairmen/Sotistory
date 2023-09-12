@@ -5,6 +5,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
 
+
 const Background = styled.div`
     padding-top: 5%;
     width: 80%;
@@ -51,7 +52,7 @@ const BoardEditor = () => {
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
-
+    const [hidden,setHidden]= useState(false);
     const onEditorStateChange = (editorState) => {
       // editorState에 값 설정
       setEditorState(editorState);
@@ -87,6 +88,15 @@ const BoardEditor = () => {
     const handleTitle = (e) => {
         setBoardTitle(e.target.value);
     }
+    const handleChangeHidden = () => {
+        if (hidden===false){
+            setHidden(true);
+            console.log(hidden);
+        }else {
+            setHidden(false);
+            console.log(hidden);
+        }
+    }
 
     return (
         <Background>
@@ -94,7 +104,7 @@ const BoardEditor = () => {
                 글 작성
             </MainHeader>
             <EditorForm>
-                <input type='checkbox' name="SecretCheck" value="SecretCheck"/>비밀 글
+                <input type='checkbox' name="SecretCheck" value="SecretCheck" checked={hidden} onChange={handleChangeHidden}/>비밀 글
                 <select name="boardname" className="select">
                     <option enabled="true" value="freeBoard" selected>freeBoard</option>
                     <option enabled="true" value="freeBoard2">freeBorad2</option>
@@ -121,7 +131,7 @@ const BoardEditor = () => {
                         },
                         }} 
                     placeholder="내용을 작성해주세요."
-                    value={boardText}
+                    value={boardText}   
                     // 한국어 설정
                     localization={{
                         locale: 'ko',

@@ -24,11 +24,12 @@ const pages = ['FreeBoard', 'History'];
 function MenuExampleSizeLarge() {
   //login 여부 확인
   const [nickname,setNickname] = useState("");
-  const [auth, setAuth] = useState(true);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [auth, setAuth] = useState(false);
+  const [anchorElUser, setAnchorElUser] =useState(null);
+
   const sessionCheck=useSelector((state)=> state.session.session);
+
   useEffect(() => {
-    setAuth(sessionCheck);
     const navbar = document.querySelector('#navbar');
     const handleScroll = (e) => {
       const scrollPos = document.documentElement.scrollTop || document.body.scrollTop;
@@ -181,61 +182,7 @@ function MenuExampleSizeLarge() {
               </Button>
             ))}
           </Box>
-          {!auth && (
-            <>          
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Button
-                className='anker'
-                onClick={handleCloseNavMenu}
-                sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
-                href={`/SignIn`}
-              >
-                SignIn
-              </Button>
-              <Button
-                className='anker'
-                onClick={handleCloseNavMenu}
-                sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
-                href={`/SignUp`}
-              >
-                SignUp
-              </Button>
-          </Box>
-
-          <Box sx={{ display: { xs: 'flex', md: 'none', flexGrow: 1 }, justifyContent: 'flex-end'}}>
-            <Button
-              className='anker'
-              variant="contained"
-              size="small"
-              onClick={() => console.log('onclick')}
-              sx={{ margin: 1, bgcolor: 'transparent', color: 'white',  ':hover': {
-                backgroundColor: 'transparent !important',
-                boxShadow: 'none !important'
-              },
-              boxShadow: 'none' }}
-              href={`/SignIn`}
-            >
-            SignIn
-            </Button>
-            <Button
-              className='anker'
-              variant="contained"
-              size="small"
-              onClick={() => console.log('onclick')}
-              sx={{ margin: 1, bgcolor: 'transparent', color: 'white',  ':hover': {
-                backgroundColor: 'transparent !important',
-                boxShadow: 'none !important'
-              },
-              boxShadow: 'none' }}
-              href={`/SignUp`}
-            >
-            SignUp
-            </Button>
-          </Box>
-          </>
-          )}
-
-          {auth&&(
+          {auth ? (
             <>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <Tooltip>
@@ -309,7 +256,59 @@ function MenuExampleSizeLarge() {
             </Menu>
           </Box>
           </>
-          )}
+          ) : (
+            <>          
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <Button
+                className='anker'
+                onClick={handleCloseNavMenu}
+                sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
+                href={`/SignIn`}
+              >
+                SignIn
+              </Button>
+              <Button
+                className='anker'
+                onClick={handleCloseNavMenu}
+                sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
+                href={`/SignUp`}
+              >
+                SignUp
+              </Button>
+          </Box>
+
+          <Box sx={{ display: { xs: 'flex', md: 'none', flexGrow: 1 }, justifyContent: 'flex-end'}}>
+            <Button
+              className='anker'
+              variant="contained"
+              size="small"
+              onClick={() => console.log('onclick')}
+              sx={{ margin: 1, bgcolor: 'transparent', color: 'white',  ':hover': {
+                backgroundColor: 'transparent !important',
+                boxShadow: 'none !important'
+              },
+              boxShadow: 'none' }}
+              href={`/SignIn`}
+            >
+            SignIn
+            </Button>
+            <Button
+              className='anker'
+              variant="contained"
+              size="small"
+              onClick={() => console.log('onclick')}
+              sx={{ margin: 1, bgcolor: 'transparent', color: 'white',  ':hover': {
+                backgroundColor: 'transparent !important',
+                boxShadow: 'none !important'
+              },
+              boxShadow: 'none' }}
+              href={`/SignUp`}
+            >
+            SignUp
+            </Button>
+          </Box>
+          </>)
+            }
         </Toolbar>
       </Container>
     </AppBar>

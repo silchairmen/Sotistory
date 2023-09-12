@@ -125,7 +125,9 @@ const History = () => {
 			<img src={hoho} alt=""  />
 		</div>
 	</div>
-
+	<p className='timeline'>
+		1기
+	</p>
 	<div className="carousel-item">
 		<div className="carousel-box">
 			<div className="title">Warsaw</div>
@@ -133,7 +135,6 @@ const History = () => {
 			<img src="https://media.istockphoto.com/id/1150545984/it/foto/palazzo-moderno-di-lusso-con-piscina.jpg?s=612x612&w=0&k=20&c=Pbrai_VGc9tUviMCF1UaBErdS1YGyIVWsD29jzMZwTY="alt=""  />
 		</div>
 	</div>
-
 	<div className="carousel-item">
 		<div className="carousel-box">
 			<div className="title">Madrid</div>
@@ -197,9 +198,6 @@ const History = () => {
 			<img src="https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0="alt=""  />
 		</div>
 	</div>
-</div>
-<div className='timeline'>
-	1기
 </div>
      </Body>
     );

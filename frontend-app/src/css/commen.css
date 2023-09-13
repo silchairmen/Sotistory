@@ -4,7 +4,7 @@
   z-index: 1;
   height: 100vh;
   overflow: hidden;
-  pointer-events: none;
+  
 }
 
 .carousel-item {
@@ -82,15 +82,32 @@
 .timeline{
   position:relative;
   z-index: 1;
-  left:700px;
-  top: 80px;
+  top:80px;
+  justify-content: center;
+  align-items: center; /* 가운데 정렬 */
   color: #fff;
   transform-origin: 0% 10%;
   font-size: 30px;
   line-height: 1.4;
+  display: flex;
+  gap:50px;
 }
-@media screen {
-  
+.previous-button,
+.next-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+}
+.previous-button{
+  transform: rotate(180deg);
+}
+
+.current-generation {
+  font-size: 20px;
+  font-weight: bold;
 }
 
 

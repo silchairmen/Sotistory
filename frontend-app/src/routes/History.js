@@ -3,6 +3,8 @@ import { useEffect,useState} from 'react';
 import styled from 'styled-components';
 import '../css/commen.css';
 import hoho from '../img/history.jpg';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+
 const Body = styled.div`
 	overflow:hidden;
 	font-family: 'Roboto', serif;
@@ -10,13 +12,28 @@ const Body = styled.div`
 	`
 
 const History = () => {
+	const generations = ['1', '2', '3', '4', '5']; // 기수 정보 배열
+  const [currentGenerationIndex, setCurrentGenerationIndex] = useState(0);
 
+  const goToPreviousGeneration = () => {
+    // 이전 기수로 이동
+    setCurrentGenerationIndex((prevIndex) => (prevIndex - 1 + generations.length) % generations.length);
+  };
+
+  const goToNextGeneration = () => {
+    // 다음 기수로 이동
+    setCurrentGenerationIndex((prevIndex) => (prevIndex + 1) % generations.length);
+  };
+
+  const currentGeneration = generations[currentGenerationIndex]
 	useEffect(()=>{
 		const navbar = document.querySelector('.footer');
 		if (navbar) {
 		  navbar.classList.add('bg-delete');
 		}
 	  })
+
+	  
 	useEffect(() => {
 		/*--------------------
 		Vars
@@ -118,6 +135,12 @@ const History = () => {
     return (
     <Body>
     <div className="carousel">
+	<div className='timeline'>
+        <PlayArrowIcon className="previous-button" onClick={goToPreviousGeneration}></PlayArrowIcon>
+            <p className="current-generation"> {currentGeneration}기</p>
+			<PlayArrowIcon className="next-button" onClick={goToNextGeneration}></PlayArrowIcon>
+	</div>
+
 		<div className="carousel-item">
 		<div className="carousel-box">
 			<div className="title">Paris</div>
@@ -125,9 +148,6 @@ const History = () => {
 			<img src={hoho} alt=""  />
 		</div>
 	</div>
-	<p className='timeline'>
-		1기
-	</p>
 	<div className="carousel-item">
 		<div className="carousel-box">
 			<div className="title">Warsaw</div>

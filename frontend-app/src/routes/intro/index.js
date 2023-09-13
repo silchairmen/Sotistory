@@ -5,9 +5,9 @@ import VideoPlayer from '../../components/viewvideos';
 const Index = () => {
   const [isIntroVisible, setIsIntroVisible] = useState(true);
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  useEffect(() => {
+  
 
-    
+  useEffect(() => {
     const erase = setTimeout(() => {
       hideLoader();
     }, 2000);
@@ -18,6 +18,10 @@ const Index = () => {
     return () => (clearTimeout(timer) ,clearTimeout(erase));
   }, []);
 
+useEffect(()=>{
+  const Mobile = window.innerWidth;
+  
+})  
   const handleButtonClick = () => {
     setIsIntroVisible(false);
   };
@@ -33,7 +37,7 @@ const Index = () => {
 
   return (
     <>
-      {isIntroVisible && !isMobile ? (
+      {isIntroVisible && !isMobile && window.innerWidth>1024 ? (
         <section id='loader' className="loader">
           <VideoPlayer />
         </section>

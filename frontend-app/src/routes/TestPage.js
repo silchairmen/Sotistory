@@ -4,14 +4,18 @@ import './TestPage.scss';
 import { Avatar } from "@mui/material";
 import SotiMyPage from "../img/SotiMyPage.png";
 const TestPage=()=> {
+  const [nickname,setNickname] = useState("");
   const handleSave = async(event) => {
     event.preventDefault();
+    
     try{
       const data = new FormData(event.currentTarget);
-      const response = await axios.post('http://localhost:80/api/member/mypage/edit', data, {withCredentials: true});
+      data.append('nickname',nickname);
+      const response = await axios.put('http://localhost:80/api/member/myPage/edit',data, {withCredentials: true});
             // 응답 처리
       if (response.data.status === 200) {
-      } else if(response.data.status === 203){
+      } else{
+        console.log(response.data);
         return 0;
         // ... (에러 처리)
       }
@@ -21,9 +25,10 @@ const TestPage=()=> {
       // ... (요청 실패 처리)
     }
   };
-  const ChangeAvatarHandle=()=>{
-
-  }
+  const handleNickName= (e) =>{
+    e.preventDefault();
+    setNickname(e.target.value);
+  } 
   return (
     <div>
       <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'></link>
@@ -38,7 +43,7 @@ const TestPage=()=> {
               
               <div class="login__box">
             <i class='bx bx-user login__icon'></i>
-            <input type="text" placeholder="닉네임" class="login__input"/>
+            <input type="text" placeholder="닉네임" class="login__input" onChange={handleNickName}/>
           </div>
           <div class="login__box">
             <i class='bx bx-at login__icon'></i>
@@ -52,7 +57,7 @@ const TestPage=()=> {
             <i class='bx bx-lock login__icon'></i>
             <input type="password" placeholder="비밀번호 재확인" class="login__input"/>
           </div>
-              <a href="#" className="login__button" onClick={handleSave}>저장</a>
+              <a className="login__button" onClick={handleSave}>저장</a>
             </form>
           </div>
         </div>

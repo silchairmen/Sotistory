@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
-
+import draftToHtml from 'draftjs-to-html';
 
 const Background = styled.div`
     padding-top: 5%;
@@ -45,17 +45,17 @@ const editorStyle = {
     height: 'auto',
     background: 'white',
 };      
-  
+
 
 const BoardEditor = () => {
 
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
-    const [hidden,setHidden]= useState(false);
+
     const onEditorStateChange = (editorState) => {
       // editorState에 값 설정
-      setEditorState(editorState);
+        setEditorState(editorState);
     };
 
     const getBoard = async () => {
@@ -98,6 +98,26 @@ const BoardEditor = () => {
         }
     }
 
+
+    const submitReview = ()=>{
+        const titles = boardTitle;
+        const contents = boardText;
+        const sqlQuery = "INSERT INTO simpleboard (title, content) VALUES (?,?)";
+        alert('등록 완료!');
+        alert(editorToHtml);
+        alert(contents);
+      };
+
+
+    const submitReview = ()=>{
+        const titles = boardTitle;
+        const contents = boardText;
+        const sqlQuery = "INSERT INTO simpleboard (title, content) VALUES (?,?)";
+        alert('등록 완료!');
+        alert(editorToHtml);
+        alert(contents);
+      };
+
     return (
         <Background>
             <MainHeader>
@@ -110,7 +130,10 @@ const BoardEditor = () => {
                     <option enabled="true" value="freeBoard2">freeBorad2</option>
                 </select>
                 <TextField placeholder="제목을 입력해주세요." value={boardTitle} onChange={handleTitle}/>
-                <button>작성</button>
+                <button
+                 className="submit-button"
+                 onClick={submitReview}
+                >작성</button>
                 <Editor
                     wrapperClassName="wrapper-class"
                     editorClassName="editor"

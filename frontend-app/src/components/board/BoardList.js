@@ -9,15 +9,15 @@ const FontColor=styled.p`
   color:black;
   font-weight:bold;
 `
-function BoardList({ userId, id, title }) {
+function BoardList({ author, postId, title }) {
   return (
       <tbody>
         <tr>
-          <Td>No.{id}</Td>  
+          <Td>No.{postId}</Td>  
           <Td>
-            <Link to={`/FreeBoard/${id}`}><FontColor>{title}</FontColor></Link>
+            <Link to={`/FreeBoard/${postId}`}><FontColor>{title}</FontColor></Link>
           </Td>
-          <td style={{textAlign:"center"}}>{userId}</td>
+          <td style={{textAlign:"center"}}>{author}</td>
         </tr>
       </tbody>
   );

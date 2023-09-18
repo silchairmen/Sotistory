@@ -48,10 +48,11 @@ const editorStyle = {
 
 
 const BoardEditor = () => {
-
+    const [hidden,setHidden] = useState(false);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
+    const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
     const onEditorStateChange = (editorState) => {
       // editorState에 값 설정
@@ -99,24 +100,31 @@ const BoardEditor = () => {
     }
 
 
-    const submitReview = ()=>{
+    const submitReview = async()=>{
         const titles = boardTitle;
         const contents = boardText;
         const sqlQuery = "INSERT INTO simpleboard (title, content) VALUES (?,?)";
-        alert('등록 완료!');
-        alert(editorToHtml);
-        alert(contents);
-      };
-
-
-    const submitReview = ()=>{
-        const titles = boardTitle;
-        const contents = boardText;
-        const sqlQuery = "INSERT INTO simpleboard (title, content) VALUES (?,?)";
-        alert('등록 완료!');
-        alert(editorToHtml);
-        alert(contents);
-      };
+        try{
+            const data = new FormData();
+          
+            data.append('content',editorToHtml);
+            data.append('title',titles);
+            data.append('postType',"NORMAL");
+            const response = await axios.post('http://localhost:80/api/post/freeBoard/create', data, {withCredentials: true});
+                  // 응답 처리
+            if (response.data.status === 300) {
+              alert(response.data.responseMessage);
+            } else{
+                alert(response.data.responseMessage);
+              // ... (에러 처리)
+            }
+          } catch (error) {
+            console.log("오류");
+            return 0;
+            // ... (요청 실패 처리)
+          }
+    };
+    
 
     return (
         <Background>
@@ -131,8 +139,8 @@ const BoardEditor = () => {
                 </select>
                 <TextField placeholder="제목을 입력해주세요." value={boardTitle} onChange={handleTitle}/>
                 <button
-                 className="submit-button"
-                 onClick={submitReview}
+                    className="submit-button"
+                    onClick={submitReview}
                 >작성</button>
                 <Editor
                     wrapperClassName="wrapper-class"

@@ -40,7 +40,8 @@
     const [boardData, setBoardData] = useState([]);
     const [loading, setLoading] = useState(true); // Add loading state
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(20);
+    const [total, setTotal] = useState(1);
     const loaddata=useSelector(state => state.search.keyword);
     const loadtype=useSelector(state => state.search.type);
 
@@ -54,9 +55,12 @@
 
     const getBoard = async () => {
       try {
-        const resp = await axios.get(address);
-        setBoardData(resp.data);
+        const resp = await axios.get("http://localhost:80/api/post/freeBoard/posts");
+        setBoardData(resp.data.pageInfo.content);
         setLoading(false); // Set loading to false after data is fetched
+        console.log(resp.data.pageInfo);
+        setLimit(resp.data.pageInfo.pagesize);
+        setTotal(resp.data.pageInfo.totalPages);
       } catch (error) {
         console.error("Error fetching board data:", error);
         setLoading(false); // Set loading to false on error as well
@@ -68,9 +72,11 @@
       setPage(1);
     };
     
-    const offset = (page - 1) * limit;
-    const paginatedData = boardData.slice(offset, offset + limit);
-
+    const handleBoardCheck=()=> {
+      console.log(boardData);
+      console.log(paginatedData);
+    }
+    const paginatedData = boardData.slice(0, boardData.totalElements);
     return (
       <LoadingOverlay
       active={loading}
@@ -100,16 +106,15 @@
                   if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
                     return (
                       <BoardList
-                        key={boardDetail.id}
-                        userId={boardDetail.userId}
-                        id={boardDetail.id}
+                        key={boardDetail.postId}
+                        author={boardDetail.author}
+                        postId={boardDetail.postId}
                         title={boardDetail.title}
-                        body={boardDetail.body}
+                        content={boardDetail.content}
                       />
                     );
                   }
                 })}
-                
               </Table>
               <Button
           type="primary"
@@ -119,9 +124,15 @@
         >
           글 쓰기
         </Button>
+        <Button
+          type="primary"
+          onClick={handleBoardCheck}
+        >
+          테스트
+        </Button>
             </div>
             <footer>
-              <Paginate page={page} limit={limit} total={boardData.length} setPage={setPage} />
+            <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />
               <Search/>
             </footer>
             

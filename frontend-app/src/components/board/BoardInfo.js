@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 const Board=styled.div`
   background-color:black;
@@ -43,14 +44,14 @@ function Boardinfo({address}) {
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const resp = await fetch(`${address}${id}`);
-        const data = await resp.json();
-        setBoardInfo(data);
+        const resp = await axios.get(`${address}${id}`);
+        
+        setBoardInfo(resp.data);
+        console.log(resp.data);
       } catch (error) {
         console.error("Error fetching board info:", error);
       }
     };
-
     getInfo();
   }, [id]);
 
@@ -58,13 +59,13 @@ function Boardinfo({address}) {
     <Board>
     <Header>
       <h1>
-        제목: {boardInfo.title}   작성자 : {id}
+        제목: {boardInfo.title}   작성자 : {boardInfo.author}
         </h1>
         <br />
       <hr />
       </Header>
       <Body>
-      <h3>{boardInfo.body}</h3>
+      <h3>{boardInfo.content}</h3>
       </Body>
       <button ><Link to={{pathname:`/FreeBoard/edit/${id}`,state:{id: id}}}>
         글 수정

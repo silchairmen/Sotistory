@@ -2,7 +2,8 @@ import * as React from 'react';
 import { useEffect,useState} from 'react';
 import styled from 'styled-components';
 import '../css/commen.css';
-import hoho from '../img/history.jpg';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import data from './AppData.json'
 const Body = styled.div`
 	overflow:hidden;
 	font-family: 'Roboto', serif;
@@ -10,18 +11,59 @@ const Body = styled.div`
 	`
 
 const History = () => {
+const [currentGeneration, setCurrentGeneration] = useState(1);
+const [totalGenerations, setTotalGenerations] = useState(data.totalGenerations); // 총 기수 개수
+const [generationInfo, setGenerationInfo] = useState(data.generationInfo);
+const currentGenerationImages = generationInfo.filter((image) => image.num === currentGeneration);
 
-	useEffect(()=>{
+const [imageCount, setImageCount] = useState(currentGenerationImages.length);
+
+  const goToPreviousGeneration = () => {
+    if (currentGeneration > 1) {
+      setCurrentGeneration(currentGeneration - 1);
+    }
+  };
+
+  // 다음 기수로 이동하는 함수
+  const goToNextGeneration = () => {
+    if (currentGeneration < totalGenerations) {
+      setCurrentGeneration(currentGeneration + 1);
+    }
+  };
+
+
+
+  useEffect(() => {
+	// currentGeneration에 따라 currentGenerationImages를 필터링하고 imageCount를 업데이트합니다.
+	const currentGenerationImages = generationInfo.filter((image) => image.num === currentGeneration);
+	const updatedImageCount = currentGenerationImages.length;
+	// imageCount를 업데이트합니다.
+	setImageCount(updatedImageCount);
+  }, [currentGeneration, generationInfo]);
+
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .carousel-item {
+        --items: ${generationInfo.filter((image) => image.num === currentGeneration).length};
+      }
+    `;
+    document.head.appendChild(style);
+  }, [currentGeneration, generationInfo]);
+
+  useEffect(()=>{
 		const navbar = document.querySelector('.footer');
 		if (navbar) {
 		  navbar.classList.add('bg-delete');
 		}
-	  })
+  },[]);
+
+	  
 	useEffect(() => {
 		/*--------------------
 		Vars
 		--------------------*/
-		let progress = 50;
+		let progress = 0;
 		let startX = 0;
 		let active = 0;
 		let isDown = false;
@@ -47,6 +89,8 @@ const History = () => {
 			const zIndex=getZindex([...itemsData],active)[index];
 			item.style.setProperty('--zIndex',zIndex);
 			item.style.setProperty('--active',(index-active)/itemsData.length);
+
+			
 		  };
 	
 		  /*--
@@ -63,8 +107,8 @@ const History = () => {
 		   /*-- Click on Items --*/
 		   itemsData.forEach((item,i)=>{
 			 item.addEventListener('click',()=>{
-			   progress=(i/itemsData.length)*100+10;
-			   animate();
+				if(progress!==0){
+				console.log('이미지 이벤트 클릭 됨')}			 
 			 });
 		   });
 	
@@ -113,94 +157,29 @@ const History = () => {
 		   document.removeEventListener('mousemove', handleMouseMove);
 		   document.removeEventListener('mouseup', handleMouseUp);	
 		};
-	 }, []);
+	 }, [currentGeneration, generationInfo]);
 
     return (
     <Body>
     <div className="carousel">
-		<div className="carousel-item">
-		<div className="carousel-box">
-			<div className="title">Paris</div>
-			<div className="num">01</div>
-			<img src={hoho} alt=""  />
-		</div>
+	<div className='timeline'>
+	{currentGeneration > 1 && (<PlayArrowIcon className="previous-button" onClick={goToPreviousGeneration}></PlayArrowIcon>)}
+            <p className="current-generation"> {currentGeneration}기</p>
+	{currentGeneration < totalGenerations && (<PlayArrowIcon className="next-button" onClick={goToNextGeneration}></PlayArrowIcon>)}
 	</div>
-
-	<div className="carousel-item">
-		<div className="carousel-box">
-			<div className="title">Warsaw</div>
-			<div className="num">02</div>
-			<img src="https://media.istockphoto.com/id/1150545984/it/foto/palazzo-moderno-di-lusso-con-piscina.jpg?s=612x612&w=0&k=20&c=Pbrai_VGc9tUviMCF1UaBErdS1YGyIVWsD29jzMZwTY="alt=""  />
-		</div>
+	{generationInfo
+  .filter((image) => image.num === currentGeneration)
+  .map((image, index) => (
+    <div key={index} className="carousel-item">
+      <div className="carousel-box">
+        <div className="title">{image.title}</div>
+        <div className="num">{image.num}</div>
+        <img src={image.img} alt="" />
+      </div>
+    </div>
+  ))
+}
 	</div>
-
-	<div className="carousel-item">
-		<div className="carousel-box">
-			<div className="title">Madrid</div>
-			<div className="num">03</div>
-			<img
-				src="https://media.istockphoto.com/id/1214351345/it/foto/guardando-direttamente-lo-skyline-del-quartiere-finanziario-nel-centro-di-londra-immagine-di.jpg?s=612x612&w=0&k=20&c=oNNbPzPvcQ-4RA6AeatNIxHQIafBiXmDRtUUY0Ska-I=" alt="" />
-		</div>
-	</div>
-
-	<div className="carousel-item">
-		<div className="carousel-box">
-			<div className="title">Sydney</div>
-			<div className="num">04</div>
-			<img src="https://media.istockphoto.com/id/904390980/it/foto/foto-di-architettura-contemporanea-astratta.jpg?s=612x612&w=0&k=20&c=_P4Wmx5nq5MeDuimpNklKCBlrLovmCyd9lfiMKeJZDs=" alt=""  />
-		</div>
-	</div>
-
-	<div className="carousel-item">
-		<div className="carousel-box">
-			<div className="title">Istanbul</div>
-			<div className="num">05</div>
-			<img src="https://media.istockphoto.com/id/130408311/it/foto/piscina-allesterno-della-casa-moderna-al-crepuscolo.jpg?s=612x612&w=0&k=20&c=ZoVjx7uDjoHKmpM1ayW6UR1SQOoYh_xx-QMG_qeOYs0=" alt="" />
-		</div>
-	</div>
-
-	<div className="carousel-item">
-		<div className="carousel-box">
-			<div className="title">Prague</div>
-			<div className="num">06</div>
-			<img src="https://media.istockphoto.com/id/1299954175/it/foto/villa-cubica-moderna.jpg?s=612x612&w=0&k=20&c=DhGhb3c1E3DW_fbrWJ_R_Zh0Lbwu6syFeRLsKlZ9no8=" alt="" />
-		</div>
-	</div>
-
-	<div className="carousel-item">
-		<div className="carousel-box">
-			<div className="title">Munich</div>
-			<div className="num">07</div>
-			<img src="https://media.istockphoto.com/id/926689776/it/foto/vista-ad-angolo-basso-dei-grattacieli-di-new-york.jpg?s=612x612&w=0&k=20&c=DmEB0Ty7ZwDnBoU5SuA8FNevOp4G1UcECw5aS4vA9A8=" alt="" />
-		</div>
-	</div>
-
-	<div className="carousel-item">
-		<div className="carousel-box">
-			<div className="title">Venice</div>
-			<div className="num">08</div>
-			<img src="https://media.istockphoto.com/id/1191376167/it/foto/villa-dellisola.jpg?s=612x612&w=0&k=20&c=PKslWo4FdbjinohKQlK_oWL34jqAsnzMTdy2bxEAf-I=" alt="" />
-		</div>
-	</div>
-
-	<div className="carousel-item">
-		<div className="carousel-box">
-			<div className="title">Oslo</div>
-			<div className="num">09</div>
-			<img src="https://media.istockphoto.com/id/184316397/it/foto/londra-edifici-aziendali.jpg?s=612x612&w=0&k=20&c=XqrRxEPzFnwRFk7PQrCiu9-FPfCTPyMe5BKKaxYXCs8=" alt="" />
-		</div>
-	</div>
-	<div className="carousel-item">
-		<div className="carousel-box">
-			<div className="title">London</div>
-			<div className="num">10</div>
-			<img src="https://media.istockphoto.com/id/184619832/it/foto/distretto-finanziario-al-crepuscolo-londra.jpg?s=612x612&w=0&k=20&c=RAThrJOBY6vhlT6-kQpu9-9jLEzWToYfdw46S8B0Mu0="alt=""  />
-		</div>
-	</div>
-</div>
-<div className='timeline'>
-	1기
-</div>
      </Body>
     );
 };

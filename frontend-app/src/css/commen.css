@@ -4,11 +4,11 @@
   z-index: 1;
   height: 100vh;
   overflow: hidden;
-  pointer-events: none;
+  
 }
 
 .carousel-item {
-  --items: 10;
+  
   --width: clamp(150px, 30vw, 300px);
   --height: clamp(200px, 40vw, 400px);
   --x: calc(var(--active) * 800%);
@@ -40,7 +40,6 @@
   width: 100%;
   height: 100%;
   transition: opacity 0.8s cubic-bezier(0, 0.02, 0, 1);
-  opacity: var(--opacity);
   font-family: "Orelo-sw-db", serif;
 }
 .carousel-item .carousel-box:before {
@@ -80,14 +79,38 @@
 }
 
 .timeline{
-  position: absolute;
+  position:relative;
   z-index: 1;
   top:80px;
-  left: 700px;
+  justify-content: center;
   color: #fff;
   transform-origin: 0% 10%;
   font-size: 30px;
   line-height: 1.4;
+  display: flex;
+}
+
+.previous-button,
+.next-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  position: absolute;
+}
+.previous-button{
+  transform: rotate(180deg);
+  left: 40%;
+}
+.next-button{
+  right: 40%;
+}
+.current-generation {
+  font-size: 20px;
+  font-weight: bold;
+  justify-content: center;
 }
 
 

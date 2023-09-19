@@ -5,6 +5,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import { useLocation } from 'react-router-dom';
 
 const Background = styled.div`
     padding-top: 5%;
@@ -41,11 +42,6 @@ const TextField = styled.textarea`
     vertical-align: middle;
 `
 
-const editorStyle = {
-    height: 'auto',
-    background: 'white',
-};      
-
 
 const BoardEditor = () => {
     const [hidden,setHidden] = useState(false);
@@ -54,15 +50,18 @@ const BoardEditor = () => {
     const [boardTitle, setBoardTitle] = useState("");
     const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
+    const location = useLocation();
+    const splitUrl = location?.pathname?.split('/') ?? null;
     const onEditorStateChange = (editorState) => {
       // editorState에 값 설정
         setEditorState(editorState);
     };
 
     const getBoard = async () => {
+        const indexNum = splitUrl[splitUrl.length-1];
         try {
-            const resp = await axios.get(`https://jsonplaceholder.typicode.com/posts/1`);
-            setBoardText(resp.data.body);
+            const resp = await axios.get(`http://localhost:80/api/post/freeBoard/post/${indexNum}`);
+            setBoardText(resp.data.content);
             setBoardTitle(resp.data.title);
         } catch (error) {
             console.error("Error fetching board data:", error);
@@ -83,6 +82,7 @@ const BoardEditor = () => {
         const contentState = ContentState.createFromText(boardText);
         const newEditorState = EditorState.createWithContent(contentState);
         setEditorState(newEditorState);
+
     }, [boardText]);
     
 
@@ -99,11 +99,11 @@ const BoardEditor = () => {
         }
     }
 
-
+    const handleTest= () => {
+        console.log(splitUrl[splitUrl.length-1]);
+    }
     const submitReview = async()=>{
         const titles = boardTitle;
-        const contents = boardText;
-        const sqlQuery = "INSERT INTO simpleboard (title, content) VALUES (?,?)";
         try{
             const data = new FormData();
           
@@ -133,8 +133,8 @@ const BoardEditor = () => {
             </MainHeader>
             <EditorForm>
                 <input type='checkbox' name="SecretCheck" value="SecretCheck" checked={hidden} onChange={handleChangeHidden}/>비밀 글
-                <select name="boardname" className="select">
-                    <option enabled="true" value="freeBoard" selected>freeBoard</option>
+                <select name="boardname" className="select" defaultValue="freeBoard">
+                    <option enabled="true" value="freeBoard">freeBoard</option>
                     <option enabled="true" value="freeBoard2">freeBorad2</option>
                 </select>
                 <TextField placeholder="제목을 입력해주세요." value={boardTitle} onChange={handleTitle}/>
@@ -173,6 +173,7 @@ const BoardEditor = () => {
                     onEditorStateChange={onEditorStateChange}
   />
             </EditorForm>
+            <button onClick={handleTest}>테스트</button>
         </Background>
     )
 }

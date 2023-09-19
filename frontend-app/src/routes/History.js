@@ -15,7 +15,9 @@ const [currentGeneration, setCurrentGeneration] = useState(1);
 const [totalGenerations, setTotalGenerations] = useState(data.totalGenerations); // 총 기수 개수
 const [generationInfo, setGenerationInfo] = useState(data.generationInfo);
 const currentGenerationImages = generationInfo.filter((image) => image.num === currentGeneration);
-const imageCount = currentGenerationImages.length;
+
+const [imageCount, setImageCount] = useState(currentGenerationImages.length);
+
   const goToPreviousGeneration = () => {
     if (currentGeneration > 1) {
       setCurrentGeneration(currentGeneration - 1);
@@ -28,28 +30,40 @@ const imageCount = currentGenerationImages.length;
       setCurrentGeneration(currentGeneration + 1);
     }
   };
- 
-  
+
+
+
+  useEffect(() => {
+	// currentGeneration에 따라 currentGenerationImages를 필터링하고 imageCount를 업데이트합니다.
+	const currentGenerationImages = generationInfo.filter((image) => image.num === currentGeneration);
+	const updatedImageCount = currentGenerationImages.length;
+	// imageCount를 업데이트합니다.
+	setImageCount(updatedImageCount);
+  }, [currentGeneration, generationInfo]);
+
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .carousel-item {
+        --items: ${generationInfo.filter((image) => image.num === currentGeneration).length};
+      }
+    `;
+    document.head.appendChild(style);
+  }, [currentGeneration, generationInfo]);
+
   useEffect(()=>{
 		const navbar = document.querySelector('.footer');
 		if (navbar) {
 		  navbar.classList.add('bg-delete');
 		}
-    const style = document.createElement('style');
-    style.innerHTML = `
-      .carousel-item {
-        --items: ${imageCount};
-      }
-    `;
-    document.head.appendChild(style);
-  }, [imageCount]);
+  },[]);
 
 	  
 	useEffect(() => {
 		/*--------------------
 		Vars
 		--------------------*/
-		let progress = 50;
+		let progress = 0;
 		let startX = 0;
 		let active = 0;
 		let isDown = false;
@@ -75,6 +89,8 @@ const imageCount = currentGenerationImages.length;
 			const zIndex=getZindex([...itemsData],active)[index];
 			item.style.setProperty('--zIndex',zIndex);
 			item.style.setProperty('--active',(index-active)/itemsData.length);
+
+			
 		  };
 	
 		  /*--
@@ -91,8 +107,8 @@ const imageCount = currentGenerationImages.length;
 		   /*-- Click on Items --*/
 		   itemsData.forEach((item,i)=>{
 			 item.addEventListener('click',()=>{
-			   progress=(i/itemsData.length)*100+10;
-			   animate();
+				if(progress!==0){
+				console.log('이미지 이벤트 클릭 됨')}			 
 			 });
 		   });
 	
@@ -141,7 +157,7 @@ const imageCount = currentGenerationImages.length;
 		   document.removeEventListener('mousemove', handleMouseMove);
 		   document.removeEventListener('mouseup', handleMouseUp);	
 		};
-	 }, []);
+	 }, [currentGeneration, generationInfo]);
 
     return (
     <Body>

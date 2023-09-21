@@ -8,6 +8,9 @@ const Body = styled.div`
 	overflow:hidden;
 	font-family: 'Roboto', serif;
 	background: linear-gradient(135deg, black, #220033);
+	.modal-active {
+		overflow: hidden;
+	}
 	`
 
 const History = () => {
@@ -105,12 +108,20 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 		   animate();
 	
 		   /*-- Click on Items --*/
-		   itemsData.forEach((item,i)=>{
-			 item.addEventListener('click',()=>{
-				if(progress!==0){
-				console.log('이미지 이벤트 클릭 됨')}			 
-			 });
-		   });
+		   itemsData.forEach((item, i) => {
+			item.addEventListener('click', () => {
+				// 현재 progress 값에서만 클릭 이벤트 처리
+				const currentIndex = i; // 현재 클릭된 아이템의 인덱스
+				const currentZIndex = parseInt(item.style.getPropertyValue('--zIndex')); // 현재 클릭된 아이템의 z-index
+		  
+				if (currentZIndex === itemsData.length) {
+				  // 클릭된 아이템이 현재 progress 값을 가진 아이템일 경우
+				  // 클릭 이벤트 처리를 수행
+				  // 이 부분에 클릭 이벤트 처리 코드 추가
+				  console.log(`클릭 이벤트 처리 - 인덱스: ${currentIndex}`);
+				} 
+			});
+		  });
 	
 		   /*-- Handlers --*/
 	
@@ -161,6 +172,14 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 
     return (
     <Body>
+	<div id="modal-container">
+  <div class="modal-background">
+    <div class="modal">
+      <h2>I'm a Modal</h2>
+      <p>Hear me roar.</p>
+    </div>
+  </div>
+</div>
     <div className="carousel">
 	<div className='timeline'>
 	{currentGeneration > 1 && (<PlayArrowIcon className="previous-button" onClick={goToPreviousGeneration}></PlayArrowIcon>)}

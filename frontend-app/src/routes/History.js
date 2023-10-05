@@ -18,6 +18,20 @@ const [currentGeneration, setCurrentGeneration] = useState(1);
 const [totalGenerations, setTotalGenerations] = useState(data.totalGenerations); // 총 기수 개수
 const [generationInfo, setGenerationInfo] = useState(data.generationInfo);
 const currentGenerationImages = generationInfo.filter((image) => image.num === currentGeneration);
+const [clickedImage, setClickedImage] = useState(null);
+const [modalClass, setModalClass] = useState('');
+
+const [modalActive, setModalActive] = useState(false);
+			
+const handleButtonClick = (buttonId) => {
+		setModalClass(buttonId);
+		setModalActive(true);
+	};
+
+const handleModalClick = () => {
+		setModalClass('out');
+		setModalActive(false);
+	};
 
 const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 
@@ -92,8 +106,6 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 			const zIndex=getZindex([...itemsData],active)[index];
 			item.style.setProperty('--zIndex',zIndex);
 			item.style.setProperty('--active',(index-active)/itemsData.length);
-
-			
 		  };
 	
 		  /*--
@@ -106,23 +118,28 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 		  };
 		  
 		   animate();
+
+		
 	
 		   /*-- Click on Items --*/
 		   itemsData.forEach((item, i) => {
-			item.addEventListener('click', () => {
+			  item.addEventListener('click', () => {
 				// 현재 progress 값에서만 클릭 이벤트 처리
 				const currentIndex = i; // 현재 클릭된 아이템의 인덱스
-				const currentZIndex = parseInt(item.style.getPropertyValue('--zIndex')); // 현재 클릭된 아이템의 z-index
+				const isActiveItem =item.style.getPropertyValue('--active') === '0';
 		  
-				if (currentZIndex === itemsData.length) {
+				if (isActiveItem) {
 				  // 클릭된 아이템이 현재 progress 값을 가진 아이템일 경우
 				  // 클릭 이벤트 처리를 수행
 				  // 이 부분에 클릭 이벤트 처리 코드 추가
-				  console.log(`클릭 이벤트 처리 - 인덱스: ${currentIndex}`);
-				} 
-			});
+				  const clickedImageInfo = generationInfo.filter((image) => image.num === currentGeneration)[currentIndex];
+				  setClickedImage(clickedImageInfo);
+				  handleButtonClick('six');
+
+				}
+			  });
 		  });
-	
+		  
 		   /*-- Handlers --*/
 	
 		   const handleWheel=(e)=>{
@@ -172,14 +189,22 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 
     return (
     <Body>
-	<div id="modal-container">
-  <div class="modal-background">
-    <div class="modal">
-      <h2>I'm a Modal</h2>
-      <p>Hear me roar.</p>
-    </div>
-  </div>
-</div>
+	{modalActive && (
+        <div id="modal-container" className={modalClass} onClick={handleModalClick} >
+			 <div className="modal-background">
+			<div className="modal">
+			<img src={clickedImage.img} alt=""/>
+			<div className='modalbody'>
+			<h2>{clickedImage.title}</h2>
+        	<p>{clickedImage.num}</p>
+			</div>
+			<svg className="modal-svg" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none">
+			<rect x="0" y="0" fill="none" width="100%" height="100%" rx="3" ry="3"></rect>
+			</svg>
+		</div>
+		</div>
+    	</div>
+      )}
     <div className="carousel">
 	<div className='timeline'>
 	{currentGeneration > 1 && (<PlayArrowIcon className="previous-button" onClick={goToPreviousGeneration}></PlayArrowIcon>)}
@@ -189,11 +214,11 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 	{generationInfo
   .filter((image) => image.num === currentGeneration)
   .map((image, index) => (
-    <div key={index} className="carousel-item">
+    <div key={index} className="carousel-item" >
       <div className="carousel-box">
         <div className="title">{image.title}</div>
         <div className="num">{image.num}</div>
-        <img src={image.img} alt="" />
+        <img src={image.img} alt=""/>
       </div>
     </div>
   ))

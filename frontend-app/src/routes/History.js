@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import '../css/commen.css';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import data from './AppData.json'
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 const Body = styled.div`
 	overflow:hidden;
 	font-family: 'Roboto', serif;
@@ -11,6 +13,8 @@ const Body = styled.div`
 	.modal-active {
 		overflow: hidden;
 	}
+	
+	
 	`
 
 const History = () => {
@@ -19,7 +23,7 @@ const [totalGenerations, setTotalGenerations] = useState(data.totalGenerations);
 const [generationInfo, setGenerationInfo] = useState(data.generationInfo);
 const currentGenerationImages = generationInfo.filter((image) => image.num === currentGeneration);
 const [clickedImage, setClickedImage] = useState(null);
-const [modalClass, setModalClass] = useState('');
+const [modalClass, setModalClass] = useState('modal-window');
 
 const [modalActive, setModalActive] = useState(false);
 			
@@ -29,7 +33,7 @@ const handleButtonClick = (buttonId) => {
 	};
 
 const handleModalClick = () => {
-		setModalClass('out');
+		setModalClass('modal-window');
 		setModalActive(false);
 	};
 
@@ -134,7 +138,7 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 				  // 이 부분에 클릭 이벤트 처리 코드 추가
 				  const clickedImageInfo = generationInfo.filter((image) => image.num === currentGeneration)[currentIndex];
 				  setClickedImage(clickedImageInfo);
-				  handleButtonClick('six');
+				  handleButtonClick('target');
 
 				}
 			  });
@@ -190,20 +194,56 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
     return (
     <Body>
 	{modalActive && (
-        <div id="modal-container" className={modalClass} onClick={handleModalClick} >
-			 <div className="modal-background">
-			<div className="modal">
-			<img src={clickedImage.img} alt=""/>
-			<div className='modalbody'>
-			<h2>{clickedImage.title}</h2>
-        	<p>{clickedImage.num}</p>
+	<div className={modalClass}>
+	<div className="grid-7 element-animation">
+    <div className="card color-card-2">
+	<Button className="modal-close" onClick={handleModalClick} >Close</Button>
+      <ul>
+        <li><i className="fas fa-arrow-left i-l b"></i></li>
+        <li><i className="fas fa-ellipsis-v i-r b"></i></li>
+        <li><i className="far fa-heart i-r b"></i></li>
+      </ul>
+      <img src={clickedImage.img} alt="profile-pic" className="profile"/>
+      <h1 className="title-2">{clickedImage.title}</h1>
+      <p className="job-title"> Woosuk University</p>
+      <div className="desc top">
+        <p>Create usable interface and designs @GraphicSpark</p>
+      </div>
+      <button className="btn color-a top"> Hire me</button>
+      <hr className="hr-2"/>
+      <div className="container">
+        <div className="content">
+          <div className="grid-2">
+            <button className="color-b circule"> <i className="fab fa-dribbble fa-2x"></i></button>
+            <h2 className="title-2">12.3k</h2>
+            <p className="followers">Followers</p>
+          </div>
+          <div className="grid-2">
+            <button className="color-c circule"><i className="fab fa-behance fa-2x"></i></button>
+            <h2 className="title-2">16k</h2>
+            <p className="followers">Followers</p>
+          </div>
+          <div className="grid-2">
+            <button className="color-d circule"><i className="fab fa-github-alt fa-2x"></i></button>
+            <h2 className="title-2">17.8k</h2>
+            <p className="followers">Followers</p>
+          </div>
+        </div>
+    </div>
+			
+					{/*<div className='modalposition'>
+						<Avatar	alt="Remy Sharp" src={clickedImage.img} sx={{ width: 180, height: 150 }}/>
+						</div>
+				<div className='contents'>
+					<h2>이름: {clickedImage.title}</h2>
+				</div>
+				<div className='bottom'>
+					<h1>이력사항</h1>			
+	</div>*/}
+				</div>
 			</div>
-			<svg className="modal-svg" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none">
-			<rect x="0" y="0" fill="none" width="100%" height="100%" rx="3" ry="3"></rect>
-			</svg>
-		</div>
-		</div>
-    	</div>
+			</div>
+    	
       )}
     <div className="carousel">
 	<div className='timeline'>

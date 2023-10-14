@@ -98,6 +98,7 @@ public class MemberAuthService implements UserDetailsService {
                     .interests(memberDto.getInterests())
                     .joinYear(memberDto.getJoinYear()).build();
 
+
             //패스워드 변동이 있을 경우
         } else {
             member = Member.builder()

@@ -19,7 +19,6 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import storageSession from 'redux-persist/lib/storage/session'
 import { useCookies } from 'react-cookie';
-import { Navigate } from 'react-router-dom';
 const pages = ['FreeBoard', 'History'];
 
 
@@ -94,7 +93,6 @@ function MenuExampleSizeLarge() {
     console.log(cookies);
     window.location.reload();
   };
-
 
   return (
     <AppBar id="navbar" position="fixed" color='transparent'elevation={0}>
@@ -232,7 +230,7 @@ function MenuExampleSizeLarge() {
               <MenuItem onClick={handleCloseUserMenu}>
                   <Typography 
                     textAlign="center" 
-                    Navigate={`/MyPage`}
+                    href={`/MyPage`}
                   >
                     MyPage
                   </Typography>

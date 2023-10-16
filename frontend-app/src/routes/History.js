@@ -53,6 +53,29 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
   };
 
 
+const buttons = document.querySelectorAll(".card-buttons button");
+const sections = document.querySelectorAll(".card-section");
+const card = document.querySelector(".card");
+
+const handleCardSection= (e) => {
+  const targetSection = e.target.getAttribute("data-section");
+  const section = document.querySelector(targetSection);
+  targetSection !== "#about"
+    ? card.classList.add("is-active")
+    : card.classList.remove("is-active");
+  card.setAttribute("data-state", targetSection);
+  sections.forEach((s) => s.classList.remove("is-active"));
+  buttons.forEach((b) => b.classList.remove("is-active"));
+  e.target.classList.add("is-active");
+  section.classList.add("is-active");
+};
+
+buttons.forEach((btn) => {
+  btn.addEventListener("click", handleCardSection);
+});
+
+
+
 
   useEffect(() => {
 	// currentGeneration에 따라 currentGenerationImages를 필터링하고 imageCount를 업데이트합니다.
@@ -205,16 +228,17 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
       </div>
       <button className="btn color-a top"><a href={clickedImage.github}>Go To my Github</a></button>
       <hr className="hr-2"/>
-	  <div className='skill'>
-		<div className='skill-subtitle'>Skills</div>
-		<div className="skills">
+	  <div className='card-section is-active' id="about">
+			<div className='skill-subtitle'>Skills</div>
+				<div className="skills">
 		{/*{clickedImage.skills.map((skill, index) => (
                     <span key={index}>{skill}</span>
 		))}*/}
-			<span>HTML</span> <span>CSS</span> <span>Javascript</span>
-		</div>
-	  </div>
-	  <div className='resume'>
+					<span>HTML</span> <span>CSS</span> <span>Javascript</span>
+				</div>
+	</div>
+
+	<div className='card-section' id="history">
 	  <div className='resume-subtitle'>History</div>
 	  <div className='history'>
 	  <ol className="dicey">
@@ -230,11 +254,14 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 		</ol>
 	  </div>
 	  </div>
-	  <Button className="modal-close" onClick={handleModalClick} >Close</Button>
-				</div>
+	  <div className="card-buttons">
+      	<button data-section="#about" className="is-active">Skill</button>
+      	<button data-section="#history">History</button>
+    </div>
+	  <Button className="modal-close" onClick={handleModalClick}>X</Button>
+	  </div>
+		</div>
 			</div>
-			</div>
-
       )}
     <div className="carousel">
 	<div className='timeline'>

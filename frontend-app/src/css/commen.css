@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=DM+Sans:400,500|Jost:400,500,600&display=swap");
+
 
 .carousel {
   position: relative;
@@ -459,10 +461,7 @@ box-shadow: 10px 10px 44px 15px rgba(0,0,0,0.14);
 }
 
 
-.skill {
-  text-align: left;
-  margin-left: 20px;
-}
+
 .skill-subtitle,.resume-subtitle {
   font-weight: 700;
   font-size: 17px;
@@ -526,3 +525,74 @@ li:nth-child(1n):before, .dejavu {font-family:dejavu_sansbold,serif;font-weight:
   } 
   
 }
+
+.card-section {
+  display: none;
+}
+
+.card-section.is-active{
+  display: block;
+  animation: fadeIn 0.6s both;
+  text-align: left;
+  margin-left: 20px;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translatey(40px);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+.card-buttons {
+  display: flex;
+  background-color: #fff;
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+}
+  .card-buttons button {
+    flex: 1 1 auto;
+    user-select: none;
+    background: 0;
+    font-size: 13px;
+    border: 0;
+    padding: 15px 5px;
+    cursor: pointer;
+    color: #5c5c6d;
+    transition: 0.3s;
+    font-family: "Jost", sans-serif;
+    font-weight: 500;
+    outline: 0;
+    border-bottom: 3px solid transparent;
+  }
+
+  .card-buttons button.is-active{
+    color: #2b2c48;
+      border-bottom: 3px solid #8a84ff;
+      background: linear-gradient(
+        to bottom,
+        rgba(127, 199, 231, 0) 0%,
+        rgba(207, 204, 255, 0.2) 44%,
+        rgba(211, 226, 255, 0.4) 100%
+      )
+  }
+  .card-buttons button.is-active:hover{
+    color: #2b2c48;
+      border-bottom: 3px solid #8a84ff;
+      background: linear-gradient(
+        to bottom,
+        rgba(127, 199, 231, 0) 0%,
+        rgba(207, 204, 255, 0.2) 44%,
+        rgba(211, 226, 255, 0.4) 100%
+      )
+  }

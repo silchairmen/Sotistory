@@ -1,27 +1,28 @@
 package com.soti.sotistory.member.entity;
 
+
 import com.soti.sotistory.member.constant.Role;
-import com.soti.sotistory.member.dto.MemberDto;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "members")
+@Table(name = "profile")
 @Builder
 @Getter
 @NoArgsConstructor // 매개변수가 없는 기본 생성자 추가
 @AllArgsConstructor // 모든 필드를 가지는 생성자 추가
 @ToString
-public class Member {
-
-    //고유 id
+public class Profile {
 
     @Id
-    @Column(name = "member_id")
+    @Column(name = "profile_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
+    @Column(name = "member_id")
+    private Long memberId;
 
     //이름
     private String name;
@@ -53,6 +54,4 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Builder.Default private Role role = Role.USER;
 
-    //@todo
-    //유저 이미지 업로드
 }

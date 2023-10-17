@@ -109,6 +109,8 @@ public class MemberApiController {
 
         //이메일로 유저 조회
         try{
+
+            //세션에서 검증
             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String email = ((CustomUser) userDetails).getUsername();
 

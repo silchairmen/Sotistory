@@ -70,7 +70,7 @@ export default function SignIn() {
       data.append('email',email);
       data.append('password',password);
 
-      const response = await axios.post('http://localhost:8080/api/member/login', data, {withCredentials: true});
+      const response = await axios.post('http://www.soti.or.kr/api/member/login', data, {withCredentials: true});
             // 응답 처리
       if (response.data.status === 200) {
         setSendData(response.data.message);

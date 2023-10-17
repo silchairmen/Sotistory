@@ -83,20 +83,20 @@ public class MemberAuthService implements UserDetailsService {
         //바뀐 정보를 저장할 객체 생성
         Member member;
 
-        //패스워드 변동이 없을 경우
-        if (memberDto.getPassword() == null) {
+            //패스워드 변동이 없을 경우
+            if (memberDto.getPassword() == null) {
 
-            member = Member.builder()
-                    .id(foundMember.getId())
-                    .email(foundMember.getEmail()) // 이메일 -> 변동 불가 foundmember에서 가져옴
-                    .name(memberDto.getName())
-                    .nickname(memberDto.getNickname())
-                    .password(foundMember.getPassword())
-                    .stuNum(memberDto.getStuNum())
-                    .role(foundMember.getRole())
-                    .address(memberDto.getAddress())
-                    .interests(memberDto.getInterests())
-                    .joinYear(memberDto.getJoinYear()).build();
+                member = Member.builder()
+                        .id(foundMember.getId())
+                        .email(foundMember.getEmail()) // 이메일 -> 변동 불가 foundmember에서 가져옴
+                        .name(memberDto.getName())
+                        .nickname(memberDto.getNickname())
+                        .password(foundMember.getPassword())
+                        .stuNum(memberDto.getStuNum())
+                        .role(foundMember.getRole())
+                        .address(memberDto.getAddress())
+                        .interests(memberDto.getInterests())
+                        .joinYear(memberDto.getJoinYear()).build();
 
             //패스워드 변동이 있을 경우
         } else {

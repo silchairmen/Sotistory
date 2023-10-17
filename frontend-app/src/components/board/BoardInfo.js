@@ -2,29 +2,15 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import '../../css/boardInfo.css';
 
 const Board=styled.div`
-  background-color:black;
-  padding:15px;
-`
-const Header=styled.div`
-  padding:15px;
-  background-color:gray;
-  align-items:center;
-  background-position: center;
-  height : 10vh;
-  width : 100%;
-  border-radius: 5px;
-`
-const Body=styled.div`
-  padding:15px;
   background-color:white;
-  align-items:center;
-  background-position:center;
-  border-radius: 5px;
-  padding-top: 15%;
-  padding-bottom: 8%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
+
 const Footer=styled.div`
   padding:15px;
   background-color:white;
@@ -57,29 +43,48 @@ function Boardinfo({address}) {
 
   return (
     <Board>
-    <Header>
-      <h1>
-        제목: {boardInfo.title}   작성자 : {boardInfo.author}
-        </h1>
-        <br />
-      <hr />
-      </Header>
-      <Body>
-      <h3>{boardInfo.content}</h3>
-      </Body>
-      <button ><Link to={{pathname:`/FreeBoard/edit/${id}`,state:{id: id}}}>
-        글 수정
-      </Link>
-      </button>
-      <button>
-        글 삭제
-      </button>
-      <Footer>
-        <UserId>
-          <h3>유저 이름 </h3>
-        </UserId>
-        <h3>댓글 입력란</h3>
-      </Footer>
+      <div class="black-box"></div>
+        <div class="container mt-5">
+                <div class="col-lg-8">
+                    <article>
+                        <header class="mb-4c">
+
+                            <h1 class="fw-bolder mb-1">{boardInfo.title}</h1>
+
+                            <div class="text-muted fst-italic mb-2">작성자 {boardInfo.author}</div>
+                            
+                        </header>
+                        
+                        <section class="mb-5">
+                          <div style={{ display: 'flex', justifyContent: 'left', marginBottom: '-17px'}}><h4><p class="mb-4" style={{color: 'gray',}}>본문</p></h4></div>
+                          <div class="textbox" dangerouslySetInnerHTML={{ __html: boardInfo.content }}></div>
+                        </section>
+                    </article>
+
+                    <section class="mb-5s">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                            <div style={{ display: 'flex', justifyContent: 'left', marginBottom: '-17px'}}><h4><p style={{color: 'green',}}></p></h4></div>
+                                <form class="mb-4 ms-4"><textarea class="form-control" rows="3" placeholder="댓글을 입력해주세요."></textarea></form>
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}><h6><p style={{color: 'green',}}>작성</p></h6></div>
+
+                                <div class="d-flex mb-4s lh-1">
+                                    <div class="ms-3">
+                                        <div class="fw-bold"><p>작성자명</p></div>
+                                        <p class="fw-bold2">대댓글 내용</p>
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+      <Link to={{pathname:`/FreeBoard/edit/${id}`,state:{id: id}}}><p style={{color: 'blue',}}>글 수정</p></Link>
+        </div>
+      
+
+
       </Board>
   );
 }

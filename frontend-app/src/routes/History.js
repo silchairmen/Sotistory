@@ -251,7 +251,7 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
         </span>
       </a>
 
-      <a href="https://www.behance.net/iaMuhammedErdem" className="profile-card-social__item behance" target="_blank">
+      <a href="https://www.behance.net/iaMuhammedErdem" className="profile-card-social__item tistory" target="_blank">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-behance"></use></svg>
         </span>
@@ -342,11 +342,7 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 
   <symbol id="icon-behance" viewBox="0 0 32 32">
   <title>Tistory</title>
-  <circle cx="16" cy="16" r="16" fill="" />
-  <path d="M13.7 9.8h1.9v10.4h-1.9V9.8zM11.9 12.4c-0.3 0-0.6-0.2-0.9-0.4-0.2-0.2-0.3-0.5-0.3-0.8 0-0.3 0.1-0.6 0.3-0.8s0.6-0.4 0.9-0.4c0.3 0 0.6 0.2 0.8 0.4 0.2 0.2 0.4 0.5 0.4 0.8 0 0.3-0.2 0.6-0.4 0.8s-0.5 0.4-0.8 0.4z"/>
-  <path d="M19.2 12.4c-0.3 0-0.6-0.2-0.8-0.4-0.2-0.2-0.4-0.5-0.4-0.8 0-0.3 0.2-0.6 0.4-0.8s0.5-0.4 0.8-0.4c0.3 0 0.6 0.2 0.9 0.4 0.2 0.2 0.3 0.5 0.3 0.8 0 0.3-0.1 0.6-0.3 0.8s-0.6 0.4-0.9 0.4z"/>
-  <path d="M11.9 17.6c-0.2 0-0.3 0-0.5-0.1-0.2-0.1-0.4-0.2-0.5-0.3-0.2-0.1-0.3-0.3-0.4-0.5-0.1-0.2-0.1-0.4-0.1-0.6 0-0.2 0-0.3 0.1-0.5 0.1-0.2 0.2-0.4 0.3-0.5s0.3-0.3 0.5-0.4c0.2-0.1 0.4-0.1 0.6-0.1 0.2 0 0.3 0 0.5 0.1 0.2 0.1 0.4 0.2 0.5 0.3 0.2 0.1 0.3 0.3 0.4 0.5s0.1 0.4 0.1 0.6c0 0.2 0 0.3-0.1 0.5s-0.2 0.4-0.3 0.5c-0.1 0.2-0.3 0.3-0.5 0.4s-0.4 0.1-0.6 0.1zM19.2 17.6c-0.2 0-0.4-0.1-0.6-0.1s-0.3-0.2-0.5-0.3c-0.2-0.1-0.3-0.3-0.4-0.5s-0.1-0.4-0.1-0.6c0-0.2 0-0.3 0.1-0.5s0.2-0.4 0.3-0.5c0.2-0.1 0.4-0.1 0.6-0.1s0.4 0.1 0.6 0.1 0.3 0.2 0.5 0.3c0.2 0.1 0.3 0.3 0.4 0.5s0.1 0.4 0.1 0.6c0 0.2 0 0.3-0.1 0.5s-0.2 0.4-0.3 0.5c-0.2 0.1-0.3 0.1-0.5 0.1z"/>
-
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 408.4 408.4"><g><circle class="cls-1" cx="58.18" cy="58.18" r="58.18"/><circle class="cls-1" cx="204.2" cy="58.18" r="58.18"/><circle class="cls-1" cx="204.2" cy="204.2" r="58.18"/><circle class="cls-1" cx="204.2" cy="350.22" r="58.18"/><circle class="cls-1" cx="350.22" cy="58.18" r="58.18"/></g></svg>
   </symbol>
 
 </defs>

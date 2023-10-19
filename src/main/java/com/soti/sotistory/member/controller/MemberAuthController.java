@@ -8,7 +8,6 @@ import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.member.service.MemberAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,10 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/api/auth")
 @Slf4j
 @RequiredArgsConstructor
-public class MemberApiController {
+public class MemberAuthController {
 
     //세션 검증
     @GetMapping("/validate")
@@ -76,7 +75,6 @@ public class MemberApiController {
                     .email(memberDto.getEmail())
                     .password(passwordEncoder.encode(memberDto.getPassword()))
                     .address(memberDto.getAddress())
-                    .interests(memberDto.getInterests())
                     .build();
 
             memberAuthService.joinMember(member);
@@ -99,54 +97,6 @@ public class MemberApiController {
             log.error("회원가입 도중 문제 발생. / " +
                     "회원 가입 정보 : {}", memberDto.toString());
             return ResponseEntity.ok().body(MemberResponseDto.builder().status(304).message("회원 가입 실패").build());
-        }
-    }
-
-
-    //마이페이지 로직
-    @GetMapping("/myPage")
-    public ResponseEntity<MemberResponseDto> myPage(){
-
-        //이메일로 유저 조회
-        try{
-
-            //세션에서 검증
-            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String email = ((CustomUser) userDetails).getUsername();
-
-            Member foundMember = memberAuthService.findUserByEmail(email);
-            MemberResponseDto mrDto = MemberResponseDto.builder().status(200).message("멤버 조회 성공").build();
-            mrDto.setMemberInfo(foundMember);
-            return ResponseEntity.ok().body(mrDto);
-
-        } catch (IllegalStateException ex){
-            return ResponseEntity.ok().body(MemberResponseDto.builder().status(203).message("유저 권한 없음").build());
-        } catch (Exception ex){
-            log.error("마이페이지 에러 발생 : {}", ex.getMessage());
-            return ResponseEntity.ok().body(MemberResponseDto.builder().status(204).message("유저 조회 실패").build());
-        }
-    }
-
-    //마이페이지 수정
-    @PutMapping("/myPage/edit")
-    public ResponseEntity<MemberResponseDto> myPageEdit(@Valid MemberInfoDto memberDto) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email = ((CustomUser) userDetails).getUsername();
-
-        if (email.equals(memberDto.getEmail())){
-            try {
-                memberAuthService.changeMemberInfo(memberDto);
-                MemberResponseDto mrDto = MemberResponseDto.builder().status(400).message("멤버 수정 성공").build();
-                return ResponseEntity.ok().body(mrDto);
-            } catch (IllegalStateException ex) {
-                MemberResponseDto mrDto = MemberResponseDto.builder().status(402).message("수정 정보 오류").build();
-                return ResponseEntity.ok().body(mrDto);
-            } catch (Exception ex){
-                MemberResponseDto mrDto = MemberResponseDto.builder().status(404).message("멤버 수정 실패").build();
-                return ResponseEntity.ok().body(mrDto);
-            }
-        } else{
-            return ResponseEntity.ok().body(MemberResponseDto.builder().status(403).message("멤버 인증 실패").build());
         }
     }
 }

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/member/help")
-public class MemberApiHelpController {
+@RequestMapping("/api/auth/help")
+public class MemberAuthHelpController {
 
     //Autowired
     private final MemberAuthService memberAuthService;

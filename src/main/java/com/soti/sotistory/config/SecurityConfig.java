@@ -65,13 +65,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .formLogin()
-                .loginPage("/api/member/login")
+                .loginPage("/api/auth/login")
                 .usernameParameter("email")
-                .failureUrl("/api/member/login/error")
-                .defaultSuccessUrl("/api/member/login/success")
+                .failureUrl("/api/auth/login/error")
+                .defaultSuccessUrl("/api/auth/login/success")
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/api/members/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
                 .logoutSuccessUrl("/")
                 .deleteCookies();
 
@@ -79,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //접근 권한 설정 관련
         http.authorizeRequests()
-                .antMatchers("/api/member/mypage").authenticated()
+                .antMatchers("/api/member/info/**", "/api/member/profile/**").authenticated()
                 .antMatchers("/admin").hasRole("ADMIN");// 마이페이지 접근은 인증된 사용자만 가능
     }
 

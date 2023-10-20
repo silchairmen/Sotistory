@@ -7,7 +7,7 @@ import History from "./routes/History";
 import { Layout } from 'antd';
 import Intro from './routes/intro/index';
 import BoardEditor from "./components/board/BoardEditor";
-import TestPage from "./routes/TestPage"
+import TestPage from "./routes/TestPage";
 const { Content } = Layout;
 const contentStyle = {
   textAlign: 'center',

@@ -65,10 +65,6 @@ export default function SignIn() {
     }
     try{
       const data = new FormData(event.currentTarget);
-    
-      data.append('email',email);
-      data.append('password',password);
-
       const response = await axios.post('http://localhost:80/api/member/login', data, {withCredentials: true});
             // 응답 처리
       if (response.data.status === 200) {

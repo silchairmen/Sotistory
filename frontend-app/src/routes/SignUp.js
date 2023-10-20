@@ -109,7 +109,7 @@ export default function SignUp() {
       formData.append('joinYear', joinYear);
       formData.append('email', email);
       formData.append('password', password);
-      formData.append('interrest',interests);
+      formData.append('interests',interests);
       formData.append('address',selectedAddress.address);
       // 회원가입 요청 보내기
       const response = await axios.post('http://localhost:80/api/member/join', formData);
@@ -419,7 +419,7 @@ export default function SignUp() {
                   type="address"
                   id="address"
                   autoComplete="new-address"
-                  onClick={() => setShowAddress(true)}
+                  onFocus={() => setShowAddress(true)}
                   value={selectedAddress.address}
                   readOnly
                 />

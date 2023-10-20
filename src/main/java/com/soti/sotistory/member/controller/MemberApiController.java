@@ -134,7 +134,7 @@ public class MemberApiController {
         if (email.equals(memberDto.getEmail())){
             try {
                 memberAuthService.changeMemberInfo(memberDto);
-                MemberResponseDto mrDto = MemberResponseDto.builder().status(400).message("멤버 수정 성공").build();5
+                MemberResponseDto mrDto = MemberResponseDto.builder().status(400).message("멤버 수정 성공").build();
                 return ResponseEntity.ok().body(mrDto);
             } catch (IllegalStateException ex) {
                 MemberResponseDto mrDto = MemberResponseDto.builder().status(402).message("수정 정보 오류").build();

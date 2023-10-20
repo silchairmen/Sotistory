@@ -4,7 +4,7 @@ $color:#232926;
 $color-dark:#23004d;
 $color-light:#a49eac;
 $color-lighten:#ffffff;
-$color-hover:#dbebe3;
+$color-hover:#c4c4c4;
 $font:"Open Sans", sans-serif;
 $big-font-size:1.5rem;
 $normal-font-size:0.938rem;
@@ -36,11 +36,28 @@ img{
     height:auto;
   //display:block;
 }
+.background{
+  background-color: #a0aaac;
+}
 .line{
   position: absolute;
   left: 30%;
   border-left: thin solid black;
   height: 80vh;
+}
+.menu{
+  &__profile:hover{
+    filter: opacity(0.5) drop-shadow(0 0 0 white);
+    transition-duration: 0.4s;
+    width: 100%;
+    height: 100%;
+
+  }
+}
+.img_button{
+  position: absolute;
+  left: 30%;
+  top: 52%;
 }
 .list{
   background-color: rgb(240, 237, 235);
@@ -48,7 +65,7 @@ img{
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
   height: 100%;
-  width: 25%;
+  width: 10%;
   border-right: thin solid black;
   list-style: none;
   top: -0%;
@@ -56,6 +73,13 @@ img{
   &__box{
     padding:.5rem 1rem;
     border-radius:.5rem;
+    border-bottom: thin solid rgb(48, 48, 48);
+  }
+  &__box:hover{
+    //background-color: black;
+    //color: white;
+    transition-duration: 0.4s;
+    cursor: pointer;
   }
   &__font{
     padding: .5em;
@@ -69,12 +93,12 @@ img{
   object-fit: cover;
   &__box {
     position: absolute;
-    width: 300px;
-    height: 300px; 
+    width: 280px;
+    height: 280px; 
     border-radius: 85%;
     overflow: hidden;
-    left: 32.5%;
-    top:10%
+    left: 19.5%;
+    top:10%;
   }
 }
 .login{
@@ -100,16 +124,16 @@ img{
   }
   &__forms{
     position:absolute;
-    top: 48em;
+    top: 37em;    // 전체 페이지 top 패딩
     left: 50%;
     transform: translate(-50%,-50%);
   }
   &__register,&__create{  //프로필 창
     //position:absolute;
     bottom:1rem;
-    width:1350px; //여기 부분이 마이페이지 폼 크기 조정
+    width:1000px; //여기 부분이 마이페이지 폼 크기 조정
     background-color:$color-lighten;
-    padding:2rem 1rem;
+    padding:1rem 1rem;
     border-radius:1rem;
     text-align:center;
     box-shadow:0 8px 20px rgba(35,0,77,.2);
@@ -139,7 +163,7 @@ img{
     width: 100%;
     text-align: left;
   }
-  &__inbox1{ //내부 inputbox
+  &__inbox1{ //내부 inputbox 닉네임
     position: absolute;
     padding:1.125rem 1rem;
     background-color:#fff;
@@ -147,8 +171,8 @@ img{
     border-radius:.5rem;
     width: 30%;
     text-align: left;
-    left: 28%;
-    top: 52.5%;
+    left: 18%;
+    top: 61%;
   }
   &__inbox2{ //내부 inputbox
     position: absolute;
@@ -158,8 +182,19 @@ img{
     border-radius:.5rem;
     width: 30%;
     text-align: left;
-    left: 28%;
-    top: 67.4%;
+    left: 18%;
+    top: 68.1%;
+  }
+  &__inbox3{ //내부 inputbox
+    position: absolute;
+    padding:1.125rem 1rem;
+    background-color:#fff;
+    //margin-top:1rem;
+    border-radius:.5rem;
+    width: 30%;
+    text-align: left;
+    left: 18%;
+    top: 82%;
   }
   &__icon{
     font-size:1.5rem;
@@ -216,11 +251,12 @@ img{
     border-radius:.5rem;
     transition:.3s;
     width: 30%;
-    left: 61em;
+    left: 45em;
     justify-content: right;
       
       &:hover{
         background-color:$color-hover;
+        color: black;
         }
   }
   &__account,&__signin,&__signup{
@@ -276,7 +312,7 @@ img{
 }
 @media screen and (min-width:1024px){
   .login{
-    height:150vh;
+    height:100vh;
     overflow:hidden;
     &__content{
       grid-template-columns:repeat(2,max-content);
@@ -297,11 +333,8 @@ img{
     &__register,&__create{
       left:-38vw;
     }
-    &__register{
-      bottom:-2rem;
-    }
     &__create{
-      bottom:-5.5rem;
+      //bottom:-5.5rem;
     }
   }
 }

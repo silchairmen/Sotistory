@@ -38,7 +38,7 @@ function MenuExampleSizeLarge() {
       }else{
         dispatch({type:"LOGIN_FAILED"});
       }
-      }  
+      }
     session();
     setAuth(sessionCheck);
     const navbar = document.querySelector('#navbar');
@@ -86,11 +86,9 @@ function MenuExampleSizeLarge() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const handleLogOut =() =>{
+  const handleLogOut =async() =>{
     setAuth(false);
-    console.log(document.cookie);
-    removeCookie('JSESSIONID');
-    console.log(cookies);
+    await axios.get('http://localhost:80/api/members/logout', {withCredentials: true});
     window.location.reload();
   };
 

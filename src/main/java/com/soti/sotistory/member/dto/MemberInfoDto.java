@@ -1,6 +1,7 @@
 package com.soti.sotistory.member.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@Setter
 public class MemberInfoDto {
     //이름
     @NotBlank(message = "이름은 필수 입력 항목입니다.")

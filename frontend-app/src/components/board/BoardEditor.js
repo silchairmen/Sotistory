@@ -9,11 +9,11 @@ import { useLocation } from 'react-router-dom';
 
 const Background = styled.div`
     padding-top: 5%;
-    width: 80%;
-    height: 80vh;
+    width: 70%;
+    height: 120vh;
     align-items:center;
     justify-content: center;
-    margin: 0 auto;
+    margin: 0 auto; 
     background-color: whitesmoke;
 `
 
@@ -27,7 +27,9 @@ const EditorForm = styled.div`
     width:100%;
     height:80%;
     border : 1px solid #444444;
+    border-radius: 10px;
     background-color: white;
+    
 `
 
 const TextField = styled.textarea`
@@ -53,7 +55,7 @@ const BoardEditor = () => {
     const location = useLocation();
     const splitUrl = location?.pathname?.split('/') ?? null;
     const onEditorStateChange = (editorState) => {
-      // editorState에 값 설정
+        // editorState에 값 설정
         setEditorState(editorState);
     };
 
@@ -68,14 +70,14 @@ const BoardEditor = () => {
         }
     };
 
-    
+
     useEffect(() => {
         getBoard();
         const navbar = document.querySelector('#navbar');
         if (navbar) {
             navbar.classList.add('bg-gogo');
         }
-    }, []); 
+    }, []);
 
     useEffect(() => {
         // 글 내용(boardText)을 Draft.js 형식으로 변환하여 에디터의 초기값으로 설정
@@ -84,7 +86,7 @@ const BoardEditor = () => {
         setEditorState(newEditorState);
 
     }, [boardText]);
-    
+
 
     const handleTitle = (e) => {
         setBoardTitle(e.target.value);
@@ -106,42 +108,63 @@ const BoardEditor = () => {
         const titles = boardTitle;
         try{
             const data = new FormData();
-          
+
             data.append('content',editorToHtml);
             data.append('title',titles);
             data.append('postType',"NORMAL");
             const response = await axios.post('http://localhost:80/api/post/freeBoard/create', data, {withCredentials: true});
-                  // 응답 처리
-            if (response.data.status === 300) {
-              alert(response.data.responseMessage);
+            window.location.href = '/Freeboard';
+            // 응답 처리
+            if (response.data.status === 200) {
+                alert(response.data.responseMessage);
+                
             } else{
                 alert(response.data.responseMessage);
-              // ... (에러 처리)
+                // ... (에러 처리)
             }
-          } catch (error) {
+        } catch (error) {
             console.log("오류");
             return 0;
             // ... (요청 실패 처리)
-          }
+        }
     };
-    
+
 
     return (
         <Background>
             <MainHeader>
-                글 작성
+                질문 작성
             </MainHeader>
+            <div>
+                <TextField
+                    placeholder="제목을 입력해주세요."
+                    value={boardTitle}
+                    onChange={handleTitle}
+                    style={{ fontFamily: 'Times New Roman' }}
+                />
+                <button
+                    style={{
+                        backgroundColor: "black",
+                        color: "white",
+                        padding: "10px 20px",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        display: "inline-block",
+                        marginBottom: "5px", // 아래쪽 여백을 설정
+                        float: "right"
+                    }}
+                    className="submit-button"
+                    onClick={submitReview}
+                >작성</button>
+            </div>
+
             <EditorForm>
                 <input type='checkbox' name="SecretCheck" value="SecretCheck" checked={hidden} onChange={handleChangeHidden}/>비밀 글
                 <select name="boardname" className="select" defaultValue="freeBoard">
                     <option enabled="true" value="freeBoard">freeBoard</option>
                     <option enabled="true" value="freeBoard2">freeBorad2</option>
                 </select>
-                <TextField placeholder="제목을 입력해주세요." value={boardTitle} onChange={handleTitle}/>
-                <button
-                    className="submit-button"
-                    onClick={submitReview}
-                >작성</button>
                 <Editor
                     wrapperClassName="wrapper-class"
                     editorClassName="editor"
@@ -160,9 +183,9 @@ const BoardEditor = () => {
                         fontFamily: {
                             options: ['Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
                         },
-                        }} 
+                    }}
                     placeholder="내용을 작성해주세요."
-                    value={boardText}   
+                    value={boardText}
                     // 한국어 설정
                     localization={{
                         locale: 'ko',
@@ -171,9 +194,8 @@ const BoardEditor = () => {
                     editorState={editorState}
                     // 에디터의 값이 변경될 때마다 onEditorStateChange 호출
                     onEditorStateChange={onEditorStateChange}
-  />
+                />
             </EditorForm>
-            <button onClick={handleTest}>테스트</button>
         </Background>
     )
 }

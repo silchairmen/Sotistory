@@ -8,6 +8,7 @@
   import LoadingOverlay from 'react-loading-overlay';
   import { Button } from "@mui/material";
   import { useNavigate,useLocation } from "react-router-dom";
+  import '../../css/b_css.css';
 
 
   const H1 = styled.h1`
@@ -16,19 +17,6 @@
     padding-bottom:100px;
   `;
 
-  
-  const Table = styled.table`
-    width: 70vw;
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
-    padding: 50px ;
-    background-color: whitesmoke;
-    text-align: center;
-    margin: 0 auto;
-    border-radius: 10px;
-    border : 1px solid #444444;
-  `;
   const ContainerFragment = styled.div`
     background-color:whitesmoke;
     padding-top: 70px;
@@ -85,52 +73,51 @@
     >
       <ContainerFragment>
           <ContainerFragment>
-            <div>
-              <H1>자유 게시판</H1>
-            </div>
-            <select value={limit} onChange={handleLimitChange}>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="30">30</option>
-            </select>
-            <div>
-              <Table>
-                <thead>
-                  <tr>
-                    <th width="50">번호</th>
-                    <th width="1700">제목</th>
-                    <th width="100">ID</th>
-                  </tr>
-                </thead>
-                {paginatedData.map((boardDetail) => {
-                  if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
-                    return (
-                      <BoardList
-                        key={boardDetail.postId}
-                        author={boardDetail.author}
-                        postId={boardDetail.postId}
-                        title={boardDetail.title}
-                        content={boardDetail.content}
-                      />
+          <div class="board_wrap">
+        <div class="board_title">
+            <strong>Q&A 게시판</strong>
+            <p>Example</p>
+        </div>
+        <div class="board_list_wrap">
+            <div class="board_list">
+                <div class="top">
+                    <div class="num">번호</div>
+                    <div class="titles">제목</div>
+                    <div class="writer">글쓴이</div>
+                    <div class="date">작성일</div>
+                    <div class="count">응답</div>
+                </div>
+                  {paginatedData.map((boardDetail) => {
+                    if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
+                      return (
+                        <div>
+                          <div class="num"><Button type="primary" onClick={() => {navigate(`/FreeBoard/${boardDetail.postId}`)}}>{boardDetail.postId}</Button></div>
+                          <div class="titles">{boardDetail.title}</div>
+                          <div class="writer">{boardDetail.author}</div>
+                          <div class="date">{boardDetail.regtime}</div>
+                          <div class="count">{boardDetail.count}</div>
+                        </div>
                     );
-                  }
-                })}
-              </Table>
-              <Button
-          type="primary"
-          onClick={() => {
-            navigate(`${location.pathname}/edit/Post`) //여기 수정
-          }}
-        >
-          글 쓰기
-        </Button>
-        <Button
-          type="primary"
-          onClick={handleBoardCheck}
-        >
-          테스트
-        </Button>
+                    }
+                  })}
+                  
             </div>
+            <div class="bt_wrap">
+                <a href="FreeBoard/edit/post" class="on">등록</a>
+            </div>
+            <div class="board_page">
+                <a href="#" class="bt first"></a>
+                <a href="#" class="bt prev"></a>
+                <a href="#" class="num on">1</a>
+                <a href="#" class="num">2</a>
+                <a href="#" class="num">3</a>
+                <a href="#" class="num">4</a>
+                <a href="#" class="num">5</a>
+                <a href="#" class="bt next"></a>
+                <a href="#" class="bt last"></a>
+            </div>
+        </div>
+    </div>
             <footer>
             <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />
               <Search/>

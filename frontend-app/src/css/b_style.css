@@ -92,10 +92,21 @@ a {
     width: 10%;
 }
 
+.board_list .titlesa {
+    width: 60%;
+    text-align: center;
+}
+
 .board_list .titles {
     width: 60%;
     text-align: left;
 }
+
+.board_list .titles:hover {
+    color: blue;
+    cursor: pointer;
+}
+
 
 .board_list .top .titles {
     text-align: center;

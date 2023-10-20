@@ -80,7 +80,7 @@ function Boardinfo({address}) {
                         </div>
                     </section>
                 </div>
-      <Link to={{pathname:`/FreeBoard/edit/${id}`,state:{id: id}}}><p style={{color: 'blue',}}>글 수정</p></Link>
+      <Link to={{pathname:`/FreeBoard/modifier/${id}`,state:{id: id}}}><p style={{color: 'blue',}}>글 수정</p></Link>
         </div>
       
 

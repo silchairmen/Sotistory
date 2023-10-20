@@ -82,17 +82,19 @@
             <div class="board_list">
                 <div class="top">
                     <div class="num">번호</div>
-                    <div class="titles">제목</div>
+                    <div class="titlesa">제목</div>
                     <div class="writer">글쓴이</div>
                     <div class="date">작성일</div>
                     <div class="count">응답</div>
                 </div>
                   {paginatedData.map((boardDetail) => {
                     if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
+                      console.log(boardDetail);
                       return (
                         <div>
-                          <div class="num"><Button type="primary" onClick={() => {navigate(`/FreeBoard/${boardDetail.postId}`)}}>{boardDetail.postId}</Button></div>
-                          <div class="titles">{boardDetail.title}</div>
+                        
+                          <div class="num">{boardDetail.postId}</div>
+                          <div class="titles" type="primary" onClick={() => {navigate(`/FreeBoard/${boardDetail.postId}`)}}>{boardDetail.title}</div>
                           <div class="writer">{boardDetail.author}</div>
                           <div class="date">{boardDetail.regtime}</div>
                           <div class="count">{boardDetail.count}</div>
@@ -105,23 +107,13 @@
             <div class="bt_wrap">
                 <a href="FreeBoard/edit/post" class="on">등록</a>
             </div>
-            <div class="board_page">
-                <a href="#" class="bt first"></a>
-                <a href="#" class="bt prev"></a>
-                <a href="#" class="num on">1</a>
-                <a href="#" class="num">2</a>
-                <a href="#" class="num">3</a>
-                <a href="#" class="num">4</a>
-                <a href="#" class="num">5</a>
-                <a href="#" class="bt next"></a>
-                <a href="#" class="bt last"></a>
-            </div>
         </div>
+        <footer>
+          <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />
+          <Search/>
+        </footer>
     </div>
-            <footer>
-            <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />
-              <Search/>
-            </footer>
+
             
           </ContainerFragment>
       </ContainerFragment>

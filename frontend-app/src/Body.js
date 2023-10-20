@@ -8,6 +8,7 @@ import { Layout } from 'antd';
 import Intro from './routes/intro/index';
 import BoardEditor from "./components/board/BoardEditor";
 import TestPage from "./routes/TestPage"
+import Boardmodifier from "./components/board/Boardmodifier";
 const { Content } = Layout;
 const contentStyle = {
   textAlign: 'center',
@@ -29,6 +30,7 @@ function Body() {
             <Route path="/SignUp" element={<Content style={contentStyle}><SignUp /></Content>} />
             <Route path="/History" element={<History />} />
             <Route path="/FreeBoard/Edit/:id" element={<Content style={contentStyle}><BoardEditor/></Content>} />
+            <Route path="/FreeBoard/modifier/:id" element={<Content style={contentStyle}><Boardmodifier/></Content>} />
             <Route path="/" element={<Content style={contentStyle}><Intro /></Content>} />
             <Route path="/MyPage" element ={<Content style={contentStyle}><TestPage /></Content>} />
           </Routes>

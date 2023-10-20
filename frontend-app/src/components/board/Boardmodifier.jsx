@@ -46,11 +46,12 @@ const TextField = styled.textarea`
 `
 
 
-const BoardEditor = () => {
+const Boardmodifier = () => {
     const [hidden,setHidden] = useState(false);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
+    const [boardId, setBoardId] = useState("");
     const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
     const location = useLocation();
@@ -66,6 +67,9 @@ const BoardEditor = () => {
             const resp = await axios.get(`http://localhost:80/api/post/freeBoard/post/${indexNum}`);
             setBoardText(resp.data.content);
             setBoardTitle(resp.data.title);
+            setBoardId(resp.data.postId);
+
+            console.log(resp.data.content)
         } catch (error) {
             console.error("Error fetching board data:", error);
         }
@@ -84,7 +88,11 @@ const BoardEditor = () => {
         // 글 내용(boardText)을 Draft.js 형식으로 변환하여 에디터의 초기값으로 설정
         const contentState = ContentState.createFromText(boardText);
         const newEditorState = EditorState.createWithContent(contentState);
-        setEditorState(newEditorState);
+
+
+        console.log(contentState)
+        console.log(newEditorState)
+        setEditorState(newsEditorState);
 
     }, [boardText]);
 
@@ -106,37 +114,36 @@ const BoardEditor = () => {
         console.log(splitUrl[splitUrl.length-1]);
     }
 
-    const submitReview = async()=>{
+    const submitReview = async () => {
+        const postId = boardId; // 수정하려는 게시물의 ID를 여기에 설정
         const titles = boardTitle;
-        try{
-            const data = new FormData();
 
-            data.append('content',editorToHtml);
-            data.append('title',titles);
-            data.append('postType',"NORMAL");
-            const response = await axios.post('http://localhost:80/api/post/freeBoard/create', data, {withCredentials: true});
-            window.location.href = '/Freeboard';
-            // 응답 처리
-            if (response.data.status === 200) {
-                alert(response.data.responseMessage);
-                
-            } else{
-                alert(response.data.responseMessage);
-                // ... (에러 처리)
-            }
+        try {
+          const data = new FormData();
+          data.append('content', editorToHtml);
+          data.append('title', titles);
+          data.append('postType',"NORMAL");
+          const response = await axios.put(`http://localhost:80/api/post/freeBoard/post/edit/${postId}`, data, { withCredentials: true });
+          window.location.href = '/Freeboard';
+          
+          // 응답 처리
+          if (response.data.status === 200) {
+            alert(response.data.responseMessage);
+          } else {
+            alert(response.data.responseMessage);
+            // ... (에러 처리)
+          }
         } catch (error) {
-            console.log("오류");
-            return 0;
-            // ... (요청 실패 처리)
+          console.error("오류:", error);
         }
-    };
+      };
     
 
 
     return (
         <Background>
             <MainHeader>
-                질문 작성
+                질문 수정
             </MainHeader>
             <div>
                 <TextField
@@ -186,7 +193,6 @@ const BoardEditor = () => {
                         },
                     }}
                     placeholder="내용을 작성해주세요."
-                    value={boardText}
                     // 한국어 설정
                     localization={{ 
                         locale: 'ko',
@@ -197,8 +203,9 @@ const BoardEditor = () => {
                     onEditorStateChange={onEditorStateChange}
                 />
             </EditorForm>
+
         </Background>
     )
 }
 
-export default BoardEditor;
+export default Boardmodifier;

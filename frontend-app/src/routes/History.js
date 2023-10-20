@@ -21,6 +21,9 @@ const History = () => {
 const [currentGeneration, setCurrentGeneration] = useState(1);
 const [totalGenerations, setTotalGenerations] = useState(data.totalGenerations); // 총 기수 개수
 const [generationInfo, setGenerationInfo] = useState(data.generationInfo);
+//position에 따른 순서 배열 정의
+
+
 const currentGenerationImages = generationInfo.filter((image) => image.num === currentGeneration);
 const [clickedImage, setClickedImage] = useState(null);
 const [modalClass, setModalClass] = useState('modal-window');
@@ -245,24 +248,23 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
         <p>SOTI {clickedImage.num}기</p>
       </div>
 	  <div className="profile-card-social">
-      <a href="https://www.instagram.com/iamuhammederdem" className="profile-card-social__item instagram" target="_blank">
+      <a href="https://www.instagram.com/iamuhammederdem" className="profile-card-social__item instagram" >
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-instagram"></use></svg>
         </span>
       </a>
 
-      <a href="https://www.behance.net/iaMuhammedErdem" className="profile-card-social__item tistory" target="_blank">
+      <a href="https://www.behance.net/iaMuhammedErdem" className="profile-card-social__item tistory">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-behance"></use></svg>
         </span>
       </a>
-      <a href="https://github.com/muhammederdem" className="profile-card-social__item github" target="_blank">
+      <a href="https://github.com/muhammederdem" className="profile-card-social__item github">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-github"></use></svg>
         </span>
       </a>
     </div>
-     
 	  </div>
       <hr className="hr-2"/>
 	  <div className='card-section is-active' id="about">

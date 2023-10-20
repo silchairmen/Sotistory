@@ -172,6 +172,7 @@
   color:#2D354A;
   font-family: roboto;
   weight: 200px;
+  animation: fadeIn 0.6s both;
 }
 
 .job-title{
@@ -179,6 +180,7 @@
   font-size:12px;
   weight:100;
   font-family:roboto;
+  animation: fadeIn 0.6s both;
 }
 
 .desc{
@@ -187,6 +189,7 @@
   margin-right: 65px;
   color:#3F9EFC;
   text-align:center;
+  animation: fadeIn 0.6s both;
 }
 
 .profile{
@@ -194,6 +197,7 @@
   margin-top:30px;
   width:132px;
   height:128px;
+  animation: fadeIn 0.6s both;
 }
 
 /*cards*/
@@ -212,6 +216,7 @@
 .card.is-active .card-header {
  display: flex;
  width: 400px;
+ animation: fadeIn 0.6s both;
 }
 
 
@@ -219,13 +224,15 @@
   width: 90px;
   height: 88px;
   margin-left: 20px;
+  animation: fadeIn 0.6s both;
 }
 
 .card.is-active .title-2 {
   position: absolute;
   top: 10px;
   left: 140px; /* 원하는 위치에 조정 */
-  font-size:30px;
+  font-size:25px;
+  animation: fadeIn 0.6s both;
 }
 
 .card.is-active .job-title {
@@ -233,6 +240,7 @@
   top: 40px;
   left: 140px; /* 원하는 위치에 조정 */
   font-size:15px;
+  animation: fadeIn 0.6s both;
 }
 
 .card.is-active .desc{
@@ -243,6 +251,7 @@
   margin-top: 0;
   top: 70px;
   left: 140px;
+  animation: fadeIn 0.6s both;
 }
 
 .card.is-active .profile-card-social {
@@ -256,13 +265,17 @@
   stroke-width: 0;
   stroke: currentColor;
   fill: currentColor;
+
 }
+
+
 .profile-card-social {
   margin-top: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  
 }
 .icon-font {
   display: inline-flex;
@@ -271,15 +284,18 @@
 .profile-card-social__item.github {
   background: linear-gradient(45deg, #333333, #626b73);
   box-shadow: 0px 4px 30px rgba(63, 65, 67, 0.6);
+  text-decoration: none;
 }
 
 .profile-card-social__item.instagram {
   background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
   box-shadow: 0px 4px 30px rgba(120, 64, 190, 0.6);
+  text-decoration: none;
 }
 .profile-card-social__item.tistory {
   background: linear-gradient(45deg, #FA5B3D, #FF7446, #FF8C4E, #FFA557, #FFBD60, #FFD468);
   box-shadow: 0px 4px 30px rgba(250, 91, 61, 0.6);
+  text-decoration: none;
 }
 
 
@@ -292,12 +308,17 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  background: #405de6;
+  text-decoration: none;
   box-shadow: 0px 7px 30px rgba(43, 98, 169, 0.5);
   position: relative;
   font-size: 21px;
   flex-shrink: 0;
   transition: all 0.3s;
+}
+
+
+.profile-card-social__item:hover{
+  transform: scale(1.2);
 }
 
 svg[hidden] {
@@ -338,6 +359,7 @@ hr{
 
 .hr-2{
   border-color:#E4E8ED;
+  animation: fadeIn 0.6s both;
 }
 
 
@@ -524,6 +546,7 @@ box-shadow: 10px 10px 44px 15px rgba(0,0,0,0.14);
   margin-top:30px;
   width:132px;
   height:128px;
+  animation: fadeIn 0.6s both;
 }
 
 
@@ -649,6 +672,7 @@ li:nth-child(1n):before, .dejavu {font-family:dejavu_sansbold,serif;font-weight:
   text-align: left;
   margin-left: 20px;
 }
+
 
 
 

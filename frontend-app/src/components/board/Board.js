@@ -8,7 +8,7 @@
   import LoadingOverlay from 'react-loading-overlay';
   import { Button } from "@mui/material";
   import { useNavigate,useLocation } from "react-router-dom";
-  import '../../css/b_css.css';
+  import '../../css/boardcss.css';
 
 
   const H1 = styled.h1`

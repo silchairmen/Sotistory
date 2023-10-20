@@ -92,7 +92,7 @@ const Boardmodifier = () => {
 
         console.log(contentState)
         console.log(newEditorState)
-        setEditorState(newsEditorState);
+        setEditorState(newEditorState);
 
     }, [boardText]);
 

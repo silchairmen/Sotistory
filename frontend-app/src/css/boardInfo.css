@@ -642,13 +642,13 @@ progress {
   white-space: pre-wrap;
 }
 
-.container,
-.container-fluid,
-.container-xxl,
-.container-xl,
-.container-lg,
-.container-md,
-.container-sm {
+.boardcontainer,
+.boardcontainer-fluid,
+.boardcontainer-xxl,
+.boardcontainer-xl,
+.boardcontainer-lg,
+.boardcontainer-md,
+.boardcontainer-sm {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
   width: 35%;
@@ -658,27 +658,27 @@ progress {
 }
 
 @media (min-width: 576px) {
-  .container-sm, .container {
+  .boardcontainer-sm, .container {
     max-width: 540px;
   }
 }
 @media (min-width: 768px) {
-  .container-md, .container-sm, .container {
+  .boardcontainer-md, .boardcontainer-sm, .boardcontainer {
     max-width: 720px;
   }
 }
 @media (min-width: 992px) {
-  .container-lg, .container-md, .container-sm, .container {
+  .boardcontainer-lg, .boardcontainer-md, .boardcontainer-sm, .boardcontainer {
     max-width: 960px;
   }
 }
 @media (min-width: 1200px) {
-  .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .boardcontainer-xl, .boardcontainer-lg, .boardcontainer-md, .boardcontainer-sm, .boardcontainer {
     max-width: 1140px;
   }
 }
 @media (min-width: 1400px) {
-  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .boardcontainer-xxl, .boardcontainer-xl, .boardcontainer-lg, .boardcontainer-md, .boardcontainer-sm, .boardcontainer {
     max-width: 1320px;
   }
 }
@@ -3752,13 +3752,13 @@ textarea.form-control-lg {
   justify-content: space-between;
   padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
 }
-.navbar > .container,
-.navbar > .container-fluid,
-.navbar > .container-sm,
-.navbar > .container-md,
-.navbar > .container-lg,
-.navbar > .container-xl,
-.navbar > .container-xxl {
+.navbar > .boardcontainer,
+.navbar > .boardcontainer-fluid,
+.navbar > .boardcontainer-sm,
+.navbar > .boardcontainer-md,
+.navbar > .boardcontainer-lg,
+.navbar > .boardcontainer-xl,
+.navbar > .boardcontainer-xxl {
   display: flex;
   flex-wrap: inherit;
   align-items: center;
@@ -5016,7 +5016,7 @@ textarea.form-control-lg {
   display: none;
 }
 
-.toast-container {
+.toast-boardcontainer {
   --bs-toast-zindex: 1090;
   position: absolute;
   z-index: var(--bs-toast-zindex);
@@ -5025,7 +5025,7 @@ textarea.form-control-lg {
   max-width: 100%;
   pointer-events: none;
 }
-.toast-container > :not(:last-child) {
+.toast-boardcontainer > :not(:last-child) {
   margin-bottom: var(--bs-toast-spacing);
 }
 

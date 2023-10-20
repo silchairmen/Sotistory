@@ -44,7 +44,7 @@ function Boardinfo({address}) {
   return (
     <Board>
       <div class="black-box"></div>
-        <div class="container mt-5">
+        <div class="boardcontainer mt-5">
                 <div class="col-lg-8">
                     <article>
                         <header class="mb-4c">
@@ -62,8 +62,7 @@ function Boardinfo({address}) {
                     </article>
 
                     <section class="mb-5s">
-                        <div class="card bg-light">
-                            <div class="card-body">
+                        <div class="bg-light">
                             <div style={{ display: 'flex', justifyContent: 'left', marginBottom: '-17px'}}><h4><p style={{color: 'green',}}></p></h4></div>
                                 <form class="mb-4 ms-4"><textarea class="form-control" rows="3" placeholder="댓글을 입력해주세요."></textarea></form>
                                 <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}><h6><p style={{color: 'green',}}>작성</p></h6></div>
@@ -74,9 +73,7 @@ function Boardinfo({address}) {
                                         <p class="fw-bold2">대댓글 내용</p>
                                         
                                     </div>
-                                    
                                 </div>
-                            </div>
                         </div>
                     </section>
                 </div>

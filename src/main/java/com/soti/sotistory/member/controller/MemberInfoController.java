@@ -10,9 +10,8 @@ import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.member.entity.Profile;
 import com.soti.sotistory.member.service.MemberAuthService;
 import com.soti.sotistory.member.service.MemberInfoService;
-import com.soti.sotistory.post.exception.MemberNotFoundException;
-import com.soti.sotistory.post.exception.ProfileNotFoundException;
-import lombok.Getter;
+import com.soti.sotistory.exception.MemberNotFoundException;
+import com.soti.sotistory.exception.ProfileNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/member/")

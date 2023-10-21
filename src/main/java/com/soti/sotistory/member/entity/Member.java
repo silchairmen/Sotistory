@@ -2,12 +2,18 @@ package com.soti.sotistory.member.entity;
 
 import com.soti.sotistory.member.constant.Role;
 import com.soti.sotistory.member.dto.MemberDto;
+import com.soti.sotistory.post.entity.PromotionalPost;
+import com.soti.sotistory.post.entity.QuestionPost;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Table(name = "members")

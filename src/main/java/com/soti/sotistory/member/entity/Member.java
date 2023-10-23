@@ -63,7 +63,7 @@ public class Member {
     private List<PromotionalPost> promotionalPostList = new ArrayList<>();
 
     /*연관관계부분*/
-    public void addPost (PromotionalPost promotionalPost) {
+    public void addPromotionalPost (PromotionalPost promotionalPost) {
         promotionalPostList.add(promotionalPost);
     }
 }

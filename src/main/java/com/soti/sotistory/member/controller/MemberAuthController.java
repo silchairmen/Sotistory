@@ -1,7 +1,6 @@
 package com.soti.sotistory.member.controller;
 
 import com.soti.sotistory.config.CustomUser;
-import com.soti.sotistory.member.dto.MemberInfoDto;
 import com.soti.sotistory.member.dto.MemberDto;
 import com.soti.sotistory.member.dto.MemberResponseDto;
 import com.soti.sotistory.member.entity.Member;

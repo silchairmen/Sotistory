@@ -21,23 +21,11 @@ public class PromotionalPostUpdateDto {
         return title;
     }
 
-    public void setTitle(Optional<String> title) {
-        this.title = title;
-    }
-
     public Optional<String> getContent() {
         return content;
     }
 
-    public void setContent(Optional<String> content) {
-        this.content = content;
-    }
-
     public Optional<MultipartFile> getUploadFile() {
         return uploadFile;
-    }
-
-    public void setUploadFile(Optional<MultipartFile> uploadFile) {
-        this.uploadFile = uploadFile;
     }
 }

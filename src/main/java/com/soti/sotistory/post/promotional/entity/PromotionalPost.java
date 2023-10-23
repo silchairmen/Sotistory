@@ -42,7 +42,7 @@ public class PromotionalPost extends BaseTimeEntity {
     //연관관계 설정
     public void confirmWriter(Member writer) {
         this.writer = writer;
-        writer.addPost(this);
+        writer.addPromotionalPost(this);
     }
 
     /*내용 수정*/

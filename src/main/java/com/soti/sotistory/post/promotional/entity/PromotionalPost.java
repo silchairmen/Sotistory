@@ -1,6 +1,7 @@
-package com.soti.sotistory.post.entity;
+package com.soti.sotistory.post.promotional.entity;
 
 import com.soti.sotistory.member.entity.Member;
+import com.soti.sotistory.post.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "promotional_post")
-public class PromotionalPost {
+public class PromotionalPost extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +36,25 @@ public class PromotionalPost {
     public PromotionalPost(String title, String content, String filePath){
         this.title = title;
         this.content = content;
+        this.filePath = filePath;
+    }
+
+    //연관관계 설정
+    public void confirmWriter(Member writer) {
+        this.writer = writer;
+        writer.addPost(this);
+    }
+
+    /*내용 수정*/
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
+    public void updateFilePath(String filePath) {
         this.filePath = filePath;
     }
 }

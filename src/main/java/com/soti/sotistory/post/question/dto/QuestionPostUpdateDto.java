@@ -1,17 +1,17 @@
-package com.soti.sotistory.post.promotional.dto;
+package com.soti.sotistory.post.question.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
 @Data
 @AllArgsConstructor
-public class PromotionalPostUpdateDto {
+public class QuestionPostUpdateDto {
+
     private Optional<String> title;
     private Optional<String> content;
-    private Optional<MultipartFile> uploadFile;
+    private Optional<String> password;
 
     public Optional<String> getTitle() {
         return title;
@@ -21,7 +21,7 @@ public class PromotionalPostUpdateDto {
         return content;
     }
 
-    public Optional<MultipartFile> getUploadFile() {
-        return uploadFile;
+    public Optional<String> getPassword() {
+        return password;
     }
 }

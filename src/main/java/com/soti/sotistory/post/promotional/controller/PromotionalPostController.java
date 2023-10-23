@@ -20,8 +20,7 @@ public class PromotionalPostController {
 
     private final PromotionalPostService postService;
 
-    //FileUpload 때문에 json이 아닌 form 형태 구현
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/save")
     public void save(@Valid @ModelAttribute PromotionalPostSaveDto saveDto) {
         postService.save(saveDto);

@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import javax.persistence.*;
 
@@ -38,16 +38,8 @@ public class QuestionPost {
 
     private String password;
 
-    public void setContentType(PostType postType){
-        this.postType=postType;
-    }
-
-    public void setPassword(String password){
-        this.password=password;
-    }
-
     @Builder
-    public QuestionPost(String title, String content, String filePath){
+    public QuestionPost(String title, String content){
         this.title = title;
         this.content = content;
     }
@@ -55,5 +47,22 @@ public class QuestionPost {
     public void confirmWriter(Member writer) {
         this.writer = writer;
         writer.addQuestionPost(this);
+    }
+
+    /*내용 수정*/
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
+    public void updatePostType(PostType postType) {
+        this.postType = postType;
+    }
+
+    public void updatePassword(String password){
+        this.password=password;
     }
 }

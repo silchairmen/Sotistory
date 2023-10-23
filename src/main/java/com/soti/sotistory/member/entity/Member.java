@@ -1,9 +1,13 @@
 package com.soti.sotistory.member.entity;
 
-import com.soti.sotistory.comment.entity.Comment;
+import com.soti.sotistory.comment.promotional.entity.PromotionalComment;
 import com.soti.sotistory.member.constant.Role;
 import com.soti.sotistory.post.promotional.entity.PromotionalPost;
-import lombok.*;
+import com.soti.sotistory.post.question.entity.QuestionPost;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -66,14 +70,22 @@ public class Member {
 
     @Builder.Default
     @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
-    private List<Comment> commentList = new ArrayList<>();
+    private List<QuestionPost> questionPostList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
+    private List<PromotionalComment> promotionalCommentList = new ArrayList<>();
 
     /*연관관계부분*/
     public void addPromotionalPost(PromotionalPost promotionalPost) {
         promotionalPostList.add(promotionalPost);
     }
 
-    public void addComment(Comment comment) {
-        commentList.add(comment);
+    public void addQuestionPost(QuestionPost questionPost) {
+        questionPostList.add(questionPost);
+    }
+
+    public void addPromotionalComment(PromotionalComment comment) {
+        promotionalCommentList.add(comment);
     }
 }

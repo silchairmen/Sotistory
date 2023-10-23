@@ -1,6 +1,5 @@
 package com.soti.sotistory.post.promotional.service;
 
-import com.soti.sotistory.exception.PostNotFoundException;
 import com.soti.sotistory.member.repository.MemberRepository;
 import com.soti.sotistory.post.cond.PostSearchCondition;
 import com.soti.sotistory.post.exception.PostErrorCode;
@@ -8,7 +7,7 @@ import com.soti.sotistory.post.exception.PostException;
 import com.soti.sotistory.post.file.exception.FileErrorCode;
 import com.soti.sotistory.post.file.exception.FileException;
 import com.soti.sotistory.post.file.service.FileService;
-import com.soti.sotistory.post.promotional.dto.PromotionalPostInfoDto;
+import com.soti.sotistory.post.promotional.dto.PromotionalPostDetailInfoDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostListDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostSaveDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostUpdateDto;
@@ -24,8 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -37,12 +34,12 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
     private final PromotionalPostRepositoryCustom postRepositoryCustom;
 
     @Override
-    public void save(PromotionalPostSaveDto promotionalPostSaveDto) {
-        PromotionalPost post = promotionalPostSaveDto.toEntity();
+    public void save(PromotionalPostSaveDto postSaveDto) {
+        PromotionalPost post = postSaveDto.toEntity();
 
         post.confirmWriter(memberRepository.findByNickname(SecurityUtil.getLoginUserNickname()));
 
-        promotionalPostSaveDto.getUploadFile().ifPresent(file -> {
+        postSaveDto.getUploadFile().ifPresent(file -> {
             try {
                 post.updateFilePath(fileService.save(file));
             } catch (Exception e) {
@@ -55,14 +52,14 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
     }
 
     @Override
-    public void update(Long id, PromotionalPostUpdateDto promotionalPostUpdateDto) {
+    public void update(Long id, PromotionalPostUpdateDto postUpdateDto) {
         PromotionalPost post = postRepository.findById(id).orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
 
         checkAuthority(post,PostErrorCode.NOT_AUTHORITY_UPDATE_POST);
 
         //제목, 내용 처리
-        promotionalPostUpdateDto.getTitle().ifPresent(post::updateTitle);
-        promotionalPostUpdateDto.getContent().ifPresent(post::updateContent);
+        postUpdateDto.getTitle().ifPresent(post::updateTitle);
+        postUpdateDto.getContent().ifPresent(post::updateContent);
 
         //수정 후 기존 파일이 없어졌을 시 삭제
         if(post.getFilePath() != null) {
@@ -70,7 +67,7 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
         }
 
         //첨부파일 처리
-        promotionalPostUpdateDto.getUploadFile().ifPresentOrElse(
+        postUpdateDto.getUploadFile().ifPresentOrElse(
                 multipartFile -> {
                     try {
                         post.updateFilePath(fileService.save(multipartFile));
@@ -84,8 +81,7 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
 
     @Override
     public void delete(Long id) {
-        PromotionalPost post = postRepository.findById(id).orElseThrow(() ->
-                new PostNotFoundException("없음"));
+        PromotionalPost post = postRepository.findById(id).orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
 
         checkAuthority(post, PostErrorCode.NOT_AUTHORITY_DELETE_POST);
 
@@ -104,8 +100,8 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
     }
 
     @Override
-    public PromotionalPostInfoDto getPostInfo(Long id) {
-        return new PromotionalPostInfoDto(postRepository.findById(id).orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND)));
+    public PromotionalPostDetailInfoDto getPostInfo(Long id) {
+        return new PromotionalPostDetailInfoDto(postRepository.findById(id).orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND)));
     }
 
     @Override

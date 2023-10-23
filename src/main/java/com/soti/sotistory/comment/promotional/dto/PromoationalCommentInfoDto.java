@@ -1,13 +1,13 @@
-package com.soti.sotistory.comment.dto;
+package com.soti.sotistory.comment.promotional.dto;
 
 
-import com.soti.sotistory.comment.entity.Comment;
+import com.soti.sotistory.comment.promotional.entity.PromotionalComment;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class CommentInfoDto {
+public class PromoationalCommentInfoDto {
 
     private final static String DEFAULT_DELETE_MESSAGE = "삭제된 댓글입니다";
 
@@ -21,13 +21,13 @@ public class CommentInfoDto {
 
     private String writer;//댓글 작성자에 대한 정보
 
-    private List<ReCommentInfoDto> reCommentListDtoList;//대댓글에 대한 정보들
+    private List<PromotionalReCommentInfoDto> reCommentListDtoList;//대댓글에 대한 정보들
 
     /**
      * 삭제되었을 경우 삭제된 댓글입니다 출력
      */
 
-    public CommentInfoDto(Comment comment, List<Comment> reCommentList) {
+    public PromoationalCommentInfoDto(PromotionalComment comment, List<PromotionalComment> reCommentList) {
 
         this.postId = comment.getPost().getId();
         this.commentId = comment.getId();
@@ -43,7 +43,7 @@ public class CommentInfoDto {
 
         this.writer = comment.getWriter().getNickname();
 
-        this.reCommentListDtoList = reCommentList.stream().map(ReCommentInfoDto::new).toList();
+        this.reCommentListDtoList = reCommentList.stream().map(PromotionalReCommentInfoDto::new).toList();
 
     }
 }

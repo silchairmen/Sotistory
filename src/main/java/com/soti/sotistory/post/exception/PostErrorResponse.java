@@ -10,8 +10,8 @@ public class PostErrorResponse {
     private int status;
     private String message;
 
-    public PostErrorResponse(PostErrorCode postErrorCode) {
-        this.status = postErrorCode.getStatus();
-        this.message = postErrorCode.getMessage();
+    public PostErrorResponse(PostErrorCode errorCode) {
+        this.status = errorCode.getStatus();
+        this.message = errorCode.getMessage();
     }
 }

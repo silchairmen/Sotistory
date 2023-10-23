@@ -1,10 +1,10 @@
-package com.soti.sotistory.comment.dto;
+package com.soti.sotistory.comment.promotional.dto;
 
-import com.soti.sotistory.comment.entity.Comment;
+import com.soti.sotistory.comment.promotional.entity.PromotionalComment;
 import lombok.Data;
 
 @Data
-public class ReCommentInfoDto {
+public class PromotionalReCommentInfoDto {
 
     private final static String DEFAULT_DELETE_MESSAGE = "삭제된 댓글입니다";
 
@@ -19,7 +19,7 @@ public class ReCommentInfoDto {
 
     private String writer;
 
-    public ReCommentInfoDto(Comment reComment) {
+    public PromotionalReCommentInfoDto(PromotionalComment reComment) {
         this.postId = reComment.getPost().getId();
         this.parentId = reComment.getParent().getId();
         this.reCommentId = reComment.getId();

@@ -1,4 +1,4 @@
-package com.soti.sotistory.comment.entity;
+package com.soti.sotistory.comment.promotional.entity;
 
 
 import com.soti.sotistory.member.entity.Member;
@@ -17,11 +17,11 @@ import java.util.Optional;
 import static javax.persistence.FetchType.LAZY;
 
 
-@Table(name = "COMMENT")
+@Table(name = "promotional_comment")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment extends BaseTimeEntity {
+public class PromotionalComment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -38,7 +38,7 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "parent_id")
-    private Comment parent;
+    private PromotionalComment parent;
 
     @Lob
     @Column(nullable = false)
@@ -48,25 +48,25 @@ public class Comment extends BaseTimeEntity {
 
     //부모 댓글 삭제시 자식 댓글 생존
     @OneToMany(mappedBy = "parent")
-    private List<Comment> childList = new ArrayList<>();
+    private List<PromotionalComment> childList = new ArrayList<>();
 
     /*연관관계 설정*/
     public void confirmWriter(Member writer) {
         this.writer = writer;
-        writer.addComment(this);
+        writer.addPromotionalComment(this);
     }
 
     public void confirmPost(PromotionalPost post) {
         this.post = post;
-        post.addComment(this);
+        post.addPromotionalComment(this);
     }
 
-    public void confirmParent(Comment parent) {
+    public void confirmParent(PromotionalComment parent) {
         this.parent = parent;
         parent.addChild(this);
     }
 
-    public void addChild(Comment child) {
+    public void addChild(PromotionalComment child) {
         childList.add(child);
     }
 
@@ -81,7 +81,7 @@ public class Comment extends BaseTimeEntity {
     }
 
     @Builder
-    public Comment(Member writer, PromotionalPost post, Comment parent, String content) {
+    public PromotionalComment(Member writer, PromotionalPost post, PromotionalComment parent, String content) {
         this.writer = writer;
         this.post = post;
         this.parent = parent;
@@ -90,9 +90,9 @@ public class Comment extends BaseTimeEntity {
     }
 
     /* 비즈니스 로직 */
-    public List<Comment> findRemovableList() {
+    public List<PromotionalComment> findRemovableList() {
 
-        List<Comment> result = new ArrayList<>();
+        List<PromotionalComment> result = new ArrayList<>();
 
         Optional.ofNullable(this.parent).ifPresentOrElse(
 
@@ -117,7 +117,7 @@ public class Comment extends BaseTimeEntity {
     //모든 자식 댓글이 삭제되었는지 판단
     private boolean isAllChildRemoved() {
         return getChildList().stream()
-                .map(Comment::isRemoved)//삭제 여부로 변환
+                .map(PromotionalComment::isRemoved)//삭제 여부로 변환
                 .filter(isRemove -> !isRemove)//지워졌으면 true, 안지워졌으면 false이다. 따라서 filter에 걸러지는 것은 false인 녀석들이고, 있다면 false를 없다면 orElse를 통해 true를 반환한다.
                 .findAny()//지워지지 않은게 하나라도 있다면 false를 반환
                 .orElse(true);//모두 지워졌다면 true를 반환

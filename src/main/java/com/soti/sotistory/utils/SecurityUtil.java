@@ -1,6 +1,7 @@
 package com.soti.sotistory.utils;
 
 import com.soti.sotistory.config.CustomUser;
+import com.soti.sotistory.post.exception.PostException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 

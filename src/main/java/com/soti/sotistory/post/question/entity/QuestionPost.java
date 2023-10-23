@@ -1,9 +1,12 @@
 package com.soti.sotistory.post.question.entity;
 
-import com.soti.sotistory.member.constant.Role;
 import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.post.PostType;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -35,11 +38,22 @@ public class QuestionPost {
 
     private String password;
 
+    public void setContentType(PostType postType){
+        this.postType=postType;
+    }
+
+    public void setPassword(String password){
+        this.password=password;
+    }
+
     @Builder
-    public QuestionPost(String title, String content, String filePath, PostType postType, String password){
+    public QuestionPost(String title, String content, String filePath){
         this.title = title;
         this.content = content;
-        this.postType = postType;
-        this.password = password;
+    }
+
+    public void confirmWriter(Member writer) {
+        this.writer = writer;
+        writer.addQuestionPost(this);
     }
 }

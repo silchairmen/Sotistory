@@ -1,9 +1,12 @@
-package com.soti.sotistory.post.promotional.controller;
+package com.soti.sotistory.post.question.controller;
 
+import com.soti.sotistory.post.cond.PostSearchCondition;
+import com.soti.sotistory.post.promotional.dto.PromotionalPostListDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostSaveDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostUpdateDto;
 import com.soti.sotistory.post.promotional.service.PromotionalPostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +43,10 @@ public class PromotionalPostController {
     @GetMapping("/{postId}")
     public ResponseEntity getInfo(@PathVariable("postId") Long postId){
         return ResponseEntity.ok(postService.getPostInfo(postId));
+    }
+
+    @GetMapping({"/"})
+    public ResponseEntity<PromotionalPostListDto> getPostList(Pageable pageable, PostSearchCondition condition) {
+        return this.postService.getPostList(pageable, condition);
     }
 }

@@ -1,10 +1,13 @@
 package com.soti.sotistory.post.promotional.entity;
 
+import com.soti.sotistory.comment.entity.Comment;
 import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.post.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,10 +42,18 @@ public class PromotionalPost extends BaseTimeEntity {
         this.filePath = filePath;
     }
 
+    //게시글 삭제시 댓글 모두 삭제
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
+
     //연관관계 설정
     public void confirmWriter(Member writer) {
         this.writer = writer;
         writer.addPromotionalPost(this);
+    }
+
+    public void addComment(Comment comment) {
+        commentList.add(comment);
     }
 
     /*내용 수정*/

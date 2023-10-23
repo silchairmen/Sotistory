@@ -11,7 +11,7 @@ group = 'com.soti'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '11'
+	sourceCompatibility = "16"
 }
 
 repositories {
@@ -131,3 +131,4 @@ configurations {
 	querydsl.extendsFrom compileClasspath
 }
 //querydsl 추가 끝
+targetCompatibility = JavaVersion.VERSION_16

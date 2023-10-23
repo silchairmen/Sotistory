@@ -1,5 +1,6 @@
 package com.soti.sotistory.member.entity;
 
+import com.soti.sotistory.comment.entity.Comment;
 import com.soti.sotistory.member.constant.Role;
 import com.soti.sotistory.post.promotional.entity.PromotionalPost;
 import lombok.*;
@@ -50,7 +51,8 @@ public class Member {
 
     //직급
     @Enumerated(EnumType.STRING)
-    @Builder.Default private Role role = Role.USER;
+    @Builder.Default
+    private Role role = Role.USER;
 
     //마이페이지(프로필)
     @OneToOne(mappedBy = "member")
@@ -62,8 +64,16 @@ public class Member {
     @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
     private List<PromotionalPost> promotionalPostList = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
+
     /*연관관계부분*/
-    public void addPromotionalPost (PromotionalPost promotionalPost) {
+    public void addPromotionalPost(PromotionalPost promotionalPost) {
         promotionalPostList.add(promotionalPost);
+    }
+
+    public void addComment(Comment comment) {
+        commentList.add(comment);
     }
 }

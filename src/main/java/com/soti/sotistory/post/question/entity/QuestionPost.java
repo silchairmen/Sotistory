@@ -1,4 +1,4 @@
-package com.soti.sotistory.post.entity;
+package com.soti.sotistory.post.question.entity;
 
 import com.soti.sotistory.member.constant.Role;
 import com.soti.sotistory.member.entity.Member;

@@ -1,6 +1,6 @@
-package com.soti.sotistory.post.repository;
+package com.soti.sotistory.post.question.repository;
 
-import com.soti.sotistory.post.entity.QuestionPost;
+import com.soti.sotistory.post.question.entity.QuestionPost;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

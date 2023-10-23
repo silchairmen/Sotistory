@@ -1,6 +1,6 @@
-package com.soti.sotistory.post.repository;
+package com.soti.sotistory.post.promotional.repository;
 
-import com.soti.sotistory.post.entity.PromotionalPost;
+import com.soti.sotistory.post.promotional.entity.PromotionalPost;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

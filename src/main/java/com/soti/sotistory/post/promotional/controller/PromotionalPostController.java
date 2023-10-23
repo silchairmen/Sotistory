@@ -1,4 +1,4 @@
-package com.soti.sotistory.post.question.controller;
+package com.soti.sotistory.post.promotional.controller;
 
 import com.soti.sotistory.post.cond.PostSearchCondition;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostListDto;

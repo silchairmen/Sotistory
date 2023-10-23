@@ -2,14 +2,11 @@ package com.soti.sotistory.post.promotional.service;
 
 import com.soti.sotistory.exception.PostNotFoundException;
 import com.soti.sotistory.member.repository.MemberRepository;
-import com.soti.sotistory.post.file.exception.FileException;
-import com.soti.sotistory.post.file.exception.FileExceptionType;
 import com.soti.sotistory.post.file.service.FileService;
+import com.soti.sotistory.post.promotional.dto.PromotionalPostInfoDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostSaveDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostUpdateDto;
 import com.soti.sotistory.post.promotional.entity.PromotionalPost;
-import com.soti.sotistory.post.promotional.exception.PostException;
-import com.soti.sotistory.post.promotional.exception.PostExceptionType;
 import com.soti.sotistory.post.promotional.repository.PromotionalPostRepository;
 import com.soti.sotistory.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +32,9 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
             try {
                 post.updateFilePath(fileService.save(file));
             } catch (Exception e) {
-                throw new FileException(FileExceptionType.FILE_CAN_NOT_SAVE);
+                throw new RuntimeException(e);
             }
+
         });
 
         postRepository.save(post);
@@ -44,9 +42,9 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
 
     @Override
     public void update(Long id, PromotionalPostUpdateDto promotionalPostUpdateDto) {
-        PromotionalPost post = postRepository.findById(id).orElseThrow(() -> new PostException(PostExceptionType.POST_NOT_POUND));
+        PromotionalPost post = postRepository.findById(id).orElseThrow(RuntimeException::new);
 
-        checkAuthority(post, PostExceptionType.NOT_AUTHORITY_UPDATE_POST);
+        checkAuthority(post);
 
         //제목, 내용 처리
         promotionalPostUpdateDto.getTitle().ifPresent(post::updateTitle);
@@ -63,14 +61,35 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
                     try {
                         post.updateFilePath(fileService.save(multipartFile));
                     } catch (Exception e) {
-                        throw new FileException(FileExceptionType.FILE_CAN_NOT_SAVE);
+                        throw new RuntimeException(e);
                     }
                 }
                 , () -> post.updateFilePath(null));
     }
 
-    private void checkAuthority(PromotionalPost post, PostExceptionType postExceptionType) {
-        if(!post.getWriter().getNickname().equals(SecurityUtil.getLoginUserNickname()))
-            throw new PostException(postExceptionType);
+    private void checkAuthority(PromotionalPost post){
+        if(!post.getWriter().getNickname().toString().equals(SecurityUtil.getLoginUserNickname())){
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        PromotionalPost post = postRepository.findById(id).orElseThrow(() ->
+                new PostNotFoundException("없음"));
+
+        checkAuthority(post);
+
+        //기존에 올린 파일 지우기
+        if(post.getFilePath() !=null){
+            fileService.delete(post.getFilePath());
+        }
+
+        postRepository.delete(post);
+    }
+
+    @Override
+    public PromotionalPostInfoDto getPostInfo(Long id) {
+        return new PromotionalPostInfoDto(postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("글 없음")));
     }
 }

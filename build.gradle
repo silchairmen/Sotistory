@@ -3,6 +3,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.13'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	//QueryDSL 추가
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.soti'
@@ -37,7 +39,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 //	runtimeOnly 'mysql:mysql-connector-java'
 
-
 	//devtools
 	implementation 'org.springframework.boot:spring-boot-devtools'
 
@@ -50,6 +51,10 @@ dependencies {
 	//Spring-Security-Test
 	implementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	//QueryDSL 추가
+	implementation 'com.querydsl:querydsl-jpa:5.0.0'
+	annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: '5.0.0'
 }
 
 //리엑트 설정
@@ -102,3 +107,27 @@ bootJar {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
+
+//querydsl 추가 시작
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
+}
+//querydsl 추가 끝

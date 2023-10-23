@@ -1,13 +1,8 @@
 package com.soti.sotistory.member.entity;
 
 import com.soti.sotistory.member.constant.Role;
-import com.soti.sotistory.member.dto.MemberDto;
-import com.soti.sotistory.post.entity.PromotionalPost;
-import com.soti.sotistory.post.entity.QuestionPost;
+import com.soti.sotistory.post.promotional.entity.PromotionalPost;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -61,4 +56,14 @@ public class Member {
     @OneToOne(mappedBy = "member")
     private Profile profile;
 
+
+    /* 회원탈퇴시 작성한 게시물, 댓글 모두 삭제 */
+    @Builder.Default
+    @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
+    private List<PromotionalPost> promotionalPostList = new ArrayList<>();
+
+    /*연관관계부분*/
+    public void addPost (PromotionalPost promotionalPost) {
+        promotionalPostList.add(promotionalPost);
+    }
 }

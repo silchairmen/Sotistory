@@ -1,6 +1,7 @@
 package com.soti.sotistory.config;
 
 import com.soti.sotistory.member.service.MemberAuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

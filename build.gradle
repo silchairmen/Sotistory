@@ -50,10 +50,6 @@ dependencies {
 	//Spring-Security-Test
 	implementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-
-	//swagger-ui
-	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
-	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
 }
 
 //리엑트 설정

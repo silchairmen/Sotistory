@@ -1,5 +1,7 @@
 package com.soti.sotistory.post.promotional.entity;
 
+import com.soti.sotistory.comment.promotional.entity.PromotionalComment;
+import com.soti.sotistory.comment.question.entity.QuestionComment;
 import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.post.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -8,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -46,6 +50,14 @@ public class PromotionalPost extends BaseTimeEntity {
     public void confirmWriter(Member writer) {
         this.writer = writer;
         writer.addPromotionalPost(this);
+    }
+
+    //연관관계 설정
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PromotionalComment> commentsList = new ArrayList<>();
+
+    public void addComment(PromotionalComment comment) {
+        commentsList.add(comment);
     }
 
     /*내용 수정*/

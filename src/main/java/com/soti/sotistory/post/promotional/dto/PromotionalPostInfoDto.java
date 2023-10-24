@@ -13,13 +13,15 @@ public class PromotionalPostInfoDto {
     private String content;//내용
     private String filePath;//업로드 파일 경로
     private String writer;//작성자에 대한 정보
+    private Long commentSize;
 
-    public PromotionalPostInfoDto(PromotionalPost promotionalPost) {
-        this.postId = promotionalPost.getId();
-        this.title = promotionalPost.getTitle();
-        this.content = promotionalPost.getContent();
-        this.filePath = promotionalPost.getFilePath();
-        this.writer = promotionalPost.getWriter().getNickname();
+    public PromotionalPostInfoDto(PromotionalPost post) {
+        this.postId = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.filePath = post.getFilePath();
+        this.writer = post.getWriter().getNickname();
+        this.commentSize = (long) post.getCommentsList().size();
     }
 
 }

@@ -1,10 +1,14 @@
 package com.soti.sotistory.post.question.controller;
 
+import com.soti.sotistory.post.cond.PostSearchCondition;
+import com.soti.sotistory.post.promotional.dto.PromotionalPostListDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostUpdateDto;
+import com.soti.sotistory.post.question.dto.QuestionPostListDto;
 import com.soti.sotistory.post.question.dto.QuestionPostSaveDto;
 import com.soti.sotistory.post.question.dto.QuestionPostUpdateDto;
 import com.soti.sotistory.post.question.service.QuestionPostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +44,10 @@ public class QuestionPostController {
     @GetMapping("/{postId}")
     public ResponseEntity getInfo(@PathVariable("postId") Long postId, String password){
         return ResponseEntity.ok(postService.getPostInfo(postId, password));
+    }
+
+    @GetMapping({"/"})
+    public ResponseEntity<QuestionPostListDto> getPostList(Pageable pageable, PostSearchCondition condition) {
+        return this.postService.getPostList(pageable, condition);
     }
 }

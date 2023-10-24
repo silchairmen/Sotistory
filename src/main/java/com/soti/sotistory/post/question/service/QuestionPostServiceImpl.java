@@ -2,15 +2,24 @@ package com.soti.sotistory.post.question.service;
 
 import com.soti.sotistory.member.repository.MemberRepository;
 import com.soti.sotistory.post.PostType;
+import com.soti.sotistory.post.cond.PostSearchCondition;
 import com.soti.sotistory.post.exception.PostErrorCode;
 import com.soti.sotistory.post.exception.PostException;
+import com.soti.sotistory.post.promotional.dto.PromotionalPostListDto;
+import com.soti.sotistory.post.promotional.entity.PromotionalPost;
 import com.soti.sotistory.post.question.dto.QuestionPostDetailInfoDto;
+import com.soti.sotistory.post.question.dto.QuestionPostListDto;
 import com.soti.sotistory.post.question.dto.QuestionPostSaveDto;
 import com.soti.sotistory.post.question.dto.QuestionPostUpdateDto;
 import com.soti.sotistory.post.question.entity.QuestionPost;
 import com.soti.sotistory.post.question.repository.QuestionPostRepository;
+import com.soti.sotistory.post.question.repository.QuestionPostRepositoryCustom;
 import com.soti.sotistory.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +30,7 @@ public class QuestionPostServiceImpl implements QuestionPostService {
 
     private final MemberRepository memberRepository;
     private final QuestionPostRepository postRepository;
+    private final QuestionPostRepositoryCustom postRepositoryCustom;
 
     @Override
     public void save(QuestionPostSaveDto postSaveDto) {
@@ -79,6 +89,16 @@ public class QuestionPostServiceImpl implements QuestionPostService {
         } else {
             return new QuestionPostDetailInfoDto(post);
         }
+    }
+
+    @Override
+    public ResponseEntity<QuestionPostListDto> getPostList(Pageable pageable, PostSearchCondition condition) {
+        Page<QuestionPost> result = this.postRepositoryCustom.getPostList(pageable, condition);
+        return new ResponseEntity<>(QuestionPostListDto.builder()
+                .postList(result.getContent())
+                .totalCount(result.getTotalElements())
+                .totalPages((long)result.getTotalPages())
+                .build(), HttpStatus.OK);
     }
 
 

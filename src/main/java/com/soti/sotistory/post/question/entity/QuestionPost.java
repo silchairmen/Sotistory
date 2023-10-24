@@ -1,6 +1,7 @@
 package com.soti.sotistory.post.question.entity;
 
 import com.soti.sotistory.member.entity.Member;
+import com.soti.sotistory.post.BaseTimeEntity;
 import com.soti.sotistory.post.PostType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "question_post")
-public class QuestionPost {
+public class QuestionPost extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")

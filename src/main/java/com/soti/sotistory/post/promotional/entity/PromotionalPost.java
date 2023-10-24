@@ -1,6 +1,5 @@
 package com.soti.sotistory.post.promotional.entity;
 
-import com.soti.sotistory.comment.promotional.entity.PromotionalComment;
 import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.post.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -45,18 +44,10 @@ public class PromotionalPost extends BaseTimeEntity {
         this.filePath = filePath;
     }
 
-    //게시글 삭제시 댓글 모두 삭제
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PromotionalComment> promotionalCommentList = new ArrayList<>();
-
     //연관관계 설정
     public void confirmWriter(Member writer) {
         this.writer = writer;
         writer.addPromotionalPost(this);
-    }
-
-    public void addPromotionalComment(PromotionalComment comment) {
-        promotionalCommentList.add(comment);
     }
 
     /*내용 수정*/

@@ -13,15 +13,4 @@ public class QuestionPostUpdateDto {
     private Optional<String> content;
     private Optional<String> password;
 
-    public Optional<String> getTitle() {
-        return title;
-    }
-
-    public Optional<String> getContent() {
-        return content;
-    }
-
-    public Optional<String> getPassword() {
-        return password;
-    }
 }

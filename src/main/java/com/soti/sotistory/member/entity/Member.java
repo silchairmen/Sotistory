@@ -1,5 +1,6 @@
 package com.soti.sotistory.member.entity;
 
+import com.soti.sotistory.comment.question.entity.QuestionComment;
 import com.soti.sotistory.member.constant.Role;
 import com.soti.sotistory.post.promotional.entity.PromotionalPost;
 import com.soti.sotistory.post.question.entity.QuestionPost;
@@ -71,6 +72,10 @@ public class Member {
     @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
     private List<QuestionPost> questionPostList = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
+    private List<QuestionComment> questionCommentList = new ArrayList<>();
+
 
     /*연관관계부분*/
     public void addPromotionalPost(PromotionalPost promotionalPost) {
@@ -79,6 +84,10 @@ public class Member {
 
     public void addQuestionPost(QuestionPost questionPost) {
         questionPostList.add(questionPost);
+    }
+
+    public void addQuestionComment(QuestionComment comment) {
+        questionCommentList.add(comment);
     }
 
 }

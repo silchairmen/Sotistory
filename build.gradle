@@ -56,6 +56,10 @@ dependencies {
 	//QueryDSL 추가
 	implementation 'com.querydsl:querydsl-jpa:5.0.0'
 	annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: '5.0.0'
+
+	//swagger 추가
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.5.12'
 }
 
 //리엑트 설정

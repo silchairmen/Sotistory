@@ -84,7 +84,7 @@ public class QuestionPostServiceImpl implements QuestionPostService {
             if(post.getPassword().equals(password) || post.getWriter().getNickname().equals(SecurityUtil.getLoginUserNickname())){
                 return new QuestionPostDetailInfoDto(post);
             } else {
-                throw new PostException(PostErrorCode.NOT_AUTHORITY_UPDATE_POST);
+                throw new PostException(PostErrorCode.NOT_AUTHORITY_POST);
             }
         } else {
             return new QuestionPostDetailInfoDto(post);

@@ -1,6 +1,5 @@
 package com.soti.sotistory.member.dto;
 
-import com.soti.sotistory.member.entity.Profile;
 import lombok.Getter;
 
 @Getter

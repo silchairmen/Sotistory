@@ -5,8 +5,6 @@ import com.soti.sotistory.post.PostType;
 import com.soti.sotistory.post.cond.PostSearchCondition;
 import com.soti.sotistory.post.exception.PostErrorCode;
 import com.soti.sotistory.post.exception.PostException;
-import com.soti.sotistory.post.promotional.dto.PromotionalPostListDto;
-import com.soti.sotistory.post.promotional.entity.PromotionalPost;
 import com.soti.sotistory.post.question.dto.QuestionPostDetailInfoDto;
 import com.soti.sotistory.post.question.dto.QuestionPostListDto;
 import com.soti.sotistory.post.question.dto.QuestionPostSaveDto;

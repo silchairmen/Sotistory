@@ -1,10 +1,8 @@
 package com.soti.sotistory.member.service;
 
 import com.soti.sotistory.config.CustomUser;
-import com.soti.sotistory.member.constant.Role;
-import com.soti.sotistory.member.dto.MemberInfoDto;
-import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.member.repository.MemberRepository;
+import com.soti.sotistory.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

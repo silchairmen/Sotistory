@@ -1,7 +1,6 @@
 package com.soti.sotistory.post.promotional.entity;
 
 import com.soti.sotistory.comment.promotional.entity.PromotionalComment;
-import com.soti.sotistory.comment.question.entity.QuestionComment;
 import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.post.BaseTimeEntity;
 import lombok.AccessLevel;

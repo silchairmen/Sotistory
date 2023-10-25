@@ -2,7 +2,6 @@ package com.soti.sotistory.comment.question.service;
 
 import com.soti.sotistory.comment.exception.CommentErrorCode;
 import com.soti.sotistory.comment.exception.CommentException;
-import com.soti.sotistory.comment.question.dto.QuestionCommentInfoDto;
 import com.soti.sotistory.comment.question.dto.QuestionCommentSaveDto;
 import com.soti.sotistory.comment.question.dto.QuestionCommentUpdateDto;
 import com.soti.sotistory.comment.question.entity.QuestionComment;
@@ -13,13 +12,9 @@ import com.soti.sotistory.post.exception.PostException;
 import com.soti.sotistory.post.question.repository.QuestionPostRepository;
 import com.soti.sotistory.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
-import nonapi.io.github.classgraph.utils.LogNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service

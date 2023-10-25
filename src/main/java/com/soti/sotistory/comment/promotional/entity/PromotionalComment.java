@@ -3,7 +3,6 @@ package com.soti.sotistory.comment.promotional.entity;
 import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.post.BaseTimeEntity;
 import com.soti.sotistory.post.promotional.entity.PromotionalPost;
-import com.soti.sotistory.post.question.entity.QuestionPost;
 import lombok.*;
 
 import javax.persistence.*;

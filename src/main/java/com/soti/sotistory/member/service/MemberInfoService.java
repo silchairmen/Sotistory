@@ -1,12 +1,12 @@
 package com.soti.sotistory.member.service;
 
 import com.soti.sotistory.member.constant.Role;
+import com.soti.sotistory.member.repository.MemberRepository;
+import com.soti.sotistory.member.repository.ProfileRepository;
 import com.soti.sotistory.member.dto.MemberInfoDto;
 import com.soti.sotistory.member.dto.MemberProfileDto;
 import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.member.entity.Profile;
-import com.soti.sotistory.member.repository.MemberRepository;
-import com.soti.sotistory.member.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

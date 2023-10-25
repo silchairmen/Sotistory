@@ -51,8 +51,6 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
         });
 
         postRepository.save(post);
-
-        log.info("NickName : "+post.getWriter().getNickname()+" -> Promotional Post 작성");
     }
 
     @Override
@@ -80,8 +78,6 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
                     }
                 }
                 , () -> post.updateFilePath(null));
-
-        log.info("NickName : "+post.getWriter().getNickname()+" -> Promotional Post 수정");
     }
 
 
@@ -97,8 +93,6 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
         }
 
         postRepository.delete(post);
-
-        log.info("NickName : "+post.getWriter().getNickname()+" -> Promotional Post 삭제");
     }
 
     private void checkAuthority(PromotionalPost post, PostErrorCode postErrorCode){

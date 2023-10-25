@@ -37,8 +37,6 @@ public class QuestionCommentService {
 
         //저장
         commentRepository.save(comment);
-
-        log.info("NickName : "+comment.getWriter().getNickname()+" -> Question Comment 작성");
     }
 
     public void update(Long commentId, QuestionCommentUpdateDto commentUpdateDto) {
@@ -49,15 +47,11 @@ public class QuestionCommentService {
         }
 
         commentUpdateDto.getContent().ifPresent(comment::updateContent);
-
-        log.info("NickName : "+comment.getWriter().getNickname()+" -> Question Comment 수정");
     }
 
     public void remove(Long commentId) {
         QuestionComment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentException(CommentErrorCode.NOT_POUND_COMMENT));
 
         commentRepository.delete(comment);
-
-        log.info("NickName : "+comment.getWriter().getNickname()+" -> Question Comment 삭제");
     }
 }

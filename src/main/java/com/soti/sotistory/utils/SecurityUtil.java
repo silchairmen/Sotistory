@@ -9,11 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class SecurityUtil {
 
     public static String getLoginUserNickname() {
-        try{
+
             UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return ((CustomUser) user).getNickname();
-        } catch (Exception e){
-            throw new PostException(PostErrorCode.NOT_AUTHORITY_POST);
-        }
     }
 }

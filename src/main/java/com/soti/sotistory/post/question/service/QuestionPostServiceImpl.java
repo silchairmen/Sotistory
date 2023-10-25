@@ -47,8 +47,6 @@ public class QuestionPostServiceImpl implements QuestionPostService {
         }
 
         postRepository.save(post);
-
-        log.info("NickName : "+post.getWriter().getNickname()+" -> Question Post 작성");
     }
 
     @Override
@@ -68,8 +66,6 @@ public class QuestionPostServiceImpl implements QuestionPostService {
             post.updatePostType(PostType.HIDDEN);
             postUpdateDto.getPassword().ifPresent(post::updatePassword);
         }
-
-        log.info("NickName : "+post.getWriter().getNickname()+" -> Question Post 수정");
     }
 
     @Override
@@ -79,8 +75,6 @@ public class QuestionPostServiceImpl implements QuestionPostService {
         checkAuthority(post, PostErrorCode.NOT_AUTHORITY_UPDATE_POST);
 
         postRepository.delete(post);
-
-        log.info("NickName : "+post.getWriter().getNickname()+" -> Question Post 삭제");
     }
 
     @Override

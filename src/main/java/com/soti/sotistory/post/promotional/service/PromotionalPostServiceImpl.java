@@ -16,6 +16,7 @@ import com.soti.sotistory.post.promotional.repository.PromotionalPostRepository;
 import com.soti.sotistory.post.promotional.repository.PromotionalPostRepositoryCustom;
 import com.soti.sotistory.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -49,6 +51,8 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
         });
 
         postRepository.save(post);
+
+        log.info("NickName : "+post.getWriter().getNickname()+" -> Promotional Post 작성");
     }
 
     @Override
@@ -76,6 +80,8 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
                     }
                 }
                 , () -> post.updateFilePath(null));
+
+        log.info("NickName : "+post.getWriter().getNickname()+" -> Promotional Post 수정");
     }
 
 
@@ -91,6 +97,8 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
         }
 
         postRepository.delete(post);
+
+        log.info("NickName : "+post.getWriter().getNickname()+" -> Promotional Post 삭제");
     }
 
     private void checkAuthority(PromotionalPost post, PostErrorCode postErrorCode){

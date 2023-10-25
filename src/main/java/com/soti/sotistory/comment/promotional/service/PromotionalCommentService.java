@@ -12,9 +12,11 @@ import com.soti.sotistory.post.exception.PostException;
 import com.soti.sotistory.post.promotional.repository.PromotionalPostRepository;
 import com.soti.sotistory.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -35,6 +37,8 @@ public class PromotionalCommentService {
 
         //저장
         commentRepository.save(comment);
+
+        log.info("NickName : "+comment.getWriter().getNickname()+" -> Promotional Comment 생성");
     }
 
     public void update(Long commentId, PromotionalCommentUpdateDto commentUpdateDto) {
@@ -45,11 +49,15 @@ public class PromotionalCommentService {
         }
 
         commentUpdateDto.getContent().ifPresent(comment::updateContent);
+
+        log.info("NickName : "+comment.getWriter().getNickname()+" -> Promotional Comment 수정");
     }
 
     public void remove(Long commentId) {
         PromotionalComment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentException(CommentErrorCode.NOT_POUND_COMMENT));
 
         commentRepository.delete(comment);
+
+        log.info("NickName : "+comment.getWriter().getNickname()+" -> Promotional Comment 삭제");
     }
 }

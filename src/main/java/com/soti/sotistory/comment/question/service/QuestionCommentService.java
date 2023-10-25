@@ -14,12 +14,14 @@ import com.soti.sotistory.post.question.repository.QuestionPostRepository;
 import com.soti.sotistory.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import nonapi.io.github.classgraph.utils.LogNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -40,6 +42,8 @@ public class QuestionCommentService {
 
         //저장
         commentRepository.save(comment);
+
+        log.info("NickName : "+comment.getWriter().getNickname()+" -> Question Comment 작성");
     }
 
     public void update(Long commentId, QuestionCommentUpdateDto commentUpdateDto) {
@@ -50,11 +54,15 @@ public class QuestionCommentService {
         }
 
         commentUpdateDto.getContent().ifPresent(comment::updateContent);
+
+        log.info("NickName : "+comment.getWriter().getNickname()+" -> Question Comment 수정");
     }
 
     public void remove(Long commentId) {
         QuestionComment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentException(CommentErrorCode.NOT_POUND_COMMENT));
 
         commentRepository.delete(comment);
+
+        log.info("NickName : "+comment.getWriter().getNickname()+" -> Question Comment 삭제");
     }
 }

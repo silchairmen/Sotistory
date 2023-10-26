@@ -16,6 +16,6 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute
     public void logging(){
-        LogUtil.logInfo(request.getRequestURI(), request.getMethod());
+        LogUtil.logInfo(request.getRemoteAddr(), request.getRequestURI(), request.getMethod());
     }
 }

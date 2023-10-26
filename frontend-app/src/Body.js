@@ -9,6 +9,7 @@ import Intro from './routes/intro/index';
 import BoardEditor from "./components/board/BoardEditor";
 import TestPage from "./routes/TestPage"
 import Boardmodifier from "./components/board/Boardmodifier";
+import Noticeboard from "./routes/notice/noticeboard"
 const { Content } = Layout;
 const contentStyle = {
   textAlign: 'center',
@@ -25,6 +26,7 @@ function Body() {
       <Layout>
           <Routes>
             <Route path="/FreeBoard" element={<Content style={contentStyle}><FreeBoard /></Content>} />
+            <Route path="/notice" element={<Content style={contentStyle}><Noticeboard /></Content>} />
             <Route path="/FreeBoard/:id" element={<Content style={contentStyle}><FreeBoardInfo /></Content>} />
             <Route path="/SignIn" element={<Content style={contentStyle}><SignIn /></Content>} />
             <Route path="/SignUp" element={<Content style={contentStyle}><SignUp /></Content>} />

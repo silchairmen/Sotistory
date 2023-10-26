@@ -12,11 +12,10 @@ import com.soti.sotistory.post.exception.PostException;
 import com.soti.sotistory.post.promotional.repository.PromotionalPostRepository;
 import com.soti.sotistory.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
+
 @Service
 @RequiredArgsConstructor
 @Transactional

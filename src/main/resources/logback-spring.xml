@@ -9,9 +9,9 @@
 
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>D:/logs/application.log</file> <!--파일 저장 위치 지정-->
+        <file>/var/log/soti/application.log</file> <!--파일 저장 위치 지정-->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>D:/logs/application-%d{yyyy-MM-dd}-%i.log</fileNamePattern> <!--파일 이름 정책 설정-->
+            <fileNamePattern>/var/log/soti/application-%d{yyyy-MM-dd}-%i.log</fileNamePattern> <!--파일 이름 정책 설정-->
             <maxFileSize>50MB</maxFileSize> <!--파일 사이즈 설정-->
             <maxHistory>7</maxHistory> <!--파일 최대 갯수 설정-->
         </rollingPolicy>

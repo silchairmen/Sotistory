@@ -1,6 +1,6 @@
   import { useEffect, useState } from "react";
   import axios from "axios";
-  import BoardList from "./BoardList";
+  import BoardList from "../board/BoardList";
   import Paginate from "../Paginate";
   import { useSelector} from "react-redux";
   import Search from "../Search";
@@ -8,7 +8,9 @@
   import LoadingOverlay from 'react-loading-overlay';
   import { Button } from "@mui/material";
   import { useNavigate,useLocation } from "react-router-dom";
-  import '../../css/boardcss.css';
+  import '../../css/noticeboard.css';
+  import image from "../../img/1.png"
+  import TruncateText from '../TruncateText'
 
 
   const H1 = styled.h1`
@@ -73,48 +75,29 @@
     >
       <ContainerFragment>
           <ContainerFragment>
-          <div class="board_wrap">
-        <div class="board_title">
-            <strong>Q&A 게시판</strong>
-            <p>Example</p>
-        </div>
-        <div class="board_list_wrap">
-            <div class="board_list">
-                <div class="top">
-                    <div class="num">번호</div>
-                    <div class="titlesa">제목</div>
-                    <div class="writer">글쓴이</div>
-                    <div class="date">작성일</div>
-                    <div class="count">응답</div>
-                </div>
-                  {paginatedData.map((boardDetail) => {
-                    if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
-                      console.log(boardDetail);
-                      return (
-                        <div>
-                        
-                          <div class="num">{boardDetail.postId}</div>
-                          <div class="titles" type="primary" onClick={() => {navigate(`/FreeBoard/${boardDetail.postId}`)}}>{boardDetail.title}</div>
-                          <div class="writer">{boardDetail.author}</div>
-                          <div class="date">{boardDetail.regtime}</div>
-                          <div class="count">{boardDetail.count}</div>
-                        </div>
-                    );
-                    }
-                  })}
-                  
+            <center><h1>공지사항</h1></center>
+            <center>지금 SOTI의 공지사항을 확인하세요!</center>
+            <br />
+            <div class="gallery">
+            {paginatedData.map((boardDetail) => {
+              if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
+                return (
+                  <div class="thumb">
+                    <div class="overlay"></div>
+                    <div class="title">
+                      <TruncateText text={boardDetail.title} maxLength={10} />
+                    </div>
+                    <div class="author">
+                      작성자 {boardDetail.author}
+                    </div>
+                    <div class="content">
+                      <TruncateText text={boardDetail.content} maxLength={100} />
+                    </div>
+                  </div>
+            );
+            }
+          })}
             </div>
-            <div class="bt_wrap">
-                <a href="FreeBoard/edit/post" class="on">등록</a>
-            </div>
-        </div>
-        <footer>
-          <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />
-          <Search/>
-        </footer>
-    </div>
-
-            
           </ContainerFragment>
       </ContainerFragment>
       </LoadingOverlay>

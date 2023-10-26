@@ -108,7 +108,7 @@ const Mainslide = () => {
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   return (
     <Carouselstyle>
-      <Carousel className="carousel-container" interval={4000} zIndex={1} autoPlay>
+      <Carousel className="carousel-container" interval={4000} zIndex={1} height={"100%"} autoPlay>
       {isMobile ? (
             mitemq.map((item, index) => (
               <Item key={index} item={item} />

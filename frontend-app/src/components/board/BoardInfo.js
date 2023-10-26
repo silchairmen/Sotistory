@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
-import '../../css/boardInfo.css';
+import '../../css/Board.css';
 
 const Board=styled.div`
   background-color:white;
@@ -43,34 +43,34 @@ function Boardinfo({address}) {
 
   return (
     <Board>
-      <div class="black-box"></div>
-        <div class="boardcontainer mt-5">
-                <div class="col-lg-8">
+      <div className="black-box"></div>
+        <div className="boardcontainer board_mt-5">
+                <div className="board_col-lg-8">
                     <article>
-                        <header class="mb-4c">
+                        <header className="board_mb-4c">
 
-                            <h1 class="fw-bolder mb-1">{boardInfo.title}</h1>
+                            <h1 className="board_fw-bolder board_mb-1">{boardInfo.title}</h1>
 
-                            <div class="text-muted fst-italic mb-2">작성자 {boardInfo.author}</div>
+                            <div className="board_text-muted board_fst-italic board_mb-2">작성자 {boardInfo.author}</div>
                             
                         </header>
                         
-                        <section class="mb-5">
-                          <div style={{ display: 'flex', justifyContent: 'left', marginBottom: '-17px'}}><h4><p class="mb-4" style={{color: 'gray',}}>본문</p></h4></div>
-                          <div class="textbox" dangerouslySetInnerHTML={{ __html: boardInfo.content }}></div>
+                        <section className="board_mb-5">
+                          <div style={{ display: 'flex', justifyContent: 'left', marginBottom: '-17px'}}><h4><p className="board_mb-4" style={{color: 'gray',}}>본문</p></h4></div>
+                          <div className="board_textbox" dangerouslySetInnerHTML={{ __html: boardInfo.content }}></div>
                         </section>
                     </article>
 
-                    <section class="mb-5s">
-                        <div class="bg-light">
+                    <section className="board_mb-5s">
+                        <div className="bg-light">
                             <div style={{ display: 'flex', justifyContent: 'left', marginBottom: '-17px'}}><h4><p style={{color: 'green',}}></p></h4></div>
-                                <form class="mb-4 ms-4"><textarea class="form-control" rows="3" placeholder="댓글을 입력해주세요."></textarea></form>
-                                <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}><h6><p style={{color: 'green',}}>작성</p></h6></div>
+                                <form className="board_mb-4 board_ms-4"><textarea className="board_form-control" rows="3" placeholder="댓글을 입력해주세요."></textarea></form>
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}><h6><p style={{color: 'green',fontSize:'15px'}}>작성</p></h6></div>
 
-                                <div class="d-flex mb-4s lh-1">
-                                    <div class="ms-3">
-                                        <div class="fw-bold"><p>작성자명</p></div>
-                                        <p class="fw-bold2">대댓글 내용</p>
+                                <div className="board_d-flex board_mb-4s board_lh-1">
+                                    <div className="board_ms-3">
+                                        <div className="board_fw-bold"><p>작성자명</p></div>
+                                        <p className="board_fw-bold2">대댓글 내용</p>
                                         
                                     </div>
                                 </div>

@@ -34,13 +34,13 @@ a {
     font-size: 1.4rem;
 }
 
-    .bt_wrap {
+    .board_button_wrap {
         margin-top: 0px;
         text-align: right;
         font-size: 0;
     }
 
-    .bt_wrap a {
+    .board_button_wrap a {
         display: inline-block;
         min-width: 10px;
         margin-left: 10px;
@@ -50,11 +50,11 @@ a {
         font-size: 1.4rem;
     }
 
-    .bt_wrap a:first-child {
+    .board_button_wrap a:first-child {
         margin-left: 0;
     }
 
-    .bt_wrap a.on {
+    .board_button_wrap a.on {
         background: #000;
         color: #fff;
     }

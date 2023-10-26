@@ -104,7 +104,7 @@
                   })}
                   
             </div>
-            <div class="bt_wrap">
+            <div class="board_button_wrap">
                 <a href="FreeBoard/edit/post" class="on">등록</a>
             </div>
         </div>

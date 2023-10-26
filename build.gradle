@@ -85,12 +85,3 @@ configurations {
 }
 //querydsl 추가 끝
 targetCompatibility = JavaVersion.VERSION_16
-
-bootJar {
-	mainClassName= 'com.soti.sotistory.SotistoryApplication'
-}
-
-bootRun {
-	String activeProfile = System.properties['application.properties']
-	systemProperty 'application.properties', activeProfile
-}

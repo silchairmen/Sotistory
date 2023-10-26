@@ -113,7 +113,7 @@ const TestPage=()=> {
                 </ul>
                 <div></div>
                   <div className='profile__box'>
-                    <img className='profile' src={photo} alt='profile'/>
+                    <img className='profile_a' src={photo} alt='profile_a'/>
                   </div>
                   <button className='img_button'>이미지 변경</button>
                   <div className="login__inbox1">
@@ -177,7 +177,7 @@ const TestPage=()=> {
                 <p style={{position:"absolute",fontSize:"20px",left:"28%"}}>[직급]{nickname}</p>
                   <div className='profile__box'>
                     
-                    <img className='profile' src={photo} alt='profile'/>
+                    <img className='profile_a' src={photo} alt='profile'/>
                   </div>
                   <button className='img_button'>이미지 변경</button>
                   <div className="login__inbox1">

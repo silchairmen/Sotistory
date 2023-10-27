@@ -3,6 +3,8 @@ package com.soti.sotistory.member.entity;
 import com.soti.sotistory.member.constant.Role;
 import com.soti.sotistory.member.dto.MemberDto;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -13,7 +15,6 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor // 매개변수가 없는 기본 생성자 추가
 @AllArgsConstructor // 모든 필드를 가지는 생성자 추가
-@ToString
 public class Member {
 
     //고유 id
@@ -46,10 +47,12 @@ public class Member {
     //주소
     private String address;
 
-    //관심 분야
-    private String interests;
-
     //직급
     @Enumerated(EnumType.STRING)
     @Builder.Default private Role role = Role.USER;
+
+    //마이페이지(프로필)
+    @OneToOne(mappedBy = "member")
+    private Profile profile;
+
 }

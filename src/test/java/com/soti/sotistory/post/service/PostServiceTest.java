@@ -48,7 +48,6 @@ class PostServiceTest {
             .email("test@soti.com")
             .password("test")
             .address("test")
-            .interests("hack")
             .build();
     Category category = Category.builder().categoryName("free_Board").build();
 

@@ -40,7 +40,7 @@ const TestPage=()=> {
     data.append('interests',interest);
     const passData = new FormData();
     passData.append('password',password);
-    const response = await axios.put('http://localhost:80/api/member/myPage/edit',data, {withCredentials: true});
+    const response = await axios.put('http://localhost:80/api/auth/myPage/edit',data, {withCredentials: true});
     //const responsePass = await axios.post('http://localhost:80/api/member/myPage/edit',passData, {withCredentials: true});
           // 응답 처리
       
@@ -66,7 +66,7 @@ const TestPage=()=> {
         navbar.classList.add('bg-gogo');
       }
     const loadMyData= async()=>{
-      const response = await axios.get('http://localhost:80/api/member/myPage', {withCredentials: true});
+      const response = await axios.get('http://localhost:80/api/auth/myPage', {withCredentials: true});
       if (response.data.status===200){
         setNickname(response.data.memberInfo.nickname);
         setName(response.data.memberInfo.name);

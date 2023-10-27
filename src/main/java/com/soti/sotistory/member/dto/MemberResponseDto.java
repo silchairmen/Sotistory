@@ -5,6 +5,8 @@ import com.soti.sotistory.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter @Builder
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class MemberResponseDto {
@@ -14,6 +16,11 @@ public class MemberResponseDto {
     private String message;
 
     MemberDto memberInfo;
+
+    List<MemberInfoProfileDto> allMemberInfo;
+
+    MemberProfileDto memberProfileDto;
+
     public void setMemberInfo(Member member){
         memberInfo = new MemberDto();
         this.memberInfo.setEmail(member.getEmail());
@@ -21,7 +28,14 @@ public class MemberResponseDto {
         this.memberInfo.setName(member.getName());
         this.memberInfo.setJoinYear(member.getJoinYear());
         this.memberInfo.setStuNum(member.getStuNum());
-        this.memberInfo.setInterests(member.getInterests());
         this.memberInfo.setAddress(member.getAddress());
+    }
+
+    public void setAllMemberInfoProfileDto(List<MemberInfoProfileDto> memberInfoProfileDto){
+        this.allMemberInfo = memberInfoProfileDto;
+    }
+
+    public void setMemberProfileDto(MemberProfileDto memberProfileDto){
+        this.memberProfileDto = memberProfileDto;
     }
 }

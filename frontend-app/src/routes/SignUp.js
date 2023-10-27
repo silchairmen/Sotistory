@@ -112,7 +112,7 @@ export default function SignUp() {
       formData.append('interests',interests);
       formData.append('address',selectedAddress.address);
       // 회원가입 요청 보내기
-      const response = await axios.post('http://192.168.0.16:8888/api/auth/join', formData);
+      const response = await axios.post('http://localhost:80/api/auth/join', formData);
       if (nickNameduplicationError||emailduplicationError){
         setSendData("중복되는 입력값이 있습니다.");
         setShowSuccessAlert('error');

@@ -31,7 +31,7 @@ function MenuExampleSizeLarge() {
   const dispatch=useDispatch();
   useEffect(() => {
     async function session(){
-      const response = await axios.get('http://192.168.0.16:8888/api/auth/validate', {withCredentials: true});
+      const response = await axios.get('http://localhost:80/api/auth/validate', {withCredentials: true});
       if(response.data.status === 200){
         dispatch({type:"LOGIN_SUCCESS"});
         
@@ -53,7 +53,7 @@ function MenuExampleSizeLarge() {
     window.addEventListener('scroll', handleScroll);
 
     async function findNickname(){
-        const response = await axios.get('http://192.168.0.16:8888/api/auth/validate', {withCredentials: true});
+        const response = await axios.get('http://localhost:80/api/auth/validate', {withCredentials: true});
         if(response.data.status === 200){
           setNickname(response.data.message);
         }else{
@@ -88,7 +88,7 @@ function MenuExampleSizeLarge() {
   };
   const handleLogOut =async() =>{
     setAuth(false);
-    await axios.get('http://192.168.0.16:8888/api/auth/logout', {withCredentials: true});
+    await axios.get('http://localhost:80/api/auth/logout', {withCredentials: true});
     window.location.reload();
   };
 

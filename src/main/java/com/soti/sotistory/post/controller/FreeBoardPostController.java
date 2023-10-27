@@ -25,7 +25,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-    @RequestMapping(value = "/api/post/freeBoard")
+@RequestMapping(value = "/api/post/freeBoard")
 @RequiredArgsConstructor
 public class FreeBoardPostController {
 

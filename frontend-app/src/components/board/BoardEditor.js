@@ -118,11 +118,9 @@ const BoardEditor = () => {
         const titles = boardTitle;
         try{
             const data = new FormData();
-
             data.append('content',editorToHtml);
             data.append('title',titles);
-            data.append('postType',"NORMAL");
-            const response = await axios.post('http://localhost:80/api/post/freeBoard/create', data, {withCredentials: true});
+            const response = await axios.post('http://192.168.0.16:8888/api/question/save', data, {withCredentials: true});
             window.location.href = '/Freeboard';
             // 응답 처리
             if (response.data.status === 200) {
@@ -166,6 +164,8 @@ const BoardEditor = () => {
                         height: "50px",
                         width: "55px",
                         fontWeight: "bold",
+                        margin: "10px",
+                        boxShadow: "0 5px 10px rgba(0, 0, 0, 0.3)",
                     }}
                     className="submit-button"
                     onClick={submitReview}

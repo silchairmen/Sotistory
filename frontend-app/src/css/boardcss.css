@@ -45,13 +45,13 @@
     width: 45%;
 }
 .writer {
-    width: 20%;
-}
-.date {
     width: 15%;
 }
+.date {
+    width: 25%;
+}
 .count {
-    width: 10%;
+    width: 5%;
 }
 
 

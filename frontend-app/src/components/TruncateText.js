@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function TruncateText({ text, maxLength }) {
+function TruncateText({ text, maxLength, size }) {
   const [truncatedText, setTruncatedText] = useState(text);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ function TruncateText({ text, maxLength }) {
   }, [text, maxLength]);
 
   return (
-    <div style={{fontSize: '16px', lineHeight: '1'}} dangerouslySetInnerHTML={{ __html: truncatedText }} />
+    <div style={{fontSize: size, lineHeight: '1'}} dangerouslySetInnerHTML={{ __html: truncatedText }} />
   );
 }
 

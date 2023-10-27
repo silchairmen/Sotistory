@@ -38,12 +38,6 @@
     useEffect(() => {
       getBoard();
       const navbar = document.querySelector('#navbar');
-      const thumbs = document.querySelectorAll(".thumb");
-      thumbs.forEach((thumb, index) => {
-        setTimeout(() => {
-          thumb.classList.add("animate"); // animate 클래스 추가
-        }, 2000 * index); // 0.2초 간격으로 애니메이션 시작
-      });
       if (navbar) {
         navbar.classList.add('bg-gogo');
       }
@@ -51,13 +45,12 @@
 
     const getBoard = async () => {
       try {
-        const resp = await axios.get("http://192.168.0.16:8888/api/question/");
-        console.log(resp);
-        setBoardData(resp.data.pageInfo.content);
+        const resp = await axios.get("http://192.168.0.16:8888/api/promotional/");
+        console.log(resp.data);
+        setBoardData(resp.data.postInfoDtoList);
         setLoading(false); // Set loading to false after data is fetched
-        console.log(resp.data.pageInfo);
-        setLimit(resp.data.pageInfo.pagesize);
-        setTotal(resp.data.pageInfo.totalPages);
+        setLimit(resp.data.totalCount);
+        setTotal(resp.data.totalPages);
       } catch (error) {
         console.error("Error fetching board data:", error);
         setLoading(false); // Set loading to false on error as well
@@ -73,6 +66,11 @@
       console.log(boardData);
       console.log(paginatedData);
     }
+
+    const handleRegpage=()=> {
+      window.location.href="/Notice/Edit/post"
+    }
+
     const paginatedData = boardData.slice(0, boardData.totalElements);
     return (
       <LoadingOverlay
@@ -81,31 +79,33 @@
       text='게시판을 불러오는 중입니다.'
     >
       <ContainerFragment>
-          <ContainerFragment>
-            <center><h1>공지사항</h1></center>
+            <center><h1>홍보 게시판</h1></center>
             <center>지금 SOTI의 공지사항을 확인하세요!</center>
-            <br />
+            <div class="reg_button" onClick={handleRegpage}>등록</div>
             <div class="gallery">
             {paginatedData.map((boardDetail, index) => {
               if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
                 return (
-                  <div className={`thumb ${index % 2 === 0 ? 'even' : 'odd'}`}>
+                  <div className="thumb">
                     <div class="overlay"></div>
                     <div class="title">
-                      <TruncateText text={boardDetail.title} maxLength={10} />
+                      <TruncateText text={boardDetail.title} maxLength={10} size={16} />
                     </div>
                     <div class="author">
-                      작성자 {boardDetail.author}
+                      작성자 {boardDetail.writer}
                     </div>
                     <div class="content">
-                      <TruncateText text={boardDetail.content} maxLength={100} />
+                      <TruncateText text={boardDetail.content} maxLength={100} size={16} />
+                    </div>
+                    <div class="regdate">
+                      작성일 {boardDetail.regDate}
                     </div>
                   </div>
             );
             }
           })}
             </div>
-          </ContainerFragment>
+            
       </ContainerFragment>
       </LoadingOverlay>
 

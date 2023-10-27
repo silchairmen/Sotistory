@@ -51,7 +51,7 @@ function Boardinfo({address}) {
 
                             <h1 className="board_fw-bolder board_mb-1">{boardInfo.title}</h1>
 
-                            <div className="board_text-muted board_fst-italic board_mb-2">작성자 {boardInfo.author}</div>
+                            <div className="board_text-muted board_fst-italic board_mb-2">작성자 {boardInfo.writer}</div>
                             
                         </header>
                         

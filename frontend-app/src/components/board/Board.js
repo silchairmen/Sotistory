@@ -32,6 +32,8 @@
     const [total, setTotal] = useState(1);
     const loaddata=useSelector(state => state.search.keyword);
     const loadtype=useSelector(state => state.search.type);
+    const [postId,setPostId] = useState(1);
+    const [numCount,setnumCount] = useState(2);
 
     useEffect(() => {
       getBoard();
@@ -42,13 +44,13 @@
     }, [address]);
 
     const getBoard = async () => {
+      const resp = await axios.get("http://192.168.0.16:8888/api/question/");
+      setBoardData(resp.data.postInfoDtoList)
+      setPostId(resp.data.postInfoDtoList.postId);
+      setLoading(false); // Set loading to false after data is fetched
+      setLimit(resp.data.postInfoDtoList.totalpages);
+      setTotal(resp.data.postInfoDtoList.totalCount);
       try {
-        const resp = await axios.get("http://localhost:80/api/post/freeBoard/posts");
-        setBoardData(resp.data.pageInfo.content);
-        setLoading(false); // Set loading to false after data is fetched
-        console.log(resp.data.pageInfo);
-        setLimit(resp.data.pageInfo.pagesize);
-        setTotal(resp.data.pageInfo.totalPages);
       } catch (error) {
         console.error("Error fetching board data:", error);
         setLoading(false); // Set loading to false on error as well
@@ -79,6 +81,7 @@
     >
       <ContainerFragment>
           <ContainerFragment>
+            <div class="loadingset">
           <div class="board_wrap">
         <div class="board_titles">
             <strong>Q&A 게시판</strong>
@@ -87,7 +90,7 @@
         <div class="board_list_wrap">
           <div class="board_title">
               <div class="top">
-                  <div class="num">번호</div>
+                  <div class="num">비밀</div>
                   <div class="titles">제목</div>
                   <div class="writer">글쓴이</div>
                   <div class="date">작성일</div>
@@ -100,10 +103,11 @@
                       return (
                         <div class="board_middle">
                           <div class="middle">
-                            <div class="num">{boardDetail.postId}</div>
+                          {boardDetail.postType == "HIDDEN" && (<div class="num">Y</div>)}
+                          {boardDetail.postType != "HIDDEN" && (<div class="num">N</div>)}
                             <div class="titles" type="primary" onClick={() => {navigate(`/FreeBoard/${boardDetail.postId}`)}}>{boardDetail.title}</div>
-                            <div class="writer">{boardDetail.author}</div>
-                            <div class="date">{boardDetail.regtime}</div>
+                            <div class="writer">{boardDetail.writer}</div>
+                            <div class="date">{boardDetail.createDate}</div>
                             <div class="count">{boardDetail.count}</div>
                           </div>
                         </div>
@@ -113,14 +117,14 @@
             <div class="board_button_wrap" onClick={handleWrite}>
               등록
             </div>
+            <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />
+            <Search/>
         </div>
-        <footer>
-          <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />
-          <Search/>
-        </footer>
     </div>
+    </div>
+    <footer>
 
-            
+    </footer>
           </ContainerFragment>
       </ContainerFragment>
       </LoadingOverlay>

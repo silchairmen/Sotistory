@@ -105,15 +105,15 @@ const TestPage=()=> {
               <form action="" className="login__register" id="login-up">
                 <ul className='list'>
                   <li className='list__box'onClick={()=>handleMenuClick("0")}>
-                    <img className='menu__profile' src={profile} alt='profile_menu_img'/>
+                    <img className='menu__profile' src={profile} alt='menu__profile'/>
                   </li>
                   <li className='list__box'onClick={()=>handleMenuClick("1")}>
                     <p className='list__font' >자기 소개</p>
                   </li>
                 </ul>
                 <div></div>
-                  <div className='profile__box'>
-                    <img className='profile_a' src={photo} alt='profile_a'/>
+                  <div className='mypage_profile__box'>
+                    <img className='mypage_profile' src={photo} alt='mypage_profile'/>
                   </div>
                   <button className='img_button'>이미지 변경</button>
                   <div className="login__inbox1">
@@ -175,9 +175,9 @@ const TestPage=()=> {
                 </ul>
                 <div></div>
                 <p style={{position:"absolute",fontSize:"20px",left:"28%"}}>[직급]{nickname}</p>
-                  <div className='profile__box'>
+                  <div className='mypage_profile__box'>
                     
-                    <img className='profile_a' src={photo} alt='profile'/>
+                    <img className='mypage_profile' src={photo} alt='mypage_profile'/>
                   </div>
                   <button className='img_button'>이미지 변경</button>
                   <div className="login__inbox1">

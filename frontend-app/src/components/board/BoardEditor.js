@@ -26,16 +26,23 @@ const MainHeader = styled.h1`
 const EditorForm = styled.div`
     width:100%;
     height:80%;
-    border : 1px solid #444444;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
     border-radius: 10px;
     background-color: white;
+    padding: 15px;
     
 `
 
+
 const TextField = styled.textarea`
     width: 60%;
-    height: auto;
-    border: 1px solid #f0e8e8;
+    height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    outline: none;
     resize: none;
     font-size: 20px;
     text-align:center;
@@ -43,6 +50,7 @@ const TextField = styled.textarea`
     line-height: normal;
     justify-content: center; /* 가로 방향 가운데 정렬 */
     align-items: center; /* 세로 방향 가운데 정렬 */
+    padding: 10px;
 `
 
 
@@ -149,13 +157,15 @@ const BoardEditor = () => {
                     style={{
                         backgroundColor: "black",
                         color: "white",
-                        padding: "10px 20px",
                         border: "none",
                         borderRadius: "5px",
                         cursor: "pointer",
                         display: "inline-block",
                         marginBottom: "5px", // 아래쪽 여백을 설정
-                        float: "right"
+                        float: "right",
+                        height: "50px",
+                        width: "55px",
+                        fontWeight: "bold",
                     }}
                     className="submit-button"
                     onClick={submitReview}

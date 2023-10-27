@@ -7,7 +7,26 @@
     outline:1px solid #ddd;
     box-shadow: 0 0px 5px rgba(0, 0, 0, 1);
     margin: 20px;
+
+    animation-name: moveRight; /* 애니메이션 이름 정의 */
+    animation-duration: 0.4s; /* 애니메이션 지속 시간 (4초) */
+    animation-timing-function: linear; /* 애니메이션 타이밍 함수 (선형) */
+    animation-iteration-count: 1;
+    animation-direction: normal; /* 애니메이션 방향 (정방향) */
+
+}
+
+@keyframes moveRight {
+    0% {
+      transform: translateX(-10px); /* 시작 위치 */
+      opacity: 0.4;
     }
+    100% {
+      transform: translateX(0.5px); /* 오른쪽으로 이동 (예: 100px) */
+      opacity: 1;
+    }
+  }
+
 .thumb:hover .overlay {
     opacity:0!important;
     cursor:pointer;

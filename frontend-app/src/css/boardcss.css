@@ -12,7 +12,7 @@
 
 
 .top {
-    width: 75%;
+    width: 60%;
     height: 10%;
     display: flex;
     white-space: nowrap;
@@ -24,7 +24,7 @@
 }
 
 .middle {
-    width: 75%;
+    width: 60%;
     height: 10%;
     display: flex;
     white-space: nowrap;
@@ -96,4 +96,10 @@
 
 .board_button_wrap:hover {
     cursor: pointer;
+}
+
+.loadingset {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
 }

@@ -167,7 +167,7 @@ public class MemberInfoController {
         }
 
         //문제가 없다면 400을 리턴
-        return ResponseEntity.badRequest().body(MemberResponseDto.builder().status(400).message("수정 성공").build());
+        return ResponseEntity.ok().body(MemberResponseDto.builder().status(400).message("수정 성공").build());
     }
 
     @GetMapping("/profile")

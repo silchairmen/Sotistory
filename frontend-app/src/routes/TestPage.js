@@ -15,10 +15,12 @@ const TestPage=()=> {
   const [interest,setInterest] = useState("");
   const [password,setPassword] = useState("");
   const [menuNum, setMenuNum] = useState("0");
-  const [inputPassword,setInputPassword] = useState("");
   const [tistory,setTistory] = useState("");
   const [github,setGithub] = useState("");
   const [dreamhack,setDreamhack] = useState("");
+  const [position,setPosition] = useState("");
+  const [skills,setSkills] = useState("");
+  const [award,setAward] = useState("");
 
 
   const MypageHr = styled.hr`
@@ -29,34 +31,31 @@ const TestPage=()=> {
   `
 
   const handleSave = async(event) => {
+    console.log(event.target.form);
     event.preventDefault();
-    const data = new FormData();
-    data.append('nickname',nickname);
-    data.append('name',name);
-    data.append('joinYear',joinyear);
-    data.append('stuNum',stunum);
-    data.append('email',email);
-    data.append('address',address);
-    data.append('interests',interest);
-    const passData = new FormData();
-    passData.append('password',password);
-    const response = await axios.put('http://localhost:80/api/auth/myPage/edit',data, {withCredentials: true});
-    //const responsePass = await axios.post('http://localhost:80/api/member/myPage/edit',passData, {withCredentials: true});
-          // 응답 처리
+    if (menuNum==="0"){
+      const data = new FormData(event.currentTarget.form);
+      const response = await axios.put(`http://localhost:80/api/member/info/edit`,data, {withCredentials: true});
+      if (response.data.status === 200) {          // 응답 처리
+        console.log("저장성공");
+      } else{
+        console.log(response.data);
+          // ... (에러 처리)
+        }
+    }else if(menuNum==="1"){
+      const data = new FormData(event.currentTarget.form);
+      const response = await axios.put(`http://localhost:80/api/member/profile/edit`,data, {withCredentials: true});
+      if (response.data.status === 400) {          // 응답 처리
+        console.log("저장성공");
+      } else{
+        console.log(response.data);
+          // ... (에러 처리)
+        }
+    }
+
       
-    if (response.data.status === 200) {
-    } else{
-      console.log(response.data);
-        // ... (에러 처리)
-      }
+    
   };
-  const receiveData= useCallback(()=>{
-    console.log(password);
-    handleSave();
-  })
-  const handleSavePassword = (inputPassword)=>{
-    setPassword(inputPassword);
-  }
   const handleMenuClick = (num) => {
     setMenuNum(num);
   }
@@ -66,43 +65,70 @@ const TestPage=()=> {
         navbar.classList.add('bg-gogo');
       }
     const loadMyData= async()=>{
-      const response = await axios.get('http://localhost:80/api/auth/myPage', {withCredentials: true});
-      if (response.data.status===200){
-        setNickname(response.data.memberInfo.nickname);
-        setName(response.data.memberInfo.name);
-        setJoinyear(response.data.memberInfo.joinYear);
-        setStunum(response.data.memberInfo.stuNum);
-        setEmail(response.data.memberInfo.email);
-        setAddress(response.data.memberInfo.address);
-        setInterest(response.data.memberInfo.interests);
+      if (menuNum==="0"){
+        const response = await axios.get('http://localhost:80/api/member/info', {withCredentials: true});
+        if (response.data.status===200){
+          setNickname(response.data.memberInfo.nickname);
+          setName(response.data.memberInfo.name);
+          setJoinyear(response.data.memberInfo.joinYear);
+          setStunum(response.data.memberInfo.stuNum);
+          setEmail(response.data.memberInfo.email);
+          setAddress(response.data.memberInfo.address);
+          setInterest(response.data.memberInfo.interests);
+        }
+      }else if(menuNum==="1"){
+        const response = await axios.get('http://localhost:80/api/member/profile', {withCredentials: true});
+        if (response.data.status===200){
+          setAward(response.data.memberProfileDto.awards);
+          setDreamhack(response.data.memberProfileDto.dreamhackAddr);
+          setGithub(response.data.memberProfileDto.githubAddr);
+          setSkills(response.data.memberProfileDto.skills);
+          setTistory(response.data.memberProfileDto.tistoryAddr);
+          setPosition(response.data.memberProfileDto.position);
+        }
       }
+      
+
     }
     loadMyData();
-  },[]);
-  const handleNicknameChange=(e)=>{
-    setNickname(e.target.value);
-  }
-  const handleNameChange=(e)=>{
-    setName(e.target.value);
-  }
-  const handleJoinYearChange=(e)=>{
-    setJoinyear(e.target.value);
-  }
-  const handleStuNumChange=(e)=>{
-    setStunum(e.target.value);
-  }
-  const handleAddressChange=(e)=>{
-    setAddress(e.target.value);
-  }
-  const handleTistoryChange=(e)=>{
-    setTistory(e.target.value);
-  }
-  const handleGithubChange=(e)=>{
-    setGithub(e.target.value);
-  }
-  const handleDreamhackChange=(e)=>{
-    setDreamhack(e.target.value);
-  }
+  },[menuNum]);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "nickname":
+        setNickname(value);
+        break;
+      case "name":
+        setName(value);
+        break;
+      case "joinYear":
+        setJoinyear(value);
+        break;
+      case "stuNum":
+        setStunum(value);
+        break;
+      case "address":
+        setAddress(value);
+        break;
+      case "tistoryAddr":
+        setTistory(value);
+        break;
+      case "githubAddr":
+        setGithub(value);
+        break;
+      case "dreamhackAddr":
+        setDreamhack(value);
+        break;
+      case "skills":
+        setSkills(value);
+        break;
+      case "awards":
+        setAward(value);
+        break;
+      default:
+        break;
+    }
+  };
   if (menuNum==="0"){
     return (
       <div className='background'>
@@ -126,30 +152,31 @@ const TestPage=()=> {
               <div className="menu__mypage__inbox">
                 <p className='menu__mypage__p'>닉네임</p>
                 <MypageHr/>
-                <input type="text" id="nickname" className="menu__mypage__input" value={nickname} onChange={handleNicknameChange}/>
+                <input type="text" name='nickname' id="nickname" className="menu__mypage__input" value={nickname} onChange={handleInputChange}/>
               </div>
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>이름</p>
               <MypageHr/>
-              <input type="text" id="name" className="menu__mypage__input" value={name} onChange={handleNameChange}/>
+              <input type="text" name='name' id="name" className="menu__mypage__input" value={name} onChange={handleInputChange}/>
               </div>
               <div className='menu__mypage__inbox'>
               <p className='menu__mypage__p'>기수</p>
               <MypageHr/>
-              <input type="text" id="joinyear" className="menu__mypage__input" value={joinyear+"기"} onChange={handleJoinYearChange}/>
+              <input type="text" name='joinYear' id="joinyear" className="menu__mypage__input" value={joinyear} onChange={handleInputChange}/>
               </div>
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>학번</p>
               <MypageHr/>
-              <input type="text" id="stunum" className="menu__mypage__input" value={stunum} onChange={handleStuNumChange}/>
+              <input type="text" name='stuNum' id="stunum" className="menu__mypage__input" value={stunum} onChange={handleInputChange}/>
               </div>
               <div className="menu__mypage__inbox">
                 <p className='menu__mypage__p'>거주지</p>
                 <MypageHr/>
-              <input type="text" id="address" className="menu__mypage__input" value={address} onChange={handleAddressChange}/>
+              <input type="text" name='address' id="address" className="menu__mypage__input" value={address} onChange={handleInputChange}/>
               </div>
               </div>
-              <a className='menu__mypage__button' onClick={handleSave} style={{left:"25%",width:"72%"}}>저장하기</a>
+              <button className='menu__mypage__button' type='submit' onClick={handleSave} style={{left:"25%",width:"72%",cursor:"pointer"}}>저장하기</button>
+              <input type="hidden" name='email' id="email" className="menu__mypage__input" value={email}/>
               </form>
             </div>
           </div>
@@ -174,42 +201,42 @@ const TestPage=()=> {
                   </li>
                 </ul>
                 <div></div>
-                <p style={{position:"absolute",fontSize:"20px",left:"28%"}}>[직급]{nickname}</p>
+                <p style={{position:"absolute",fontSize:"20px",left:"28%"}}>[{position}]{nickname}</p>
                   <div className='mypage_profile__box'>
                     
                     <img className='mypage_profile' src={photo} alt='mypage_profile'/>
                   </div>
                   <button className='img_button'>이미지 변경</button>
                   <div className="menu__mypage__inbox1">
-                    <p className='menu__mypage__p'>닉네임</p>
+                    <p className='menu__mypage__p'>스킬</p>
                     <MypageHr/>
-                    <input type="text" id="nickname" className="menu__mypage__input" value={nickname} onChange={handleNicknameChange}/>
+                    <input type="text" name='skills' id="skills" className="menu__mypage__input" value={skills} onChange={handleInputChange}/>
                   </div>
             <div className="menu__mypage__box" style={{marginLeft:"auto"}}>
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>티스토리</p>
               <MypageHr/>
-              <input type="text" id="tistory" className="menu__mypage__input" value={tistory} onChange={handleTistoryChange}/>
+              <input type="text" name='tistoryAddr' id="tistory" className="menu__mypage__input" value={tistory} onChange={handleInputChange}/>
               </div>
               <div className='menu__mypage__inbox'>
               <p className='menu__mypage__p'>깃허브</p>
               <MypageHr/>
-              <input type="text" id="github" className="menu__mypage__input" value={github} onChange={handleGithubChange}/>
+              <input type="text" name='githubAddr' id="github" className="menu__mypage__input" value={github} onChange={handleInputChange}/>
               </div>
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>드림핵</p>
               <MypageHr/>
-              <input type="text" id="dreamhack" className="menu__mypage__input" value={dreamhack} onChange={handleDreamhackChange}/>
+              <input type="text" name='dreamhackAddr' id="dreamhack" className="menu__mypage__input" value={dreamhack} onChange={handleInputChange}/>
               </div>
               <div className="menu__mypage__inbox">
                 <p className='menu__mypage__p'>수상 이력</p>
                 <MypageHr/>
-              <input type="text" id="address" className="menu__mypage__input" value={address} onChange={handleAddressChange}/>
+              <input type="text" name='awards' id="awards" className="menu__mypage__input" value={award} onChange={handleInputChange}/>
               </div>
               </div>
-                <a className='menu__mypage__button' onClick={handleSave} style={{left: "45em",width: "30%"}}>
+                <button className='menu__mypage__button' type='submit' onClick={handleSave} style={{left: "47em",width: "30%",cursor:"pointer"}}>
                   저장하기
-                </a>
+                </button>
               </form>
             </div>
           </div>

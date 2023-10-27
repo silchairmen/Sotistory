@@ -45,6 +45,7 @@ const Paragraph = styled.p`
   font-size: 20px;
   position: relative;
   //padding-left: 30px;
+  cursor: pointer;
 `;
 const Image = styled.img`
   width: 100%;
@@ -66,6 +67,16 @@ const Dreamhack = () => {
   const handleMouseLeave = () => {
     setShowCheckmarks((prev) => prev.map(() => false));
   };
+  const handleClickRanking = (index) => {
+    switch(index) {
+      case 2:
+        window.location.href = "https://dreamhack.io/ranking/wargame?scope=organization&filter=global&page=1&country&search=&name=%EC%9A%B0%EC%84%9D%EB%8C%80%ED%95%99%EA%B5%90&type=school";
+        break;
+      default:
+        break;
+    }
+  };
+  
 
   const animatedItem = {
     0: useScrollFadeIn('right', 1, 0),
@@ -87,6 +98,7 @@ const Dreamhack = () => {
             key={index}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}
+            onClick={()=>handleClickRanking(index)}
           >
             {showCheckmarks[index] && <Checkmark>✔</Checkmark>}
             {text}

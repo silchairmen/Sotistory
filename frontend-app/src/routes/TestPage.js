@@ -111,8 +111,8 @@ const TestPage=()=> {
         <div className="menu__mypage">
           <div className="menu__mypage__content">
             <div className="menu__mypage__forms">
-              <form action="" className="menu__mypage__register" id="menu__mypage-up">
-                <ul className='list'>
+              <form action="" className="menu__mypage__register" id="menu__mypage-up"style={{width:"500px"}}> 
+                <ul className='list' style={{width:"20%"}}>
                   <li className='list__box'onClick={()=>handleMenuClick("0")}>
                     <img className='menu__profile' src={profile} alt='menu__profile'/>
                   </li>
@@ -121,44 +121,35 @@ const TestPage=()=> {
                   </li>
                 </ul>
                 <div></div>
-                  <div className='mypage_profile__box'>
-                    <img className='mypage_profile' src={photo} alt='mypage_profile'/>
-                  </div>
-                  <button className='img_button'>이미지 변경</button>
-                  <div className="menu__mypage__inbox1">
-                    <p className='menu__mypage__p'>닉네임</p>
-                    <MypageHr/>
-                    <input type="text" id="nickname" className="menu__mypage__input" value={nickname} onChange={handleNicknameChange}/>
-                  </div>
-            <div className="menu__mypage__box">
+                  
+            <div className="menu__mypage__box" style={{marginLeft:"20%",width:"80%"}}>
+              <div className="menu__mypage__inbox">
+                <p className='menu__mypage__p'>닉네임</p>
+                <MypageHr/>
+                <input type="text" id="nickname" className="menu__mypage__input" value={nickname} onChange={handleNicknameChange}/>
+              </div>
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>이름</p>
               <MypageHr/>
               <input type="text" id="name" className="menu__mypage__input" value={name} onChange={handleNameChange}/>
               </div>
-              </div>
-            <div className="menu__mypage__box">
               <div className='menu__mypage__inbox'>
               <p className='menu__mypage__p'>기수</p>
               <MypageHr/>
-              <input type="text" id="joinyear" className="menu__mypage__input" value={joinyear} onChange={handleJoinYearChange}/>
+              <input type="text" id="joinyear" className="menu__mypage__input" value={joinyear+"기"} onChange={handleJoinYearChange}/>
               </div>
-            </div>
-            <div className="menu__mypage__box">
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>학번</p>
               <MypageHr/>
               <input type="text" id="stunum" className="menu__mypage__input" value={stunum} onChange={handleStuNumChange}/>
               </div>
-            </div>
-            <div className="menu__mypage__box">
               <div className="menu__mypage__inbox">
                 <p className='menu__mypage__p'>거주지</p>
                 <MypageHr/>
               <input type="text" id="address" className="menu__mypage__input" value={address} onChange={handleAddressChange}/>
               </div>
-            </div>
-                <MypageModal receiveData={receiveData}/>
+              </div>
+              <a className='menu__mypage__button' onClick={handleSave} style={{left:"25%",width:"72%"}}>저장하기</a>
               </form>
             </div>
           </div>
@@ -173,8 +164,8 @@ const TestPage=()=> {
         <div className="menu__mypage">
           <div className="menu__mypage__content">
             <div className="menu__mypage__forms">
-              <form action="" className="menu__mypage__register" id="menu__mypage-up">
-                <ul className='list'>
+              <form action="" className="menu__mypage__register" id="menu__mypage-up" style={{width:"1000px"}}>
+                <ul className='list' style={{width:"10%"}}>
                   <li className='list__box'onClick={()=>handleMenuClick("0")}>
                     <img className='menu__profile' src={profile} alt='profile_menu_img'/>
                   </li>
@@ -194,36 +185,29 @@ const TestPage=()=> {
                     <MypageHr/>
                     <input type="text" id="nickname" className="menu__mypage__input" value={nickname} onChange={handleNicknameChange}/>
                   </div>
-            <div className="menu__mypage__box">
+            <div className="menu__mypage__box" style={{marginLeft:"auto"}}>
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>티스토리</p>
               <MypageHr/>
               <input type="text" id="tistory" className="menu__mypage__input" value={tistory} onChange={handleTistoryChange}/>
               </div>
-              </div>
-            <div className="menu__mypage__box">
               <div className='menu__mypage__inbox'>
               <p className='menu__mypage__p'>깃허브</p>
               <MypageHr/>
               <input type="text" id="github" className="menu__mypage__input" value={github} onChange={handleGithubChange}/>
               </div>
-            </div>
-            <div className="menu__mypage__box">
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>드림핵</p>
               <MypageHr/>
               <input type="text" id="dreamhack" className="menu__mypage__input" value={dreamhack} onChange={handleDreamhackChange}/>
               </div>
-            </div>
-            <div className="menu__mypage__box">
               <div className="menu__mypage__inbox">
-                <p className='menu__mypage__p'>수상 \
-                이력</p>
+                <p className='menu__mypage__p'>수상 이력</p>
                 <MypageHr/>
               <input type="text" id="address" className="menu__mypage__input" value={address} onChange={handleAddressChange}/>
               </div>
-            </div>
-                <a className='menu__mypage__button' onClick={handleSave}>
+              </div>
+                <a className='menu__mypage__button' onClick={handleSave} style={{left: "45em",width: "30%"}}>
                   저장하기
                 </a>
               </form>

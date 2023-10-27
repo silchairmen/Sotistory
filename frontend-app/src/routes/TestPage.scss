@@ -124,7 +124,7 @@ img{
   }
   &__forms{
     position:absolute;
-    top: 37em;    // 전체 페이지 top 패딩
+    top: 35em;    // 전체 페이지 top 패딩
     left: 50%;
     transform: translate(-50%,-50%);
   }
@@ -154,6 +154,7 @@ img{
     border-radius:.5rem;
     width: 40%;
     margin-left: auto;
+
   }
   &__inbox{ //내부 inputbox
     padding:1.125rem 1rem;
@@ -162,6 +163,7 @@ img{
     border-radius:.5rem;
     width: 100%;
     text-align: left;
+    margin-bottom: .5rem;
   }
   &__inbox1{ //내부 inputbox 닉네임
     position: absolute;
@@ -172,7 +174,7 @@ img{
     width: 30%;
     text-align: left;
     left: 18%;
-    top: 61%;
+    top: 58.7%;
   }
   &__inbox2{ //내부 inputbox
     position: absolute;

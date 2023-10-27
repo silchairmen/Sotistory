@@ -13,6 +13,8 @@ public class QuestionPostInfoDto {
     private Long postId; //POST의 ID
     private String title;//제목
     private String postType;//업로드 파일 경로
+    private String createDate;
+    private String lastModifiedDate;
     private String writer;//작성자에 대한 정보
     private Long commentSize;
 
@@ -21,6 +23,8 @@ public class QuestionPostInfoDto {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.postType = post.getPostType().toString();
+        this.createDate = post.getCreateDate().toString();
+        this.lastModifiedDate = post.getLastModifiedDate().toString();
         this.writer = post.getWriter().getNickname();
         this.commentSize = (long) post.getCommentsList().size();
     }

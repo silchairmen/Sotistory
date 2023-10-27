@@ -12,6 +12,8 @@ public class PromotionalPostInfoDto {
     private String title;//제목
     private String content;//내용
     private String filePath;//업로드 파일 경로
+    private String createDate;
+    private String lastModifiedDate;
     private String writer;//작성자에 대한 정보
     private Long commentSize;
 
@@ -20,6 +22,8 @@ public class PromotionalPostInfoDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.filePath = post.getFilePath();
+        this.createDate = post.getCreateDate().toString();
+        this.lastModifiedDate = post.getLastModifiedDate().toString();
         this.writer = post.getWriter().getNickname();
         this.commentSize = (long) post.getCommentsList().size();
     }

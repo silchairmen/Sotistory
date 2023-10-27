@@ -16,6 +16,8 @@ public class QuestionPostDetailInfoDto {
     private String title;//제목
     private String content;//내용
     private String postType;//업로드 파일 경로
+    private String createDate;
+    private String lastModifiedDate;
     private String writer;//작성자에 대한 정보
     private List<QuestionCommentInfoDto> commentInfoDtoList;
 
@@ -24,6 +26,8 @@ public class QuestionPostDetailInfoDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.postType = post.getPostType().toString();
+        this.createDate = post.getCreateDate().toString();
+        this.lastModifiedDate = post.getLastModifiedDate().toString();
         this.writer = post.getWriter().getNickname();
 
         List<QuestionComment> comments = post.getCommentsList();

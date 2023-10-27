@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .deleteCookies();
 
-        http.cors();
+        http.cors().disable();
 
         //접근 권한 설정 관련
         http.authorizeRequests()

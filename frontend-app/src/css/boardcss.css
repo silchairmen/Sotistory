@@ -1,2 +1,99 @@
-@import url(boardstyle.css);
-@import url(boardmedia.css);
+.board_list_wrap {
+    height: 100%;
+    width: 100%;
+
+}
+
+.board_title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.top {
+    width: 75%;
+    height: 10%;
+    display: flex;
+    white-space: nowrap;
+    justify-content: center;
+    font-weight: bold;
+
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+
+}
+
+.middle {
+    width: 75%;
+    height: 10%;
+    display: flex;
+    white-space: nowrap;
+    justify-content: center;
+
+    animation-name: moveRight; /* 애니메이션 이름 정의 */
+    animation-duration: 0.4s; /* 애니메이션 지속 시간 (4초) */
+    animation-timing-function: linear; /* 애니메이션 타이밍 함수 (선형) */
+    animation-iteration-count: 1;
+    animation-direction: normal; /* 애니메이션 방향 (정방향) */
+
+}
+
+.num {
+    width: 10%;
+}
+.titles {
+    width: 45%;
+}
+.writer {
+    width: 20%;
+}
+.date {
+    width: 15%;
+}
+.count {
+    width: 10%;
+}
+
+
+
+.board_title {
+    text-align: center;
+}
+
+.board_middle {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+@keyframes moveRight {
+    0% {
+      transform: translateX(-10px); /* 시작 위치 */
+      opacity: 0.4;
+    }
+    100% {
+      transform: translateX(0.5px); /* 오른쪽으로 이동 (예: 100px) */
+      opacity: 1;
+    }
+  }
+
+.middle:hover {
+    background-color: rgb(239, 238, 238); /* 마우스 호버 상태에서 배경 색상 변경 */
+    cursor: pointer;
+}
+
+.board_button_wrap {
+    position: relative;
+    left: 85%;
+    width: 45px;
+    height: 42px;
+
+    background-color: black;
+    border: 1px solid rgba(0,0,0,1);
+    border-radius: 3px;
+    color: white;
+}
+
+.board_button_wrap:hover {
+    cursor: pointer;
+}

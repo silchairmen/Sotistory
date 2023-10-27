@@ -64,6 +64,12 @@
       console.log(boardData);
       console.log(paginatedData);
     }
+
+    const handleWrite=()=> {
+      window.location.href='FreeBoard/edit/post';
+    }
+
+
     const paginatedData = boardData.slice(0, boardData.totalElements);
     return (
       <LoadingOverlay
@@ -74,38 +80,38 @@
       <ContainerFragment>
           <ContainerFragment>
           <div class="board_wrap">
-        <div class="board_title">
+        <div class="board_titles">
             <strong>Q&A 게시판</strong>
             <p>Example</p>
         </div>
         <div class="board_list_wrap">
-            <div class="board_list">
-                <div class="top">
-                    <div class="num">번호</div>
-                    <div class="titlesa">제목</div>
-                    <div class="writer">글쓴이</div>
-                    <div class="date">작성일</div>
-                    <div class="count">응답</div>
-                </div>
+          <div class="board_title">
+              <div class="top">
+                  <div class="num">번호</div>
+                  <div class="titles">제목</div>
+                  <div class="writer">글쓴이</div>
+                  <div class="date">작성일</div>
+                  <div class="count">응답</div>
+              </div>
+          </div>
                   {paginatedData.map((boardDetail) => {
                     if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
                       console.log(boardDetail);
                       return (
-                        <div>
-                        
-                          <div class="num">{boardDetail.postId}</div>
-                          <div class="titles" type="primary" onClick={() => {navigate(`/FreeBoard/${boardDetail.postId}`)}}>{boardDetail.title}</div>
-                          <div class="writer">{boardDetail.author}</div>
-                          <div class="date">{boardDetail.regtime}</div>
-                          <div class="count">{boardDetail.count}</div>
+                        <div class="board_middle">
+                          <div class="middle">
+                            <div class="num">{boardDetail.postId}</div>
+                            <div class="titles" type="primary" onClick={() => {navigate(`/FreeBoard/${boardDetail.postId}`)}}>{boardDetail.title}</div>
+                            <div class="writer">{boardDetail.author}</div>
+                            <div class="date">{boardDetail.regtime}</div>
+                            <div class="count">{boardDetail.count}</div>
+                          </div>
                         </div>
                     );
                     }
                   })}
-                  
-            </div>
-            <div class="board_button_wrap">
-                <a href="FreeBoard/edit/post" class="on">등록</a>
+            <div class="board_button_wrap" onClick={handleWrite}>
+              등록
             </div>
         </div>
         <footer>

@@ -81,9 +81,13 @@ public class QuestionPostServiceImpl implements QuestionPostService {
     public QuestionPostDetailInfoDto getPostInfo(Long id, String password) {
         QuestionPost post = postRepository.findById(id).orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
         if(post.getPostType().equals(PostType.HIDDEN)){
-            if(post.getPassword().equals(password) || post.getWriter().getNickname().equals(SecurityUtil.getLoginUserNickname())){
-                return new QuestionPostDetailInfoDto(post);
-            } else {
+            try{
+                if(post.getPassword().equals(password) || post.getWriter().getNickname().equals(SecurityUtil.getLoginUserNickname())){
+                    return new QuestionPostDetailInfoDto(post);
+                } else {
+                    throw new PostException(PostErrorCode.NOT_AUTHORITY_POST);
+                }
+            } catch (Exception e){
                 throw new PostException(PostErrorCode.NOT_AUTHORITY_POST);
             }
         } else {

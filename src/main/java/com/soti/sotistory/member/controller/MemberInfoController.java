@@ -148,13 +148,13 @@ public class MemberInfoController {
             String originalFilename = file.getOriginalFilename();
             String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
             if (!extension.equals(".jpeg") && !extension.equals(".jpg")) {
-                return ResponseEntity.badRequest().body(MemberResponseDto.builder().status(400).message("JPEG 파일만 업로드 가능합니다").build());
+                return ResponseEntity.ok().body(MemberResponseDto.builder().status(400).message("JPEG 파일만 업로드 가능합니다").build());
             }
 
             // 파일 MIME 유형 확인
             String contentType = file.getContentType();
             if (contentType == null || !contentType.startsWith("image")) {
-                return ResponseEntity.badRequest().body(MemberResponseDto.builder().status(400).message("이미지 파일만 업로드 가능합니다").build());
+                return ResponseEntity.ok().body(MemberResponseDto.builder().status(400).message("이미지 파일만 업로드 가능합니다").build());
 
             }
         }
@@ -163,11 +163,11 @@ public class MemberInfoController {
         try{
             memberInfoService.saveProfile(file, profileDto, email);
         } catch (IOException e){
-            return ResponseEntity.badRequest().body(MemberResponseDto.builder().status(402).message("프로파일 수정 실패").build());
+            return ResponseEntity.ok().body(MemberResponseDto.builder().status(402).message("프로파일 수정 실패").build());
         }
 
         //문제가 없다면 400을 리턴
-        return ResponseEntity.badRequest().body(MemberResponseDto.builder().status(400).message("수정 성공").build());
+        return ResponseEntity.ok().body(MemberResponseDto.builder().status(400).message("수정 성공").build());
     }
 
     @GetMapping("/profile")

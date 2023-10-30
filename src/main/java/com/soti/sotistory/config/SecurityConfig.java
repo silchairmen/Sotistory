@@ -1,6 +1,9 @@
 package com.soti.sotistory.config;
 
+import com.soti.sotistory.config.handler.LoginFailureHandler;
+import com.soti.sotistory.config.handler.LoginSuccessHandler;
 import com.soti.sotistory.member.service.MemberAuthService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
 
 
 /**
@@ -52,7 +56,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) //메소드 단위에서 차단 Controller 에서 지정
+@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final LoginFailureHandler loginFailureHandler;
 
     @Autowired
     MemberAuthService memberAuthService;
@@ -62,19 +70,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //    csrf 토큰 해제, 로그인 관련 보안 설정
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().and().csrf().disable()
                 .formLogin()
+                .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailureHandler)
                 .loginPage("/api/auth/login")
                 .usernameParameter("email")
-                .failureUrl("/api/auth/login/error")
-                .defaultSuccessUrl("/api/auth/login/success")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
                 .logoutSuccessUrl("/")
                 .deleteCookies();
 
+
         http.cors().disable();
+
 
         //접근 권한 설정 관련
         http.authorizeRequests()

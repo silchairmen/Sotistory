@@ -15,6 +15,7 @@ public class PromotionalPostInfoDto {
     private String createDate;
     private String lastModifiedDate;
     private String writer;//작성자에 대한 정보
+    private String postType;
     private Long commentSize;
 
     public PromotionalPostInfoDto(PromotionalPost post) {
@@ -25,6 +26,7 @@ public class PromotionalPostInfoDto {
         this.createDate = post.getCreateDate().toString();
         this.lastModifiedDate = post.getLastModifiedDate().toString();
         this.writer = post.getWriter().getNickname();
+        this.postType = post.getPostType().toString();
         this.commentSize = (long) post.getCommentsList().size();
     }
 

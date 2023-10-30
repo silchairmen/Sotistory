@@ -3,6 +3,7 @@ package com.soti.sotistory.post.promotional.entity;
 import com.soti.sotistory.comment.promotional.entity.PromotionalComment;
 import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.post.BaseTimeEntity;
+import com.soti.sotistory.post.PostType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,11 +39,20 @@ public class PromotionalPost extends BaseTimeEntity {
     @Column(nullable = true)
     private String filePath;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PostType postType;
+
     @Builder
     public PromotionalPost(String title, String content, String filePath){
         this.title = title;
         this.content = content;
         this.filePath = filePath;
+    }
+
+    //작성시 자동으로 postType 기본으로 등록
+    public void setPostTypeNormal() {
+        this.postType=PostType.NORMAL;
     }
 
     //연관관계 설정

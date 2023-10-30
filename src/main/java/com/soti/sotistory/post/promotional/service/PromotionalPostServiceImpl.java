@@ -16,7 +16,6 @@ import com.soti.sotistory.post.promotional.repository.PromotionalPostRepository;
 import com.soti.sotistory.post.promotional.repository.PromotionalPostRepositoryCustom;
 import com.soti.sotistory.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -39,8 +37,13 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
     public void save(PromotionalPostSaveDto postSaveDto) {
         PromotionalPost post = postSaveDto.toEntity();
 
+        //postType 설정
+        post.setPostTypeNormal();
+
+        //postWriter 설정
         post.confirmWriter(memberRepository.findByNickname(SecurityUtil.getLoginUserNickname()));
 
+        //if File is Present save them
         postSaveDto.getUploadFile().ifPresent(file -> {
             try {
                 post.updateFilePath(fileService.save(file));
@@ -50,6 +53,7 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
 
         });
 
+        //finally saved
         postRepository.save(post);
     }
 
@@ -57,9 +61,10 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
     public void update(Long id, PromotionalPostUpdateDto postUpdateDto) {
         PromotionalPost post = postRepository.findById(id).orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
 
+        //수정 권한 검증
         checkAuthority(post,PostErrorCode.NOT_AUTHORITY_UPDATE_POST);
 
-        //제목, 내용 처리
+        //제목, 내용 존재 시 수정처리
         postUpdateDto.getTitle().ifPresent(post::updateTitle);
         postUpdateDto.getContent().ifPresent(post::updateContent);
 
@@ -85,6 +90,7 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
     public void delete(Long id) {
         PromotionalPost post = postRepository.findById(id).orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_FOUND));
 
+        //삭제 권한 검증
         checkAuthority(post, PostErrorCode.NOT_AUTHORITY_DELETE_POST);
 
         //기존에 올린 파일 지우기
@@ -92,9 +98,11 @@ public class PromotionalPostServiceImpl implements PromotionalPostService{
             fileService.delete(post.getFilePath());
         }
 
+        //삭제
         postRepository.delete(post);
     }
 
+    //유저 검증 부분
     private void checkAuthority(PromotionalPost post, PostErrorCode postErrorCode){
         if(!post.getWriter().getNickname().equals(SecurityUtil.getLoginUserNickname())){
             throw new PostException(postErrorCode);

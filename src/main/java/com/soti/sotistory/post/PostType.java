@@ -1,5 +1,5 @@
 package com.soti.sotistory.post;
 
 public enum PostType {
-    NORMAL, HIDDEN;
+    NORMAL, HIDDEN, NOTICE;
 }

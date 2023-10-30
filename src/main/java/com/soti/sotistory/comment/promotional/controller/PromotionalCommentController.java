@@ -18,20 +18,17 @@ public class PromotionalCommentController {
 
     @PostMapping("/{postId}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("isAuthenticated()")
     public void commentSave(@PathVariable("postId") Long postId, PromotionalCommentSaveDto commentSaveDto) {
         commentService.save(postId, commentSaveDto);
     }
 
     @PutMapping("/{commentId}")
-    @PreAuthorize("isAuthenticated()")
     public void update(@PathVariable("commentId") Long commentId,
                        PromotionalCommentUpdateDto commentUpdateDto){
         commentService.update(commentId, commentUpdateDto);
     }
 
     @DeleteMapping("/{commentId}")
-    @PreAuthorize("isAuthenticated()")
     public void delete(@PathVariable("commentId") Long commentId){
         commentService.remove(commentId);
     }

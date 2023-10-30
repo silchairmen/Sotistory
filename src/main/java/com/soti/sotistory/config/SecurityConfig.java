@@ -4,9 +4,11 @@ import com.soti.sotistory.config.handler.LoginFailureHandler;
 import com.soti.sotistory.config.handler.LoginSuccessHandler;
 import com.soti.sotistory.member.service.MemberAuthService;
 import lombok.AllArgsConstructor;
+import org.aspectj.apache.bcel.classfile.Method;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -82,12 +84,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .deleteCookies();
 
-
-        http.cors().disable();
-
-
         //접근 권한 설정 관련
         http.authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/api/promotional/**", "/api/question/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/promotional/", "/api/question/").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/promotional/**", "/api/question/**").authenticated()
+                .antMatchers(HttpMethod.PUT,"/api/promotional/**", "/api/question/**").authenticated()
+                .antMatchers(HttpMethod.DELETE,"/api/promotional/**", "/api/question/**").authenticated()
                 .antMatchers("/api/member/info/**", "/api/member/profile/**").authenticated()
                 .antMatchers("/admin").hasRole("ADMIN");// 마이페이지 접근은 인증된 사용자만 가능
     }

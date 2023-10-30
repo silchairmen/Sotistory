@@ -22,15 +22,13 @@ public class PromotionalPostController {
     private final PromotionalPostService postService;
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/save")
-    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/")
     public void save(@Valid @ModelAttribute PromotionalPostSaveDto saveDto) {
         postService.save(saveDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{postId}")
-    @PreAuthorize("isAuthenticated()")
     public void update(@PathVariable("postId") Long postId,
                        @ModelAttribute PromotionalPostUpdateDto updateDto){
         postService.update(postId, updateDto);
@@ -38,12 +36,11 @@ public class PromotionalPostController {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{postId}")
-    @PreAuthorize("isAuthenticated()")
     public void delete(@PathVariable("postId") Long postId){
         postService.delete(postId);
     }
 
-    @GetMapping("/info/{postId}")
+    @GetMapping("/{postId}")
     public ResponseEntity getInfo(@PathVariable("postId") Long postId){
         return ResponseEntity.ok(postService.getPostInfo(postId));
     }

@@ -40,18 +40,6 @@ public class MemberAuthController {
     private final PasswordEncoder passwordEncoder;
     private final MemberAuthService memberAuthService;
 
-    //로그인
-    @GetMapping("/login/success")
-    public ResponseEntity<MemberResponseDto> memberApiLoginSuccess(){
-        return ResponseEntity.ok().body(MemberResponseDto.builder().status(200).message("로그인 성공").build());
-    }
-
-    //로그인 에러 핸들링
-    @GetMapping("/login/error")
-    public ResponseEntity<MemberResponseDto> memberApiLoginError(){
-        return ResponseEntity.ok().body(MemberResponseDto.builder().status(203).message("로그인 실패").build());
-    }
-
     //Join 시도
     @PostMapping(value = "/join")
     public ResponseEntity<MemberResponseDto> memberJoinApi(@Valid MemberDto memberDto,

@@ -50,6 +50,6 @@ public class GlobalExceptionHandler {
     //logging controllerAdvice를 선언한 class가 두개 일때 문제가 생길 수 있음
     @ModelAttribute
     public void logging(){
-        LogUtil.logInfo(request.getRemoteAddr() ,request.getRequestURI(), request.getMethod());
+        LogUtil.logInfo(request.getRequestURI(), request.getMethod());
     }
 }

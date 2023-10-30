@@ -3,7 +3,6 @@ package com.soti.sotistory.post.question.dto;
 import com.soti.sotistory.post.question.entity.QuestionPost;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nonapi.io.github.classgraph.utils.LogNode;
 
 @Data
 @NoArgsConstructor

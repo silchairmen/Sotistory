@@ -1,10 +1,9 @@
 package com.soti.sotistory.post.promotional.repository;
 
-import com.querydsl.core.QueryResults;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soti.sotistory.post.cond.PostSearchCondition;
 import com.soti.sotistory.post.promotional.entity.PromotionalPost;
-import com.soti.sotistory.post.promotional.entity.QPromotionalPost;
+import com.querydsl.core.QueryResults;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

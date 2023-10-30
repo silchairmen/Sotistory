@@ -1,7 +1,5 @@
 package com.soti.sotistory.post.question.dto;
 
-import com.soti.sotistory.post.promotional.dto.PromotionalPostInfoDto;
-import com.soti.sotistory.post.promotional.entity.PromotionalPost;
 import com.soti.sotistory.post.question.entity.QuestionPost;
 import lombok.Builder;
 import lombok.Getter;

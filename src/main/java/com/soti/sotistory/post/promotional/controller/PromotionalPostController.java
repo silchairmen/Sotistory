@@ -1,12 +1,11 @@
 package com.soti.sotistory.post.promotional.controller;
 
 import com.soti.sotistory.post.cond.PostSearchCondition;
+import com.soti.sotistory.post.promotional.service.PromotionalPostService;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostListDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostSaveDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostUpdateDto;
-import com.soti.sotistory.post.promotional.service.PromotionalPostService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

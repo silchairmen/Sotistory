@@ -1,9 +1,9 @@
 package com.soti.sotistory.post.promotional.entity;
 
-import com.soti.sotistory.comment.promotional.entity.PromotionalComment;
-import com.soti.sotistory.member.entity.Member;
 import com.soti.sotistory.post.BaseTimeEntity;
 import com.soti.sotistory.post.PostType;
+import com.soti.sotistory.comment.promotional.entity.PromotionalComment;
+import com.soti.sotistory.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

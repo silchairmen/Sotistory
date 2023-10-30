@@ -1,11 +1,10 @@
 package com.soti.sotistory.post.question.service;
 
-import com.soti.sotistory.post.cond.PostSearchCondition;
-import com.soti.sotistory.post.promotional.dto.PromotionalPostListDto;
 import com.soti.sotistory.post.question.dto.QuestionPostDetailInfoDto;
 import com.soti.sotistory.post.question.dto.QuestionPostListDto;
 import com.soti.sotistory.post.question.dto.QuestionPostSaveDto;
 import com.soti.sotistory.post.question.dto.QuestionPostUpdateDto;
+import com.soti.sotistory.post.cond.PostSearchCondition;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 

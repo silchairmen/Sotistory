@@ -1,6 +1,5 @@
 package com.soti.sotistory.post.file.exception;
 
-import com.soti.sotistory.post.exception.PostErrorCode;
 import lombok.Getter;
 
 @Getter

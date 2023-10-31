@@ -100,15 +100,6 @@ const BoardEditor = () => {
     const handleTitle = (e) => {
         setBoardTitle(e.target.value);
     }
-    const handleChangeHidden = () => {
-        if (hidden===false){
-            setHidden(true);
-            console.log(hidden);
-        }else {
-            setHidden(false);
-            console.log(hidden);
-        }
-    }
 
     const handleTest= () => {
         console.log(splitUrl[splitUrl.length-1]);
@@ -122,7 +113,7 @@ const BoardEditor = () => {
             data.append('content',editorToHtml);
             data.append('title',titles);
             data.append('postType',"NORMAL");
-            const response = await axios.post('http://192.168.0.16:8888/api/promotional/save', data, {withCredentials: true});
+            const response = await axios.post('/api/promotional/', data, {withCredentials: true});
             window.location.href = '/Freeboard';
             // 응답 처리
             if (response.data.status === 200) {
@@ -173,11 +164,6 @@ const BoardEditor = () => {
                     onClick={submitReview}
                 >작성</button>
             <EditorForm>
-                <input type='checkbox' name="SecretCheck" value="SecretCheck" checked={hidden} onChange={handleChangeHidden}/>비밀 글
-                <select name="boardname" className="select" defaultValue="freeBoard">
-                    <option enabled="true" value="freeBoard">freeBoard</option>
-                    <option enabled="true" value="freeBoard2">freeBorad2</option>
-                </select>
                 <Editor
                     wrapperClassName="wrapper-class"
                     editorClassName="editor"

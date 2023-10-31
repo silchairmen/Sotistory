@@ -47,11 +47,12 @@ const TextField = styled.textarea`
 
 
 const Boardmodifier = () => {
-    const [hidden,setHidden] = useState(false);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
     const [boardId, setBoardId] = useState("");
+    const [boardpass, setBoardPass] = useState("");
+    const [selectedValue, setSelectedValue] = useState("freeBoard"); // 초기 선택 값
     const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
     const location = useLocation();
@@ -100,14 +101,11 @@ const Boardmodifier = () => {
     const handleTitle = (e) => {
         setBoardTitle(e.target.value);
     }
-    const handleChangeHidden = () => {
-        if (hidden===false){
-            setHidden(true);
-            console.log(hidden);
-        }else {
-            setHidden(false);
-            console.log(hidden);
-        }
+    const handlePasswordChange = (event) => {
+        setBoardPass(event.target.value);
+    }
+    const handleSelectChange = (event) => {
+        setSelectedValue(event.target.value);
     }
 
     const handleTest= () => {
@@ -122,8 +120,7 @@ const Boardmodifier = () => {
           const data = new FormData();
           data.append('content', editorToHtml);
           data.append('title', titles);
-          data.append('postType',"NORMAL");
-          const response = await axios.put(`http://localhost:80/api/post/freeBoard/post/edit/${postId}`, data, { withCredentials: true });
+          const response = await axios.put(`/api/post/freeBoard/post/edit/${postId}`, data, { withCredentials: true });
           window.location.href = '/Freeboard';
           
           // 응답 처리
@@ -170,11 +167,18 @@ const Boardmodifier = () => {
                     onClick={submitReview}
                 >작성</button>
             <EditorForm>
-                <input type='checkbox' name="SecretCheck" value="SecretCheck" checked={hidden} onChange={handleChangeHidden}/>비밀 글
-                <select name="boardname" className="select" defaultValue="freeBoard">
-                    <option enabled="true" value="freeBoard">freeBoard</option>
-                    <option enabled="true" value="freeBoard2">freeBorad2</option>
-                </select>
+            <select name="boardname" className="select" value={selectedValue} onChange={handleSelectChange}>
+                <option value="freeBoard">freeBoard</option>
+                <option value="freeBoard2">freeBoard2</option>
+            </select>
+            비밀번호:
+            <input
+                type="BoardPass"
+                id="passwordInput"
+                name="BoardPass"
+                value={boardpass}
+                onChange={handlePasswordChange}
+            />
                 <Editor
                     wrapperClassName="wrapper-class"
                     editorClassName="editor"

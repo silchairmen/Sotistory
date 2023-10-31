@@ -45,7 +45,7 @@
 
     const getBoard = async () => {
       try {
-        const resp = await axios.get("http://192.168.0.16:8888/api/promotional/");
+        const resp = await axios.get("/api/promotional/");
         console.log(resp.data);
         setBoardData(resp.data.postInfoDtoList);
         setLoading(false); // Set loading to false after data is fetched

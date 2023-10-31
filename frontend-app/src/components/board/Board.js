@@ -14,7 +14,7 @@
   const H1 = styled.h1`
     font-size:40px;
     padding-top:80px;
-    padding-bottom:100px;
+    padding-bottom:100px;Selector
   `;
 
   const ContainerFragment = styled.div`
@@ -45,7 +45,7 @@
     }, [address]);
 
     const getBoard = async () => {
-      const resp = await axios.get("http://192.168.0.16:8888/api/question/");
+      const resp = await axios.get("/api/question/");
       setBoardData(resp.data.postInfoDtoList)
       setPostId(resp.data.postInfoDtoList.postId);
       setLoading(false); // Set loading to false after data is fetched
@@ -112,12 +112,12 @@
                       return (
                         <div class="board_middle">
                           <div class="middle">
-                          {boardDetail.postType == "HIDDEN" && (<div class="num">Y</div>)}
-                          {boardDetail.postType != "HIDDEN" && (<div class="num">N</div>)}
+                          {boardDetail.postType == "HIDDEN" && (<div class="num">🔐</div>)}
+                          {boardDetail.postType != "HIDDEN" && (<div class="num">🔓</div>)}
                             <div class="titles" type="primary" onClick={() => {navigate(`/FreeBoard/${boardDetail.postId}`)}}>{boardDetail.title}</div>
                             <div class="writer">{boardDetail.writer}</div>
                             <div class="date">{formattedDateTime}</div>
-                            <div class="count">{boardDetail.count}</div>
+                            <div class="count">{boardDetail.commentSize}</div>
                           </div>
                         </div>
                     );

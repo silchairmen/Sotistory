@@ -1,5 +1,6 @@
 package com.soti.sotistory.post.question.dto;
 
+import com.soti.sotistory.post.PostType;
 import com.soti.sotistory.post.question.entity.QuestionPost;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,11 +21,15 @@ public class QuestionPostInfoDto {
 
     public QuestionPostInfoDto(QuestionPost post) {
         this.postId = post.getId();
-        this.title = post.getTitle();
+        if (post.getPostType()== PostType.HIDDEN){
+            this.title = "비밀글 입니다.";
+        } else {
+            this.title = post.getTitle();
+        }
+        this.writer = post.getWriter().getNickname();
         this.postType = post.getPostType().toString();
         this.createDate = post.getCreateDate().toString();
         this.lastModifiedDate = post.getLastModifiedDate().toString();
-        this.writer = post.getWriter().getNickname();
         this.commentSize = (long) post.getCommentsList().size();
     }
 }

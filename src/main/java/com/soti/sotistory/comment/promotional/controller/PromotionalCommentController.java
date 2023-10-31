@@ -9,6 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+
+/**
+ * 댓글 작성
+ * 댓글 수정
+ * 댓글 삭제
+ */
+
 @RequestMapping("/api/promotional/comment")
 @RestController
 @RequiredArgsConstructor

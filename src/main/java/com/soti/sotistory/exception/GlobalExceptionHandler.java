@@ -16,6 +16,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 모든 Controller실행 과정 중 관련 Exception이 터질 시
+ * 로깅 + response 처리
+ *
+ * Exception이 아니지만 일반 logging처리도 같이 해놓음
+ * 이유는 ControllerAdvice가 두개의 클래스에 선언되면 문제가 생길 수 있어서...
+ */
+
 @Slf4j
 @RestControllerAdvice
 @AllArgsConstructor

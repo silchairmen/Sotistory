@@ -92,7 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT,"/api/promotional/**", "/api/question/**").authenticated()
                 .antMatchers(HttpMethod.DELETE,"/api/promotional/**", "/api/question/**").authenticated()
                 .antMatchers("/api/member/info/**", "/api/member/profile/**").authenticated()
-                .antMatchers("/admin").hasRole("ADMIN");// 마이페이지 접근은 인증된 사용자만 가능
+                .antMatchers("/admin").hasRole("ADMIN").anyRequest().permitAll();// 마이페이지 접근은 인증된 사용자만 가능
     }
 
     @Bean

@@ -16,6 +16,24 @@
 
 }
 
+.thumbnotice {
+    position:relative; 
+    width:18%; 
+    height:250px; 
+    display:inline-block; 
+    border-radius: 2px;
+    outline:1px solid #ddd;
+    box-shadow: 0 0px 5px rgba(0, 0, 0, 1);
+    margin: 20px;
+
+    animation-name: moveRight; /* 애니메이션 이름 정의 */
+    animation-duration: 0.4s; /* 애니메이션 지속 시간 (4초) */
+    animation-timing-function: linear; /* 애니메이션 타이밍 함수 (선형) */
+    animation-iteration-count: 1;
+    animation-direction: normal; /* 애니메이션 방향 (정방향) */
+
+}
+
 @keyframes moveRight {
     0% {
       transform: translateX(-10px); /* 시작 위치 */
@@ -36,6 +54,13 @@
     top:0;left:0;width:100%;height:100%;
     background:#ffffff;opacity:0.4;
 }
+
+.overlaynotice {
+    position:absolute;
+    top:0;left:0;width:100%;height:100%;
+    background: rgba(255, 165, 0, 0.1); /* 주황색 배경에 70%의 투명도 적용 */
+}
+
 .selection_image img {
     width:100%;
     height:100%;    

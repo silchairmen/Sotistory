@@ -65,7 +65,7 @@ const Boardmodifier = () => {
     const getBoard = async () => {
         const indexNum = splitUrl[splitUrl.length-1];
         try {
-            const resp = await axios.get(`http://localhost:80/api/post/freeBoard/post/${indexNum}`);
+            const resp = await axios.get(`/api/question/${indexNum}`);
             setBoardText(resp.data.content);
             setBoardTitle(resp.data.title);
             setBoardId(resp.data.postId);
@@ -120,7 +120,7 @@ const Boardmodifier = () => {
           const data = new FormData();
           data.append('content', editorToHtml);
           data.append('title', titles);
-          const response = await axios.put(`/api/post/freeBoard/post/edit/${postId}`, data, { withCredentials: true });
+          const response = await axios.put(`/api/question/${postId}`, data, { withCredentials: true });
           window.location.href = '/Freeboard';
           
           // 응답 처리

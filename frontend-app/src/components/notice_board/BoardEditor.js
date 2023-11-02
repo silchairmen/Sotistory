@@ -6,6 +6,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { useLocation } from 'react-router-dom';
+import FileUpload from '../FileUpload';
 
 const Background = styled.div`
     padding-top: 5%;
@@ -60,6 +61,7 @@ const BoardEditor = () => {
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
     const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     const location = useLocation();
     const splitUrl = location?.pathname?.split('/') ?? null;
@@ -71,7 +73,7 @@ const BoardEditor = () => {
     const getBoard = async () => {
         const indexNum = splitUrl[splitUrl.length-1];
         try {
-            const resp = await axios.get(`http://localhost:80/api/post/freeBoard/post/${indexNum}`);
+            const resp = await axios.get(`/api/post/freeBoard/post/${indexNum}`);
             setBoardText(resp.data.content);
             setBoardTitle(resp.data.title);
         } catch (error) {
@@ -79,7 +81,9 @@ const BoardEditor = () => {
         }
     };
 
-
+    const onFilesSelected = (files) => {
+        setSelectedFiles(files);
+    };
     useEffect(() => {
         getBoard();
         const navbar = document.querySelector('#navbar');
@@ -113,6 +117,11 @@ const BoardEditor = () => {
             data.append('content',editorToHtml);
             data.append('title',titles);
             data.append('postType',"NORMAL");
+
+            // 선택된 파일을 FormData에 추가
+            selectedFiles.forEach((file) => {
+                data.append(`uploadFile`, file);
+            });
             const response = await axios.post('/api/promotional/', data, {withCredentials: true});
             window.location.href = '/Freeboard';
             // 응답 처리
@@ -164,6 +173,8 @@ const BoardEditor = () => {
                     onClick={submitReview}
                 >작성</button>
             <EditorForm>
+            <div className="App"> <FileUpload onFilesSelected={onFilesSelected} />
+            </div>
                 <Editor
                     wrapperClassName="wrapper-class"
                     editorClassName="editor"
@@ -195,6 +206,7 @@ const BoardEditor = () => {
                     onEditorStateChange={onEditorStateChange}
                 />
             </EditorForm>
+            
         </Background>
     )
 }

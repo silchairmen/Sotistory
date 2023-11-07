@@ -6,6 +6,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import data from './AppData.json'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+
+
 const Body = styled.div`
 	overflow:hidden;
 	font-family: 'Roboto', serif;
@@ -288,18 +290,18 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
         <p>SOTI {clickedImage.num}기</p>
       </div>
 	  <div className="profile-card-social">
-      <a href="https://www.instagram.com/iamuhammederdem" className="profile-card-social__item instagram" >
+      <a href="https://www.instagram.com/iamuhammederdem" className="profile-card-social__item instagram" target="_blank">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-instagram"></use></svg>
         </span>
       </a>
 
-      <a href="https://www.behance.net/iaMuhammedErdem" className="profile-card-social__item tistory">
+      <a href="https://www.behance.net/iaMuhammedErdem" className="profile-card-social__item tistory" target="_blank">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-behance"></use></svg>
         </span>
       </a>
-      <a href="https://github.com/muhammederdem" className="profile-card-social__item github">
+      <a href="https://github.com/muhammederdem" className="profile-card-social__item github" target="_blank">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-github"></use></svg>
         </span>

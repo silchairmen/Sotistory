@@ -358,8 +358,8 @@ ul {
 
 hr{
   width:90%;
-  margin-top:24px;
-  margin-bottom:24px;
+  margin-top:12px;
+  margin-bottom:12px;
   margin-left:20px;
 }
 
@@ -528,28 +528,25 @@ box-shadow: 10px 10px 44px 15px rgba(0,0,0,0.14);
 .skills span{
   margin-top: 10px;
   display: inline-block;
-  border: 1px solid #9fa3af;
+  border: 1px solid black;
   padding: 6px 15px;
   border-radius: 25px;
   min-width: 45px;
   font-weight: 600;
-  color: #9fa3af;
+  color: black;
 }
 
 
 
-ol {margin-left:20px;font-size:1.4em;
+ol {font-size:1.4em;
   list-style:decimal url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);}
-li:nth-child(1n):before, .dejavu {font-family:dejavu_sansbold,serif;font-weight:normal;}
 
-.dicey li {margin-left:35p;position:relative;margin-bottom:0.25em;}
-.dicey li:nth-child(1n):before {position:absolute;left:-1em;}
-.dicey li:nth-child(1):before {content: "\2680";}
-.dicey li:nth-child(2):before {content: "\2681";}
-.dicey li:nth-child(3):before {content: "\2682";}
-.dicey li:nth-child(4):before {content: "\2683";}
-.dicey li:nth-child(5):before {content: "\2684";}
-.dicey li:nth-child(6):before {content: "\2685";}
+.dicey li:before {
+  content: "\2022";
+  font-size: 1em;
+  font-weight: bold;
+  padding-right: 12px;
+}
 
 @media (max-width: 900px) {
   .card {

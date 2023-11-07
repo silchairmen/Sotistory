@@ -21,6 +21,7 @@ const History = () => {
 const [currentGeneration, setCurrentGeneration] = useState(1);
 const [totalGenerations, setTotalGenerations] = useState(data.totalGenerations); // 총 기수 개수
 const [generationInfo, setGenerationInfo] = useState(data.generationInfo);
+
 //position에 따른 순서 배열 정의
 
 
@@ -153,7 +154,8 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 			 progress+=wheelProgress;
 			 animate();
 		   };
-	
+
+
 		   const handleMouseMove=(e)=>{
 			 if(e.type==='mousemove'){
 			   cursorsData.forEach(($cursor)=>{
@@ -233,12 +235,50 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 		};
 	  }, [modalActive]); // 이펙트 한 번만 실행
 
+	  useEffect(() => {
+		const handlestopWheel = (e) => {
+		  if (modalActive) {
+			e.preventDefault(); // 모달이 열려있을 때 wheel 이벤트를 중지
+		  }
+		};
+	
+		// 모달이 열릴 때 wheel 이벤트 리스너를 추가
+		if (modalActive) {
+		  document.addEventListener('wheel', handlestopWheel);
+		} else {
+		  // 모달이 닫혔을 때 wheel 이벤트 리스너를 제거
+		  document.removeEventListener('wheel', handlestopWheel);
+		}
+	
+		return () => {
+		  // 컴포넌트가 언마운트될 때 이벤트 리스너를 제거
+		  document.removeEventListener('wheel', handlestopWheel);
+		};
+	  }, [modalActive]); // modalActive 값이 변경될 때만 이펙트 실행
+
+
+	  const closeModal = () => {
+		setModalActive(false);
+	  };
+	
+	  // 모달 외부를 클릭했을 때 모달을 닫는 이벤트 핸들러
+	  const handleModalOverlayClick = (e) => {
+		if (e) {
+		  closeModal();
+		}
+	  };
+	
+	  // 모달 내부 요소를 클릭했을 때 이벤트 버블링을 막아 모달이 닫히지 않도록 처리
+	  const handleModalContentClick = (e) => {
+		e.stopPropagation();
+	  };
+
 
     return (
     <Body>
 	{modalActive && (
-	<div className={modalClass}>
-	<div className="grid-7 element-animation">
+	<div className={modalClass} onClick={handleModalOverlayClick}>
+	<div className="grid-7 element-animation" onClick={handleModalContentClick}>
     <div className="card color-card-2">
 		<div className='card-header'>
       <img src={clickedImage.img} alt="profile-pic" className="profile"/>
@@ -266,7 +306,7 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
       </a>
     </div>
 	  </div>
-      <hr className="hr-2"/>
+	  <hr className="hr-2"/>
 	  <div className='card-section is-active' id="about">
 			<div className='skill-subtitle'>Skills</div>
 				<div className="skills">
@@ -297,11 +337,11 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
       	<button data-section="#about" className="is-active">Skill</button>
       	<button data-section="#history">History</button>
     </div>
-	  <Button className="modal-close" onClick={handleModalClick}>X</Button>
 	  </div>
 		</div>
 			</div>
       )}
+
     <div className="carousel">
 	<div className='timeline'>
 	{currentGeneration > 1 && (<PlayArrowIcon className="previous-button" onClick={goToPreviousGeneration}></PlayArrowIcon>)}

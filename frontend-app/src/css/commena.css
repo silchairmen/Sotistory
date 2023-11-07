@@ -298,7 +298,7 @@ html, body {
 
 #navbar {
   position: fixed;
-  z-index: 9999;
+  z-index: 98;
   width: 100%;
   display: flex;
   justify-content: center;

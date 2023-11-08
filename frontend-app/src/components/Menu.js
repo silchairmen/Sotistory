@@ -24,7 +24,7 @@ const pages = ['FreeBoard', 'History'];
 function MenuExampleSizeLarge() {
   //login 여부 확인
   const [nickname,setNickname] = useState("");
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(true);
   const [anchorElUser, setAnchorElUser] =useState(null);
 
   const sessionCheck=useSelector((state)=> state.session.session);
@@ -323,77 +323,51 @@ const toggleCategoryMenu = () => {
 
           {/*오른쪽 상단 부분*/}
           {auth ? (
-            <>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-          <Tooltip>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={photo}   sx={{
-                  border: '2px solid',
-                  borderColor: 'white'
-                  // 다른 스타일 속성들을 추가로 지정할 수 있습니다.
-                }}/>
-                <p className='nick'>{nickname}</p>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" href={`/MyPage`}>MyPage</Typography>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={handleLogOut}>Logout</Typography>
-                </MenuItem>
-            </Menu>
+            <>          
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <Button
+                className='anker'
+                sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
+                href={`/Mypage`}
+              >
+                 Mypage
+              </Button>
+              <Button
+                className='anker'
+                onClick={handleLogOut}
+                sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
+              >
+                Logout
+              </Button>
           </Box>
 
           <Box sx={{ display: { xs: 'flex', md: 'none', flexGrow: 1 }, justifyContent: 'flex-end'}}>
-          <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={photo} sx={{
-                  border: '2px solid',
-                  borderColor: 'white'
-                  // 다른 스타일 속성들을 추가로 지정할 수 있습니다.
-                }} />
-                 <p className='nick2'>{nickname}</p>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+            <Button
+              className='anker'
+              variant="contained"
+              size="small"
+              sx={{ margin: 1, bgcolor: 'transparent', color: 'white',  ':hover': {
+                backgroundColor: 'transparent !important',
+                boxShadow: 'none !important'
+              },
+              boxShadow: 'none' }}
+              href={`/Mypage`}
             >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" component="a" href={`/MyPage`} style={{ textDecoration: 'none', color:'black' }}>MyPage</Typography>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={handleLogOut}>Logout</Typography>
-                </MenuItem>
-            </Menu>
+            Mypage
+            </Button>
+            <Button
+              className='anker'
+              variant="contained"
+              size="small"
+              onClick={() => handleLogOut}
+              sx={{ margin: 1, bgcolor: 'transparent', color: 'white',  ':hover': {
+                backgroundColor: 'transparent !important',
+                boxShadow: 'none !important'
+              },
+              boxShadow: 'none' }}
+            >
+            Logout
+            </Button>
           </Box>
           </>
           ) : (
@@ -401,7 +375,6 @@ const toggleCategoryMenu = () => {
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Button
                 className='anker'
-                onClick={handleCloseNavMenu}
                 sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
                 href={`/SignIn`}
               >
@@ -409,7 +382,6 @@ const toggleCategoryMenu = () => {
               </Button>
               <Button
                 className='anker'
-                onClick={handleCloseNavMenu}
                 sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
                 href={`/SignUp`}
               >

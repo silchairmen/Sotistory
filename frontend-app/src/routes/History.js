@@ -14,10 +14,7 @@ const Body = styled.div`
 	background: linear-gradient(135deg, black, #220033);
 	.modal-active {
 		overflow: hidden;
-	}
-	
-	
-	`
+	}`
 
 const History = () => {
 const [currentGeneration, setCurrentGeneration] = useState(1);

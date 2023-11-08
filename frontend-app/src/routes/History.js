@@ -311,7 +311,7 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 				<div className="skills">
 		{/*{clickedImage.skills.map((skill, index) => (
                     <span key={index}>{skill}</span>
-		))}*/}
+		))} 받은 데이터중 skills 배열에 있는 개수만큼 <spen> 생성 백 연결시 아래 코드 지우고 주석 코드로 변경*/}
 					<span>HTML</span> <span>CSS</span> <span>Javascript</span>
 				</div>
 	</div>
@@ -322,6 +322,7 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 	  <ol className="dicey">
 		{/*{clickedImage.history.map((historys, index) => (
                     <li key={index}>{historys}</li>
+					해당 부분도 아래 지우고 위로 대체 
 		))}*/}
 			<li>I rolled a one.</li>
 			<li>I rolled a two.</li>
@@ -344,7 +345,8 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
     <div className="carousel">
 	<div className='timeline'>
 	{currentGeneration > 1 && (<PlayArrowIcon className="previous-button" onClick={goToPreviousGeneration}></PlayArrowIcon>)}
-            <p className="current-generation"> {currentGeneration}기</p>
+            <p className="current-generation"> {currentGeneration}기</p>{/* 현재 총 몇기인지에 대한 부분인데 
+			1.데이터 반환시 기수에 있는 숫자를 판별하고 가장 높은수를 뽑아서 지정하려고 계획 중 */ }
 	{currentGeneration < totalGenerations && (<PlayArrowIcon className="next-button" onClick={goToNextGeneration}></PlayArrowIcon>)}
 	</div>
 	{generationInfo

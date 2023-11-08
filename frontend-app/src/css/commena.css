@@ -330,7 +330,12 @@ html, body {
 
 
 
-
+.aconfig{
+  color: black;
+  font-size: 1.4rem;
+  text-decoration: none;
+  transition: 200ms;
+}
 
 
 

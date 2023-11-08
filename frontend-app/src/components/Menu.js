@@ -18,6 +18,14 @@ import photo from '../img/myphoto.jpg';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
+
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import MenuList from '@mui/material/MenuList';
+import Stack from '@mui/material/Stack';
+
 const pages = ['FreeBoard', 'History'];
 
 
@@ -54,6 +62,7 @@ const toggleCategoryMenu = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
 
 
 
@@ -107,6 +116,41 @@ const toggleCategoryMenu = () => {
     setAuth(false);
   };
 
+
+
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
 
   return (
     <AppBar id="navbar" position="fixed" color='transparent'elevation={0}>
@@ -237,76 +281,59 @@ const toggleCategoryMenu = () => {
 :
           (<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
           <Button
-    className='anker'
-    aria-controls="menu-board"
-    aria-haspopup="true"
-    onMouseEnter={handleOpenNavMenu}
-    sx={{
-      color: 'white',
-      display: 'block',
-      fontFamily: 'Helvetica Neue, sans-serif',
-    }}
-  >
-    Board
-  </Button>
-  <Menu
-    id="menu-board"
-    anchorEl={anchorElNav}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'left',
-    }}
-    keepMounted
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'left',
-    }}
-    open={Boolean(anchorElNav)}
-    onClose={handleCloseNavMenu}
-    sx={{
-      color: 'white',
-    }}
-  >
-    <MenuItem className='anker' component="a" href="/Category1" onClick={handleCloseNavMenu}>
-      <Button
-        sx={{
-          color: 'black',
-          display: 'block',
-          fontFamily: 'Helvetica Neue, sans-serif',
-          width: '100%',
-          textAlign: 'left',
-        }}
-      >
-        Category 1
-      </Button>
-    </MenuItem>
-    <MenuItem className='anker' component="a" href="/Category2" onClick={handleCloseNavMenu}>
-      <Button
-        sx={{
-          color: 'black',
-          display: 'block',
-          fontFamily: 'Helvetica Neue, sans-serif',
-          width: '100%',
-          textAlign: 'left',
-        }}
-      >
-        Category 2
-      </Button>
-    </MenuItem>
-    <MenuItem className='anker' component="a" href="/Category3" onClick={handleCloseNavMenu}>
-      <Button
-        sx={{
-        color: 'black',
-          display: 'block',
-          fontFamily: 'Helvetica Neue, sans-serif',
-          width: '100%',
-          textAlign: 'left',
-        }}
-      >
-        Category 3
-      </Button>
-    </MenuItem>
-  </Menu>
+          ref={anchorRef}
+          id="composition-button"
+          aria-controls={open ? 'composition-menu' : undefined}
+          aria-expanded={open ? 'true' : undefined}
+          aria-haspopup="true"
+          sx={{
+            color: 'white',
+            display: 'block',
+            fontFamily: 'Helvetica Neue, sans-serif',
+          }}
+          onClick={handleToggle}
+        >
+          Dashboard
+        </Button>
+        <Popper
+          open={open}
+          anchorEl={anchorRef.current}
+          role={undefined}
+          placement="bottom-start"
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === 'bottom-start' ? 'left top' : 'left bottom',
+              }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList
+                    autoFocusItem={open}
+                    id="composition-menu"
+                    aria-labelledby="composition-button"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    <a className="aconfig" href="">
+                    <MenuItem onClick={handleClose} >Profile</MenuItem>
+                    </a>
+                    <a className="aconfig"href="">
+                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    </a>
+                    <a className="aconfig" href="">
+                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    </a>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
   <Button
     className='anker'
     onClick={handleCloseNavMenu}

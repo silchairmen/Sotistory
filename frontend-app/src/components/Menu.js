@@ -27,8 +27,38 @@ function MenuExampleSizeLarge() {
   const sessionCheck=useSelector(state=> state.session.session);
   const [nickname,setNickname] = useState("");
   const [auth, setAuth] = useState(false);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const dispatch=useDispatch();
+  const [anchorElUser, setAnchorElUser] =useState(null);
+
+  const sessionCheck=useSelector((state)=> state.session.session);
+  const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
+ 
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+
+const toggleCategoryMenu = () => {
+  setIsCategoryMenuOpen(!isCategoryMenuOpen);
+};
+
+  const handleBoardMenuItemClick = (event) => {
+    // Handle the click on "Board" menu item
+    event.preventDefault(); // Prevent navigation
+    setIsBoardMenuOpen(!isBoardMenuOpen); // Toggle the "Board" sub-menu
+  };
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 900);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
+
   useEffect(() => {
     async function session(){
       const response = await axios.get('http://localhost:80/api/auth/validate', {withCredentials: true});
@@ -75,10 +105,10 @@ function MenuExampleSizeLarge() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
 // handleCloseNavMenu 함수 정의
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+    setIsBoardMenuOpen(false);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -86,7 +116,7 @@ function MenuExampleSizeLarge() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const handleLogOut =async() =>{
+  const handleLogOut =() =>{
     setAuth(false);
     await axios.get('http://localhost:80/api/auth/logout', {withCredentials: true});
     window.location.reload();
@@ -115,6 +145,7 @@ function MenuExampleSizeLarge() {
           >
             SOTI
           </Typography>
+
           <Typography
             className='anker'
             variant="h6"
@@ -133,69 +164,178 @@ function MenuExampleSizeLarge() {
           >
             SOTI
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              sx={{
-                color: 'white',
-                '& svg': {
-                  fill: 'white'  // 추가된 부분
-                },
-                ':hover': {
-                  color: '#f300b4',
-                  '& svg': {
-                    fill: '#f300b4'  // 추가된 부분
-                  }
-                }
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
+          {isMobile ?  (
+    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+      <IconButton
+        size="large"
+        aria-label="Menu Button"
+        aria-controls="menu-board"
+        aria-haspopup="true"
+        onClick={handleOpenNavMenu}
+        sx={{
+          color: 'white',
+        }}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Menu
+        id="menu-board"
+        anchorEl={anchorElNav}
+        anchorOrigin={{
+          vertical:40 // 상단에서 열도록 수
+        }}
+        keepMounted
+        open={Boolean(anchorElNav)}
+        onClose={handleCloseNavMenu}
+        sx={{
+          color: 'white',
+        }}
+      >
+        <MenuItem className='anker'>
+          <Button
+            sx={{
+              color: 'black',
+              display: 'block',
+              fontFamily: 'Helvetica Neue, sans-serif',
+              width: '100%',
+              textAlign: 'left',
+              zIndex:1
+            }}
+          >
+            Category 1
+          </Button>
+        </MenuItem>
+        <MenuItem className='anker'>
+          <Button
+            sx={{
+              color: 'black',
+              display: 'block',
+              fontFamily: 'Helvetica Neue, sans-serif',
+              width: '100%',
+              textAlign: 'left',
+              zIndex:1
+            }}
+          >
+            Category 2
+          </Button>
+        </MenuItem>
+        <MenuItem className='anker'>
+          <Button
+            sx={{
+              color: 'black',
+              display: 'block',
+              fontFamily: 'Helvetica Neue, sans-serif',
+              width: '100%',
+              textAlign: 'left',
+            }}
+          >
+            Category 3
+          </Button>
+        </MenuItem>
+        <MenuItem className='anker' component="a" href="/History" onClick={handleCloseNavMenu}>
+          <Button
+            sx={{
+              color: 'black',
+              display: 'block',
+              fontFamily: 'Helvetica Neue, sans-serif',
+              width: '100%',
+              textAlign: 'left',
+            }}
+          >
+            History
+          </Button>
+        </MenuItem>
+      </Menu>
+    </Box>
+  )
+:
+          (<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Button
+    className='anker'
+    aria-controls="menu-board"
+    aria-haspopup="true"
+    onMouseEnter={handleOpenNavMenu}
+    sx={{
+      color: 'white',
+      display: 'block',
+      fontFamily: 'Helvetica Neue, sans-serif',
+    }}
+  >
+    Board
+  </Button>
+  <Menu
+    id="menu-board"
+    anchorEl={anchorElNav}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'left',
+    }}
+    keepMounted
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'left',
+    }}
+    open={Boolean(anchorElNav)}
+    onClose={handleCloseNavMenu}
+    sx={{
+      color: 'white',
+    }}
+  >
+    <MenuItem className='anker' component="a" href="/Category1" onClick={handleCloseNavMenu}>
+      <Button
+        sx={{
+          color: 'black',
+          display: 'block',
+          fontFamily: 'Helvetica Neue, sans-serif',
+          width: '100%',
+          textAlign: 'left',
+        }}
+      >
+        Category 1
+      </Button>
+    </MenuItem>
+    <MenuItem className='anker' component="a" href="/Category2" onClick={handleCloseNavMenu}>
+      <Button
+        sx={{
+          color: 'black',
+          display: 'block',
+          fontFamily: 'Helvetica Neue, sans-serif',
+          width: '100%',
+          textAlign: 'left',
+        }}
+      >
+        Category 2
+      </Button>
+    </MenuItem>
+    <MenuItem className='anker' component="a" href="/Category3" onClick={handleCloseNavMenu}>
+      <Button
+        sx={{
+        color: 'black',
+          display: 'block',
+          fontFamily: 'Helvetica Neue, sans-serif',
+          width: '100%',
+          textAlign: 'left',
+        }}
+      >
+        Category 3
+      </Button>
+    </MenuItem>
+  </Menu>
+  <Button
+    className='anker'
+    onClick={handleCloseNavMenu}
+    sx={{
+      color: 'white',
+      display: 'block',
+      fontFamily: 'Helvetica Neue, sans-serif',
+    }}
+    href="/History"
+  >
+    History
+  </Button>
+          </Box>)}
 
-            <Menu
-              id="menu-appbar brand"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'flex', md: 'none' },
-                color:'white'
-              }}
-            >
-              {pages.map((page) => (
-              <MenuItem key={page} className='anker' component="a" href={`/${page}`} onClick={handleCloseNavMenu}>
-              <Typography textAlign="center">{page}</Typography>
-              </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                className='anker'
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ color: 'white', display: 'block' , fontFamily: 'Helvetica Neue, sans-serif'}}
-                href={`/${page}`}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
+          {/*오른쪽 상단 부분*/}
           {auth ? (
             <>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

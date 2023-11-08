@@ -24,7 +24,7 @@ const pages = ['FreeBoard', 'History'];
 function MenuExampleSizeLarge() {
   //login 여부 확인
   const [nickname,setNickname] = useState("");
-  const [auth, setAuth] = useState(true);
+  const [auth, setAuth] = useState(false);
   const [anchorElUser, setAnchorElUser] =useState(null);
 
   const sessionCheck=useSelector((state)=> state.session.session);

@@ -109,7 +109,6 @@ export default function SignUp() {
       formData.append('joinYear', joinYear);
       formData.append('email', email);
       formData.append('password', password);
-      formData.append('interests',interests);
       formData.append('address',selectedAddress.address);
       // 회원가입 요청 보내기
       const response = await axios.post('http://localhost:80/api/auth/join', formData);
@@ -169,7 +168,6 @@ export default function SignUp() {
   const [password, setPassword] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
 
-  const [interests,setInterests] = React.useState('');
 
 
   // 입력 필드 값이 변경될 때마다 정규식 검사를 수행하고 에러 상태 업데이트
@@ -199,9 +197,6 @@ export default function SignUp() {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     setPasswordError(!regPassword.test(e.target.value));
-  };
-  const handleInterestsChange = (e) => {
-    setInterests(e.target.value);
   };
 
   const handleSubmit = (event) => {
@@ -253,7 +248,7 @@ export default function SignUp() {
   }
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" style={{height:"80vh",marginTop:"20vh"}}>
         <CssBaseline />
         <Box
           sx={{
@@ -394,22 +389,6 @@ export default function SignUp() {
               helperText={joinYearError ? '숫자만 사용 가능합니다.' : ''}
             />
           </Grid>
-
-              {/* 관심 분야 입력란 */}
-              <Grid item xs={12} mt={5}>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={4}
-                  name="interests"
-                  label="관심 분야"
-                  value={interests}
-                  type="interests"
-                  id="interests"
-                  autoComplete="new-interests"
-                  onChange={handleInterestsChange}
-                />
-              </Grid>
               {/* 주소 입력란 */}
               <Grid item xs={12}>
                 <TextField

@@ -55,8 +55,7 @@ public class MemberAuthController {
 
     //Join 시도
     @PostMapping(value = "/join")
-    public ResponseEntity<MemberResponseDto> memberJoinApi(@Valid MemberDto memberDto,
-                                           BindingResult bindingResult){
+    public ResponseEntity<MemberResponseDto> memberJoinApi(@Valid MemberDto memberDto,BindingResult bindingResult){
         log.info("회원가입 시도 유저 -> 이메일 :{}",memberDto.getEmail());
 
         //파라미터 에러 검증

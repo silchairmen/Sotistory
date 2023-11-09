@@ -36,6 +36,14 @@ img{
     height:auto;
   //display:block;
 }
+.mypage{
+  &_hr{
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    width: 100%;
+  }
+}
 .background{
   background-color: #a0aaac;
 }
@@ -174,7 +182,7 @@ img{
     width: 30%;
     text-align: left;
     left: 18%;
-    top: 58.7%;
+    top: 59.8%;
   }
   &__inbox2{ //내부 inputbox
     position: absolute;

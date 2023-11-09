@@ -23,13 +23,13 @@ const pages = ['FreeBoard', 'History','Notice'];
 
 
 function MenuExampleSizeLarge() {
+  const dispatch = useDispatch();
   //login 여부 확인
   const sessionCheck=useSelector(state=> state.session.session);
   const [nickname,setNickname] = useState("");
   const [auth, setAuth] = useState(false);
   const [anchorElUser, setAnchorElUser] =useState(null);
 
-  const sessionCheck=useSelector((state)=> state.session.session);
   const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
  
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
@@ -116,7 +116,7 @@ const toggleCategoryMenu = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const handleLogOut =() =>{
+  const handleLogOut =async() =>{
     setAuth(false);
     await axios.get('http://localhost:80/api/auth/logout', {withCredentials: true});
     window.location.reload();
@@ -202,7 +202,7 @@ const toggleCategoryMenu = () => {
               zIndex:1
             }}
           >
-            Category 1
+            Notice
           </Button>
         </MenuItem>
         <MenuItem className='anker'>
@@ -216,20 +216,7 @@ const toggleCategoryMenu = () => {
               zIndex:1
             }}
           >
-            Category 2
-          </Button>
-        </MenuItem>
-        <MenuItem className='anker'>
-          <Button
-            sx={{
-              color: 'black',
-              display: 'block',
-              fontFamily: 'Helvetica Neue, sans-serif',
-              width: '100%',
-              textAlign: 'left',
-            }}
-          >
-            Category 3
+            FreeBoard
           </Button>
         </MenuItem>
         <MenuItem className='anker' component="a" href="/History" onClick={handleCloseNavMenu}>
@@ -281,7 +268,7 @@ const toggleCategoryMenu = () => {
       color: 'white',
     }}
   >
-    <MenuItem className='anker' component="a" href="/Category1" onClick={handleCloseNavMenu}>
+    <MenuItem className='anker' component="a" href="/Notice" onClick={handleCloseNavMenu}>
       <Button
         sx={{
           color: 'black',
@@ -291,10 +278,10 @@ const toggleCategoryMenu = () => {
           textAlign: 'left',
         }}
       >
-        Category 1
+        Notice
       </Button>
     </MenuItem>
-    <MenuItem className='anker' component="a" href="/Category2" onClick={handleCloseNavMenu}>
+    <MenuItem className='anker' component="a" href="/Freeboard" onClick={handleCloseNavMenu}>
       <Button
         sx={{
           color: 'black',
@@ -304,20 +291,7 @@ const toggleCategoryMenu = () => {
           textAlign: 'left',
         }}
       >
-        Category 2
-      </Button>
-    </MenuItem>
-    <MenuItem className='anker' component="a" href="/Category3" onClick={handleCloseNavMenu}>
-      <Button
-        sx={{
-        color: 'black',
-          display: 'block',
-          fontFamily: 'Helvetica Neue, sans-serif',
-          width: '100%',
-          textAlign: 'left',
-        }}
-      >
-        Category 3
+        Freeboard
       </Button>
     </MenuItem>
   </Menu>

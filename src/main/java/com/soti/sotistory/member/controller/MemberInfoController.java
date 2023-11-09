@@ -132,8 +132,7 @@ public class MemberInfoController {
 
     //프로필 수정
     @PutMapping("/profile/edit")
-    public ResponseEntity<MemberResponseDto> editProfile(@RequestParam(value = "profileImg", required = false) MultipartFile file,
-                                                         MemberProfileDto profileDto) {
+    public ResponseEntity<MemberResponseDto> editProfile(@RequestParam(value = "profileImg", required = false) MultipartFile file,MemberProfileDto profileDto) {
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email = ((CustomUser) userDetails).getUsername();

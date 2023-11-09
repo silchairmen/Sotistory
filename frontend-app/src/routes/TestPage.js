@@ -1,9 +1,8 @@
-import { useState,useEffect,useCallback } from 'react';
+import { useState,useEffect,useRef } from 'react';
 import axios from 'axios';
 import './TestPage.scss';
 import photo from '../img/myphoto.jpg';
 import profile from '../img/profile_img_A.png';
-import MypageModal from './MypageModal';
 import styled from 'styled-components';
 const TestPage=()=> {
   const [nickname,setNickname] = useState("");
@@ -12,8 +11,6 @@ const TestPage=()=> {
   const [stunum,setStunum] = useState("");
   const [email,setEmail] = useState("");
   const [address,setAddress] = useState("");
-  const [interest,setInterest] = useState("");
-  const [password,setPassword] = useState("");
   const [menuNum, setMenuNum] = useState("0");
   const [tistory,setTistory] = useState("");
   const [github,setGithub] = useState("");
@@ -21,41 +18,36 @@ const TestPage=()=> {
   const [position,setPosition] = useState("");
   const [skills,setSkills] = useState("");
   const [award,setAward] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
 
-
-  const MypageHr = styled.hr`
-    width:100%;
-    margin-top:0px;
-    margin-bottom:0px;
-    margin-left:0px;
-  `
+  const imgRef = useRef();
 
   const handleSave = async(event) => {
-    console.log(event.target.form);
     event.preventDefault();
-    if (menuNum==="0"){
+    if (menuNum === "0") {
       const data = new FormData(event.currentTarget.form);
       const response = await axios.put(`http://localhost:80/api/member/info/edit`,data, {withCredentials: true});
-      if (response.data.status === 200) {          // 응답 처리
+      console.log(response)
+      if (response.data.status === 200) {
         console.log("저장성공");
-      } else{
-        console.log(response.data);
-          // ... (에러 처리)
-        }
-    }else if(menuNum==="1"){
+      } else {
+        // ... (에러 처리)
+      }
+    } else if(menuNum === "1") {
       const data = new FormData(event.currentTarget.form);
+      data.delete('profileImageName');
+      data.append('profileImageName', selectedImage)
       const response = await axios.put(`http://localhost:80/api/member/profile/edit`,data, {withCredentials: true});
-      if (response.data.status === 400) {          // 응답 처리
-        console.log("저장성공");
-      } else{
-        console.log(response.data);
-          // ... (에러 처리)
-        }
+      if (response.data.status === 400) {
+        //console.log("저장성공");
+      } else {
+        // ... (에러 처리)
+      }
+    }else{
+      console.log(menuNum)
     }
-
-      
-    
-  };
+  }
+  
   const handleMenuClick = (num) => {
     setMenuNum(num);
   }
@@ -73,8 +65,7 @@ const TestPage=()=> {
           setJoinyear(response.data.memberInfo.joinYear);
           setStunum(response.data.memberInfo.stuNum);
           setEmail(response.data.memberInfo.email);
-          setAddress(response.data.memberInfo.address);
-          setInterest(response.data.memberInfo.interests);
+          setAddress(response.data.memberInfo.a1ddress);
         }
       }else if(menuNum==="1"){
         const response = await axios.get('http://localhost:80/api/member/profile', {withCredentials: true});
@@ -85,6 +76,7 @@ const TestPage=()=> {
           setSkills(response.data.memberProfileDto.skills);
           setTistory(response.data.memberProfileDto.tistoryAddr);
           setPosition(response.data.memberProfileDto.position);
+          setSelectedImage(response.data.memberProfileDto.profileImageName)
         }
       }
       
@@ -92,6 +84,14 @@ const TestPage=()=> {
     }
     loadMyData();
   },[menuNum]);
+  const handleImageInput = () => {
+    const file = imgRef.current.files[0];
+    const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+          setSelectedImage(reader.result);
+      };
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
@@ -129,6 +129,7 @@ const TestPage=()=> {
         break;
     }
   };
+  
   if (menuNum==="0"){
     return (
       <div className='background'>
@@ -151,27 +152,27 @@ const TestPage=()=> {
             <div className="menu__mypage__box" style={{marginLeft:"20%",width:"80%"}}>
               <div className="menu__mypage__inbox">
                 <p className='menu__mypage__p'>닉네임</p>
-                <MypageHr/>
+                <hr className='mypage_hr'/>
                 <input type="text" name='nickname' id="nickname" className="menu__mypage__input" value={nickname} onChange={handleInputChange}/>
               </div>
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>이름</p>
-              <MypageHr/>
+              <hr className='mypage_hr'/>
               <input type="text" name='name' id="name" className="menu__mypage__input" value={name} onChange={handleInputChange}/>
               </div>
               <div className='menu__mypage__inbox'>
               <p className='menu__mypage__p'>기수</p>
-              <MypageHr/>
+              <hr className='mypage_hr'/>
               <input type="text" name='joinYear' id="joinyear" className="menu__mypage__input" value={joinyear} onChange={handleInputChange}/>
               </div>
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>학번</p>
-              <MypageHr/>
+              <hr className='mypage_hr'/>
               <input type="text" name='stuNum' id="stunum" className="menu__mypage__input" value={stunum} onChange={handleInputChange}/>
               </div>
               <div className="menu__mypage__inbox">
                 <p className='menu__mypage__p'>거주지</p>
-                <MypageHr/>
+                <hr className='mypage_hr'/>
               <input type="text" name='address' id="address" className="menu__mypage__input" value={address} onChange={handleInputChange}/>
               </div>
               </div>
@@ -204,33 +205,33 @@ const TestPage=()=> {
                 <p style={{position:"absolute",fontSize:"20px",left:"28%"}}>[{position}]{nickname}</p>
                   <div className='mypage_profile__box'>
                     
-                    <img className='mypage_profile' src={photo} alt='mypage_profile'/>
+                    <img className='mypage_profile' src={selectedImage} alt='mypage_profile'/>
                   </div>
-                  <button className='img_button'>이미지 변경</button>
+                  <input className='img_button' type='file' accept='image/*' id='profileImageName' name='profileImageName' onChange={handleImageInput} ref={imgRef} ></input>
                   <div className="menu__mypage__inbox1">
                     <p className='menu__mypage__p'>스킬</p>
-                    <MypageHr/>
+                    <hr className='mypage_hr'/>
                     <input type="text" name='skills' id="skills" className="menu__mypage__input" value={skills} onChange={handleInputChange}/>
                   </div>
             <div className="menu__mypage__box" style={{marginLeft:"auto"}}>
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>티스토리</p>
-              <MypageHr/>
+              <hr className='mypage_hr'/>
               <input type="text" name='tistoryAddr' id="tistory" className="menu__mypage__input" value={tistory} onChange={handleInputChange}/>
               </div>
               <div className='menu__mypage__inbox'>
               <p className='menu__mypage__p'>깃허브</p>
-              <MypageHr/>
+              <hr className='mypage_hr'/>
               <input type="text" name='githubAddr' id="github" className="menu__mypage__input" value={github} onChange={handleInputChange}/>
               </div>
               <div className="menu__mypage__inbox">
               <p className='menu__mypage__p'>드림핵</p>
-              <MypageHr/>
+              <hr className='mypage_hr'/>
               <input type="text" name='dreamhackAddr' id="dreamhack" className="menu__mypage__input" value={dreamhack} onChange={handleInputChange}/>
               </div>
               <div className="menu__mypage__inbox">
                 <p className='menu__mypage__p'>수상 이력</p>
-                <MypageHr/>
+                <hr className='mypage_hr'/>
               <input type="text" name='awards' id="awards" className="menu__mypage__input" value={award} onChange={handleInputChange}/>
               </div>
               </div>

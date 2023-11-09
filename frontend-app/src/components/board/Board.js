@@ -91,7 +91,7 @@
         </div>
         <div class="board_list_wrap">
           <div class="board_title">
-              <div class="top">
+              <div class="board_top">
                   <div class="num">비밀</div>
                   <div class="titles">제목</div>
                   <div class="writer">글쓴이</div>

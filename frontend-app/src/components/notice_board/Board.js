@@ -43,6 +43,17 @@
   `;
 
 
+  const imageStyle = {
+    width: '100%',
+    height: '35%',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-end', // 이미지를 아래에 정렬합니다.
+    objectFit: 'cover',
+  };
+
+
   const Board = ({address}) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -122,6 +133,11 @@
                       <div class="regdate">
                         작성일 {boardDetail.regDate}
                       </div>
+                       <img
+                        src={image}
+                        alt="이미지 설명"
+                        style={imageStyle}
+                      />
                     </div>
               );
             }

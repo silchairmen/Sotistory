@@ -1,9 +1,8 @@
 import { useState,useEffect,useRef } from 'react';
 import axios from 'axios';
 import './TestPage.scss';
-import photo from '../img/myphoto.jpg';
 import profile from '../img/profile_img_A.png';
-import styled from 'styled-components';
+
 const TestPage=()=> {
   const [nickname,setNickname] = useState("");
   const [name,setName] = useState("");
@@ -26,7 +25,7 @@ const TestPage=()=> {
     event.preventDefault();
     if (menuNum === "0") {
       const data = new FormData(event.currentTarget.form);
-      const response = await axios.put(`http://localhost:80/api/member/info/edit`,data, {withCredentials: true});
+      const response = await axios.put(`api/member/info/edit`,data, {withCredentials: true});
       console.log(response)
       if (response.data.status === 200) {
         console.log("저장성공");
@@ -37,7 +36,7 @@ const TestPage=()=> {
       const data = new FormData(event.currentTarget.form);
       data.delete('profileImageName');
       data.append('profileImageName', selectedImage)
-      const response = await axios.put(`http://localhost:80/api/member/profile/edit`,data, {withCredentials: true});
+      const response = await axios.put(`api/member/profile/edit`,data, {withCredentials: true});
       if (response.data.status === 400) {
         //console.log("저장성공");
       } else {
@@ -58,7 +57,7 @@ const TestPage=()=> {
       }
     const loadMyData= async()=>{
       if (menuNum==="0"){
-        const response = await axios.get('http://localhost:80/api/member/info', {withCredentials: true});
+        const response = await axios.get('api/member/info', {withCredentials: true});
         if (response.data.status===200){
           setNickname(response.data.memberInfo.nickname);
           setName(response.data.memberInfo.name);
@@ -68,7 +67,7 @@ const TestPage=()=> {
           setAddress(response.data.memberInfo.a1ddress);
         }
       }else if(menuNum==="1"){
-        const response = await axios.get('http://localhost:80/api/member/profile', {withCredentials: true});
+        const response = await axios.get('api/member/profile', {withCredentials: true});
         if (response.data.status===200){
           setAward(response.data.memberProfileDto.awards);
           setDreamhack(response.data.memberProfileDto.dreamhackAddr);

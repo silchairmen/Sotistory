@@ -25,7 +25,7 @@ const TestPage=()=> {
     event.preventDefault();
     if (menuNum === "0") {
       const data = new FormData(event.currentTarget.form);
-      const response = await axios.put(`api/member/info/edit`,data, {withCredentials: true});
+      const response = await axios.put(`/api/member/info/edit`,data, {withCredentials: true});
       console.log(response)
       if (response.data.status === 200) {
         console.log("저장성공");
@@ -34,9 +34,13 @@ const TestPage=()=> {
       }
     } else if(menuNum === "1") {
       const data = new FormData(event.currentTarget.form);
-      data.delete('profileImageName');
-      data.append('profileImageName', selectedImage)
-      const response = await axios.put(`api/member/profile/edit`,data, {withCredentials: true});
+      //data.append('profileImg', selectedImage)
+      const response = await axios.put(`/api/member/profile/edit`, data, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data', // Content-Type 설정
+        },
+      });
       if (response.data.status === 400) {
         //console.log("저장성공");
       } else {
@@ -57,7 +61,7 @@ const TestPage=()=> {
       }
     const loadMyData= async()=>{
       if (menuNum==="0"){
-        const response = await axios.get('api/member/info', {withCredentials: true});
+        const response = await axios.get('/api/member/info', {withCredentials: true});
         if (response.data.status===200){
           setNickname(response.data.memberInfo.nickname);
           setName(response.data.memberInfo.name);
@@ -67,7 +71,8 @@ const TestPage=()=> {
           setAddress(response.data.memberInfo.a1ddress);
         }
       }else if(menuNum==="1"){
-        const response = await axios.get('api/member/profile', {withCredentials: true});
+        const response = await axios.get('/api/member/profile', {withCredentials: true});
+        console.log(response.data)
         if (response.data.status===200){
           setAward(response.data.memberProfileDto.awards);
           setDreamhack(response.data.memberProfileDto.dreamhackAddr);
@@ -191,7 +196,7 @@ const TestPage=()=> {
         <div className="menu__mypage">
           <div className="menu__mypage__content">
             <div className="menu__mypage__forms">
-              <form action="" className="menu__mypage__register" id="menu__mypage-up" style={{width:"1000px"}}>
+              <form action="" className="menu__mypage__register" id="menu__mypage-up" style={{width:"1000px"}} encType='multipart/form-data'>
                 <ul className='list' style={{width:"10%"}}>
                   <li className='list__box'onClick={()=>handleMenuClick("0")}>
                     <img className='menu__profile' src={profile} alt='profile_menu_img'/>
@@ -206,7 +211,7 @@ const TestPage=()=> {
                     
                     <img className='mypage_profile' src={selectedImage} alt='mypage_profile'/>
                   </div>
-                  <input className='img_button' type='file' accept='image/*' id='profileImageName' name='profileImageName' onChange={handleImageInput} ref={imgRef} ></input>
+                  <input className='img_button' type='file' accept='image/*' id='profileImg' name='profileImg' onChange={handleImageInput} ref={imgRef} ></input>
                   <div className="menu__mypage__inbox1">
                     <p className='menu__mypage__p'>스킬</p>
                     <hr className='mypage_hr'/>

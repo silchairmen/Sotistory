@@ -16,8 +16,9 @@ import '../css/commena.css';
 import logo from '../img/logo.png';
 import photo from '../img/myphoto.jpg';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 
+//const response = await axios.get('api/member/profile', {withCredentials: true});
 
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
@@ -38,18 +39,7 @@ function MenuExampleSizeLarge() {
   const [anchorElUser, setAnchorElUser] =useState(null);
 
   const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
- 
-  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
-
-const toggleCategoryMenu = () => {
-  setIsCategoryMenuOpen(!isCategoryMenuOpen);
-};
-
-  const handleBoardMenuItemClick = (event) => {
-    // Handle the click on "Board" menu item
-    event.preventDefault(); // Prevent navigation
-    setIsBoardMenuOpen(!isBoardMenuOpen); // Toggle the "Board" sub-menu
-  };
+  
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
   useEffect(() => {
@@ -73,11 +63,10 @@ const toggleCategoryMenu = () => {
       console.log(response.data)
       if(response.data.status === 200){
         dispatch({type:"LOGIN_SUCCESS"});
-        
       }else{
         dispatch({type:"LOGIN_FAILED"});
       }
-      }
+    }
     session();
     setAuth(sessionCheck);
     const navbar = document.querySelector('#navbar');
@@ -108,7 +97,7 @@ const toggleCategoryMenu = () => {
 
   // anchorElNav 변수를 초기화
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [cookies, , removeCookie] = useCookies(['JSESSIONID']);
+
 
 // handleOpenNavMenu 함수 정의
   const handleOpenNavMenu = (event) => {

@@ -6,6 +6,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import data from './AppData.json'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import axios from 'axios';
 
 
 const Body = styled.div`
@@ -80,6 +81,29 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 		if (navbar) {
 		  navbar.classList.add('bg-delete');
 		}
+		/* 
+      프로 파일 로드 데이터 구조
+    {
+      "nickname": "MerryQ",
+      "joinYear": "1",
+      "awards": null,
+      "githubAddr": null,
+      "tistoryAddr": null,
+      "dreamhackAddr": null,
+      "skills": null,
+      "profileImageName": null,
+      "position": null
+    }
+      */
+    const loadProfileData = async() =>{
+		const response = await axios.get('/api/member/all', {withCredentials: true});
+		
+		console.log(response.data);
+		if (response.data.status === 200){
+  
+		}
+	  }
+	  loadProfileData();
   },[]);
 
 	  

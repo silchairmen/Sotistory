@@ -52,6 +52,8 @@ function Boardinfo({address}) {
     data.append('content',comment);
     const cresp = await axios.post(`/api/question/comment/${id}`, data, {withCredentials: true});
     console.log(cresp.data)
+    window.location.reload();
+    alert("댓글이 입력되었습니다.");
 
   };
 

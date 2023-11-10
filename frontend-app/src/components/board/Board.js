@@ -9,12 +9,14 @@
   import { Button } from "@mui/material";
   import { useNavigate,useLocation } from "react-router-dom";
   import '../../css/boardcss.css';
+  import video from "../../img/boardvideo.mp4"
 
 
   const H1 = styled.h1`
     font-size:40px;
     padding-top:80px;
-    padding-bottom:100px;Selector
+    padding-bottom:100px
+
   `;
 
   const ContainerFragment = styled.div`
@@ -75,20 +77,42 @@
 
     const paginatedData = boardData.slice((page - 1) * limit, page * limit);
     return (
+
+      
       <LoadingOverlay
       active={loading}
       spinner
       text='게시판을 불러오는 중입니다.'
       >
-      <ContainerFragment>
 
+      <ContainerFragment>
+      <video
+        autoPlay
+        loop
+        muted
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: '0',
+          pointerEvents: 'none',
+        }}
+      >
+        <source src={video} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
             <div class="loadingset">
           <div class="board_wrap">
+
+        <div class="board_list_wrap">
+          <br />
         <div class="board_titles">
             <strong><h1>Q&A 게시판</h1> </strong>
             <p>Example</p>
         </div>
-        <div class="board_list_wrap">
           <div class="board_title">
               <div class="board_top">
                   <div class="num">비밀</div>

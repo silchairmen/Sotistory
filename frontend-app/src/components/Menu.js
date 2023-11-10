@@ -16,10 +16,17 @@ import '../css/commena.css';
 import logo from '../img/logo.png';
 import photo from '../img/myphoto.jpg';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import storageSession from 'redux-persist/lib/storage/session'
-import { useCookies } from 'react-cookie';
-const pages = ['FreeBoard', 'Notice', 'History', ];
+import { useSelector } from 'react-redux';
+
+
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import MenuList from '@mui/material/MenuList';
+import Stack from '@mui/material/Stack';
+
+const pages = ['FreeBoard', 'History'];
 
 
 function MenuExampleSizeLarge() {
@@ -56,6 +63,7 @@ const toggleCategoryMenu = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
 
 
 
@@ -123,6 +131,42 @@ const toggleCategoryMenu = () => {
     window.location.reload();
   };
 
+
+
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
+
   return (
     <AppBar id="navbar" position="fixed" color='transparent'elevation={0}>
       <Container maxWidth="xl">
@@ -168,134 +212,120 @@ const toggleCategoryMenu = () => {
           {isMobile ?  (
     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
       <IconButton
-        size="large"
-        aria-label="Menu Button"
-        aria-controls="menu-board"
+        ref={anchorRef}
+        id="composition-button"
+        aria-controls={open ? 'composition-menu' : undefined}
+        aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleOpenNavMenu}
         sx={{
           color: 'white',
+          display: 'block',
+          fontFamily: 'Helvetica Neue, sans-serif',
         }}
+        onClick={handleToggle}
       >
         <MenuIcon />
       </IconButton>
-      <Menu
-        id="menu-board"
-        anchorEl={anchorElNav}
-        anchorOrigin={{
-          vertical:40 // 상단에서 열도록 수
-        }}
-        keepMounted
-        open={Boolean(anchorElNav)}
-        onClose={handleCloseNavMenu}
-        sx={{
-          color: 'white',
-        }}
-      >
-        <MenuItem className='anker'>
-          <Button
-            sx={{
-              color: 'black',
-              display: 'block',
-              fontFamily: 'Helvetica Neue, sans-serif',
-              width: '100%',
-              textAlign: 'left',
-              zIndex:1
-            }}
-          >
-            Notice
-          </Button>
-        </MenuItem>
-        <MenuItem className='anker'>
-          <Button
-            sx={{
-              color: 'black',
-              display: 'block',
-              fontFamily: 'Helvetica Neue, sans-serif',
-              width: '100%',
-              textAlign: 'left',
-              zIndex:1
-            }}
-          >
-            FreeBoard
-          </Button>
-        </MenuItem>
-        <MenuItem className='anker' component="a" href="/History" onClick={handleCloseNavMenu}>
-          <Button
-            sx={{
-              color: 'black',
-              display: 'block',
-              fontFamily: 'Helvetica Neue, sans-serif',
-              width: '100%',
-              textAlign: 'left',
-            }}
-          >
-            History
-          </Button>
-        </MenuItem>
-      </Menu>
+      <Popper
+          open={open}
+          anchorEl={anchorRef.current}
+          role={undefined}
+          placement="bottom-start"
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === 'bottom-start' ? 'left top' : 'left bottom',
+              }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList
+                    autoFocusItem={open}
+                    id="composition-menu"
+                    aria-labelledby="composition-button"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    <a className="aconfig" href="/FreeBoard">
+                    <MenuItem onClick={handleClose} >FreeBoard</MenuItem>
+                    </a>
+                    <a className="aconfig"href="">
+                    <MenuItem onClick={handleClose}>test1</MenuItem>
+                    </a>
+                    <a className="aconfig" href="">
+                    <MenuItem onClick={handleClose}>test2</MenuItem>
+                    </a>
+                    <a className="aconfig" href="/History">
+                    <MenuItem onClick={handleClose}>history</MenuItem>
+                    </a>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
     </Box>
   )
 :
           (<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
           <Button
-    className='anker'
-    aria-controls="menu-board"
-    aria-haspopup="true"
-    onMouseEnter={handleOpenNavMenu}
-    sx={{
-      color: 'white',
-      display: 'block',
-      fontFamily: 'Helvetica Neue, sans-serif',
-    }}
-  >
-    Board
-  </Button>
-  <Menu
-    id="menu-board"
-    anchorEl={anchorElNav}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'left',
-    }}
-    keepMounted
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'left',
-    }}
-    open={Boolean(anchorElNav)}
-    onClose={handleCloseNavMenu}
-    sx={{
-      color: 'white',
-    }}
-  >
-    <MenuItem className='anker' component="a" href="/Notice" onClick={handleCloseNavMenu}>
-      <Button
-        sx={{
-          color: 'black',
-          display: 'block',
-          fontFamily: 'Helvetica Neue, sans-serif',
-          width: '100%',
-          textAlign: 'left',
-        }}
-      >
-        Notice
-      </Button>
-    </MenuItem>
-    <MenuItem className='anker' component="a" href="/Freeboard" onClick={handleCloseNavMenu}>
-      <Button
-        sx={{
-          color: 'black',
-          display: 'block',
-          fontFamily: 'Helvetica Neue, sans-serif',
-          width: '100%',
-          textAlign: 'left',
-        }}
-      >
-        Freeboard
-      </Button>
-    </MenuItem>
-  </Menu>
+          ref={anchorRef}
+          id="composition-button"
+          aria-controls={open ? 'composition-menu' : undefined}
+          aria-expanded={open ? 'true' : undefined}
+          aria-haspopup="true"
+          sx={{
+            color: 'white',
+            display: 'block',
+            fontFamily: 'Helvetica Neue, sans-serif',
+          }}
+          onClick={handleToggle}
+        >
+          Board
+        </Button>
+        <Popper
+          open={open}
+          anchorEl={anchorRef.current}
+          role={undefined}
+          placement="bottom-start"
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === 'bottom-start' ? 'left top' : 'left bottom',
+              }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList
+                    autoFocusItem={open}
+                    id="composition-menu"
+                    aria-labelledby="composition-button"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    <a className="aconfig" href="/FreeBoard">
+                    <MenuItem onClick={handleClose} >FreeBoard</MenuItem>
+                    </a>
+                    <a className="aconfig"href="">
+                    <MenuItem onClick={handleClose}>test1</MenuItem>
+                    </a>
+                    <a className="aconfig" href="">
+                    <MenuItem onClick={handleClose}>test2</MenuItem>
+                    </a>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
   <Button
     className='anker'
     onClick={handleCloseNavMenu}
@@ -312,82 +342,51 @@ const toggleCategoryMenu = () => {
 
           {/*오른쪽 상단 부분*/}
           {auth ? (
-            <>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-          <Tooltip>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={photo}   sx={{
-                  border: '2px solid',
-                  borderColor: 'white'
-                  // 다른 스타일 속성들을 추가로 지정할 수 있습니다.
-                }}/>
-                <p className='nick'>{nickname}</p>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography 
-                    textAlign="center" 
-                    href={`/MyPage`}
-                  >
-                    MyPage
-                  </Typography>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={handleLogOut}>Logout</Typography>
-                </MenuItem>
-            </Menu>
+            <>          
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <Button
+                className='anker'
+                sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
+                href={`/Mypage`}
+              >
+                 Mypage
+              </Button>
+              <Button
+                className='anker'
+                onClick={handleLogOut}
+                sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
+              >
+                Logout
+              </Button>
           </Box>
 
           <Box sx={{ display: { xs: 'flex', md: 'none', flexGrow: 1 }, justifyContent: 'flex-end'}}>
-          <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={photo} sx={{
-                  border: '2px solid',
-                  borderColor: 'white'
-                  // 다른 스타일 속성들을 추가로 지정할 수 있습니다.
-                }} />
-                  <p className='nick2'>{nickname}</p>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+            <Button
+              className='anker'
+              variant="contained"
+              size="small"
+              sx={{ margin: 1, bgcolor: 'transparent', color: 'white',  ':hover': {
+                backgroundColor: 'transparent !important',
+                boxShadow: 'none !important'
+              },
+              boxShadow: 'none' }}
+              href={`/Mypage`}
             >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" component="a" href={`/MyPage`} style={{ textDecoration: 'none', color:'black' }}>MyPage</Typography>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={handleLogOut}>Logout</Typography>
-                </MenuItem>
-            </Menu>
+            Mypage
+            </Button>
+            <Button
+              className='anker'
+              variant="contained"
+              size="small"
+              onClick={() => handleLogOut}
+              sx={{ margin: 1, bgcolor: 'transparent', color: 'white',  ':hover': {
+                backgroundColor: 'transparent !important',
+                boxShadow: 'none !important'
+              },
+              boxShadow: 'none' }}
+            >
+            Logout
+            </Button>
           </Box>
           </>
           ) : (
@@ -395,7 +394,6 @@ const toggleCategoryMenu = () => {
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Button
                 className='anker'
-                onClick={handleCloseNavMenu}
                 sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
                 href={`/SignIn`}
               >
@@ -403,7 +401,6 @@ const toggleCategoryMenu = () => {
               </Button>
               <Button
                 className='anker'
-                onClick={handleCloseNavMenu}
                 sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
                 href={`/SignUp`}
               >

@@ -5,6 +5,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 import { useLocation } from 'react-router-dom';
 
 const Background = styled.div`
@@ -87,13 +88,14 @@ const Boardmodifier = () => {
 
     useEffect(() => {
         // 글 내용(boardText)을 Draft.js 형식으로 변환하여 에디터의 초기값으로 설정
-        const contentState = ContentState.createFromText(boardText);
-        const newEditorState = EditorState.createWithContent(contentState);
+        const blocksFromHtml = htmlToDraft(boardText);
+        const { contentBlocks, entityMap } = blocksFromHtml;
+        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+        const editorState = EditorState.createWithContent(contentState);
+        setEditorState(editorState);
 
 
         console.log(contentState)
-        console.log(newEditorState)
-        setEditorState(newEditorState);
 
     }, [boardText]);
 
@@ -118,6 +120,7 @@ const Boardmodifier = () => {
 
         try {
           const data = new FormData();
+          console.log(editorToHtml)
           data.append('content', editorToHtml);
           data.append('title', titles);
           const response = await axios.put(`/api/question/${postId}`, data, { withCredentials: true });

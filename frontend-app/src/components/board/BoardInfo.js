@@ -128,6 +128,7 @@ function Boardinfo({address}) {
                           
                         </section>
                     </article>
+                    <Link to={{pathname:`/Question/modifier/${id}`,state:{id: id}}}><p style={{color: 'blue',}}>글 수정</p></Link>
 
                     <section className="board_mb-5s">
                         <div className="bg-light">
@@ -150,7 +151,7 @@ function Boardinfo({address}) {
                     </section>
                 </div>
 
-      <Link to={{pathname:`/Question/modifier/${id}`,state:{id: id}}}><p style={{color: 'blue',}}>글 수정</p></Link>
+      
         </div>
       </Board>
       

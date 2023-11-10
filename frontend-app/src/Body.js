@@ -26,15 +26,15 @@ function Body() {
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Layout>
           <Routes>
-            <Route path="/FreeBoard" element={<Content style={contentStyle}><FreeBoard /></Content>} />
+            <Route path="/Question" element={<Content style={contentStyle}><FreeBoard /></Content>} />
             <Route path="/notice" element={<Content style={contentStyle}><Noticeboard /></Content>} />
-            <Route path="/FreeBoard/:id" element={<Content style={contentStyle}><FreeBoardInfo /></Content>} />
+            <Route path="/Question/:id" element={<Content style={contentStyle}><FreeBoardInfo /></Content>} />
             <Route path="/SignIn" element={<Content style={contentStyle}><SignIn /></Content>} />
             <Route path="/SignUp" element={<Content style={contentStyle}><SignUp /></Content>} />
             <Route path="/History" element={<History />} />
-            <Route path="/FreeBoard/Edit/:id" element={<Content style={contentStyle}><BoardEditor/></Content>} />
+            <Route path="/Question/Edit/:id" element={<Content style={contentStyle}><BoardEditor/></Content>} />
             <Route path="/notice/Edit/:id" element={<Content style={contentStyle}><NoticeEditor/></Content>} />
-            <Route path="/FreeBoard/modifier/:id" element={<Content style={contentStyle}><Boardmodifier/></Content>} />
+            <Route path="/Question/modifier/:id" element={<Content style={contentStyle}><Boardmodifier/></Content>} />
             <Route path="/" element={<Content style={contentStyle}><Intro /></Content>} />
             <Route path="/MyPage" element ={<Content style={contentStyle}><TestPage /></Content>} />
           </Routes>

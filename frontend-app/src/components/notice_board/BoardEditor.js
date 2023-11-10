@@ -32,7 +32,6 @@ const EditorForm = styled.div`
     border-radius: 10px;
     background-color: white;
     padding: 15px;
-    
 `
 
 
@@ -79,6 +78,18 @@ const BoardEditor = () => {
         } catch (error) {
             console.error("Error fetching board data:", error);
         }
+    };
+
+
+    const handleImageUpload = file => {
+        // Use FormData to send the file to your server
+        const formData = new FormData();
+        formData.append('file', file);
+    
+        // Make a request to your server to handle the image upload
+        return axios.post('/api/promotional/upload', formData)
+          .then(response => ({ data: { link: response.data.imageUrl } }))
+          .catch(error => console.error(error));
     };
 
     const onFilesSelected = (files) => {
@@ -173,8 +184,7 @@ const BoardEditor = () => {
                     onClick={submitReview}
                 >작성</button>
             <EditorForm>
-            <div className="App"> <FileUpload onFilesSelected={onFilesSelected} />
-            </div>
+            <FileUpload onFilesSelected={onFilesSelected} />
                 <Editor
                     wrapperClassName="wrapper-class"
                     editorClassName="editor"
@@ -183,7 +193,6 @@ const BoardEditor = () => {
                         // inDropdown: 해당 항목과 관련된 항목을 드롭다운으로 나타낼것인지
                         list: { inDropdown: true },
                         textAlign: { inDropdown: true },
-                        link: { inDropdown: true },
                         history: { inDropdown: false },
                         fontSize: {
                             icon: 'fontSize', // 아이콘
@@ -192,6 +201,10 @@ const BoardEditor = () => {
                         },
                         fontFamily: {
                             options: ['Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+                        },
+                        image: {
+                            uploadCallback: handleImageUpload,
+                            alt: { present: true, mandatory: true },
                         },
                     }}
                     placeholder="내용을 작성해주세요."

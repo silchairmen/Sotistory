@@ -18,8 +18,7 @@
   `;
 
   const ContainerFragment = styled.div`
-    background-color:whitesmoke;
-    padding-top: 70px;
+    height: 100%;
   `
 
   const Board = ({address}) => {
@@ -28,7 +27,7 @@
     const [boardData, setBoardData] = useState([]);
     const [loading, setLoading] = useState(true); // Add loading state
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(20);
+    const [limit, setLimit] = useState(10);
     const [total, setTotal] = useState(1);
     const loaddata=useSelector(state => state.search.keyword);
     const loadtype=useSelector(state => state.search.type);
@@ -49,8 +48,8 @@
       setBoardData(resp.data.postInfoDtoList)
       setPostId(resp.data.postInfoDtoList.postId);
       setLoading(false); // Set loading to false after data is fetched
-      setLimit(resp.data.postInfoDtoList.totalpages);
-      setTotal(resp.data.postInfoDtoList.totalCount);
+      setTotal(resp.data.totalCount);
+      console.log(resp.data)
 
       try {
       } catch (error) {
@@ -70,23 +69,23 @@
     }
 
     const handleWrite=()=> {
-      window.location.href='FreeBoard/edit/post';
+      window.location.href='Question/edit/post';
     }
 
 
-    const paginatedData = boardData.slice(0, boardData.totalElements);
+    const paginatedData = boardData.slice((page - 1) * limit, page * limit);
     return (
       <LoadingOverlay
       active={loading}
       spinner
       text='게시판을 불러오는 중입니다.'
-    >
+      >
       <ContainerFragment>
-          <ContainerFragment>
+
             <div class="loadingset">
           <div class="board_wrap">
         <div class="board_titles">
-            <strong>Q&A 게시판</strong>
+            <strong><h1>Q&A 게시판</h1> </strong>
             <p>Example</p>
         </div>
         <div class="board_list_wrap">
@@ -101,7 +100,6 @@
           </div>
                   {paginatedData.map((boardDetail) => {
                     if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
-                      console.log(boardDetail);
                       const createDate = new Date(boardDetail.createDate);
                       const year = createDate.getFullYear();
                       const month = String(createDate.getMonth() + 1).padStart(2, '0');
@@ -113,8 +111,8 @@
                         <div class="board_middle">
                           <div class="middle">
                           {boardDetail.postType == "HIDDEN" && (<div class="num">🔐</div>)}
-                          {boardDetail.postType != "HIDDEN" && (<div class="num">🔓</div>)}
-                            <div class="titles" type="primary" onClick={() => {navigate(`/FreeBoard/${boardDetail.postId}`)}}>{boardDetail.title}</div>
+                          {boardDetail.postType != "HIDDEN" && (<div class="num"></div>)}
+                            <div class="titles" type="primary" onClick={() => {navigate(`/Question/${boardDetail.postId}`)}}>{boardDetail.title}</div>
                             <div class="writer">{boardDetail.writer}</div>
                             <div class="date">{formattedDateTime}</div>
                             <div class="count">{boardDetail.commentSize}</div>
@@ -126,15 +124,14 @@
             <div class="board_button_wrap" onClick={handleWrite}>
               등록
             </div>
-            <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />
-            <Search/>
+              <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />
+              <Search/>
         </div>
     </div>
     </div>
     <footer>
 
     </footer>
-          </ContainerFragment>
       </ContainerFragment>
       </LoadingOverlay>
 

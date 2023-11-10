@@ -16,7 +16,7 @@ function BoardList({ author, postId, title }) {
         <tr>
           <Td>No.{postId}</Td>  
           <Td>
-            <Link to={`/FreeBoard/${postId}`}><FontColor>{title}</FontColor></Link>
+            <Link to={`/Question/${postId}`}><FontColor>{title}</FontColor></Link>
           </Td>
           <td style={{textAlign:"center"}}>{author}</td>
         </tr>

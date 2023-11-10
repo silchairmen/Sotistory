@@ -94,8 +94,7 @@
   
   .board_mb-4c {
     margin-bottom: 0.2rem;
-    padding: 10px;
-    padding-top: 15px;
+    padding: 5px;
     background-color: #f0e8e8;
     box-shadow: 0 0 100px rgba(62, 60, 60, 0.14);
   }
@@ -203,6 +202,7 @@
     border: 1px solid #f0e8e8;
     border-radius: 10px;
     box-shadow: 0 0 100px rgba(62, 60, 60, 0.3);
+    margin-top: 7%;
   }
   .board_textbox{
     border: 1px solid #f0e8e8;
@@ -210,6 +210,9 @@
     margin-right: 10px;
     white-space: pre-wrap;
     margin-bottom: 40px;
+    padding-left: 10px;
+    text-align: left;
+
   }
 
   .modal-background {

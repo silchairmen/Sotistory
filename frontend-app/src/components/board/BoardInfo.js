@@ -10,6 +10,7 @@ const Board=styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: auto;
 `
 
 const Footer=styled.div`
@@ -80,12 +81,11 @@ function Boardinfo({address}) {
     const getInfo = async () => {
       try {
         const resp = await axios.get(`/api/question/${id}`);
-        console.log(resp.data.postType);
+        console.log(resp.data);
         if (resp.data.status !== 203){
           setBoardType(resp.data.postType);
           setBoardInfo(resp.data);
           setCommentInfo(resp.data.commentInfoDtoList)
-          console.log(commentInfo)
         } else {
           setShowModal(true);
           
@@ -125,6 +125,7 @@ function Boardinfo({address}) {
                         <section className="board_mb-5">
                           <div style={{ display: 'flex', justifyContent: 'left', marginBottom: '-17px'}}><h4><p className="board_mb-4" style={{color: 'gray',}}>본문</p></h4></div>
                           <div className="board_textbox" dangerouslySetInnerHTML={{ __html: boardInfo.content }}></div>
+                          
                         </section>
                     </article>
 
@@ -132,7 +133,7 @@ function Boardinfo({address}) {
                         <div className="bg-light">
                             <div style={{ display: 'flex', justifyContent: 'left', marginBottom: '-17px'}}><h4><p style={{color: 'green',}}></p></h4></div>
                                 <form className="board_mb-4 board_ms-4"><textarea className="board_form-control" rows="3" placeholder="댓글을 입력해주세요." value={comment} onChange={handleCommentChange}></textarea></form>
-                                <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px', cursor: 'pointer' }} onClick={handleButtonClick}><h6><p style={{ color: 'green', fontSize: '15px' }}>작성</p></h6></div>
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px', cursor: 'pointer' }} onClick={handleButtonClick}><p style={{ color: 'green', fontSize: '14px', marginTop: '-15px' }}>작성</p></div>
                     {slicecomment.map((commentDetail) => {
                     if (loadtype === "" || (commentDetail[loadtype].includes(loaddata))) {
                       return (
@@ -149,7 +150,7 @@ function Boardinfo({address}) {
                     </section>
                 </div>
 
-      <Link to={{pathname:`/FreeBoard/modifier/${id}`,state:{id: id}}}><p style={{color: 'blue',}}>글 수정</p></Link>
+      <Link to={{pathname:`/Question/modifier/${id}`,state:{id: id}}}><p style={{color: 'blue',}}>글 수정</p></Link>
         </div>
       </Board>
       
@@ -157,4 +158,4 @@ function Boardinfo({address}) {
   );
 }
 
-export default Boardinfo;
+export default Boardinfo; 

@@ -30,7 +30,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
         Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("status", 200);
+        responseBody.put("status", 203);
         responseBody.put("message", "로그인 실패");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");

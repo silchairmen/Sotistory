@@ -111,13 +111,12 @@ export default function SignUp() {
       formData.append('password', password);
       formData.append('address',selectedAddress.address);
       // 회원가입 요청 보내기
-      const response = await axios.post('http://localhost:80/api/auth/join', formData);
+      const response = await axios.post('/api/auth/join', formData);
       if (nickNameduplicationError||emailduplicationError){
         setSendData("중복되는 입력값이 있습니다.");
         setShowSuccessAlert('error');
         return 0;
       }
-
       // 응답 처리
       if (response.data.status === 300) {
         setSendData(response.data.message);
@@ -212,7 +211,7 @@ export default function SignUp() {
     try {
       const Data1 = new FormData();
       Data1.append('nickname', nickname);
-      const resp = await axios.post('http://localhost:80/api/auth/help/check_nickname', Data1);
+      const resp = await axios.post('/api/auth/help/check_nickname', Data1);
       if (resp.data.status === 200) {
         setNickNameDuplicationError(false);
       } else if(resp.data.status === 500){
@@ -226,7 +225,7 @@ export default function SignUp() {
     try {
       const Data2 = new FormData();
       Data2.append('email', email);
-      const resp = await axios.post('http://localhost:80/api/auth/help/check_email', Data2);
+      const resp = await axios.post('/api/member/help/check_email', Data2);
       if (resp.data.status === 200) {
         setEmailDuplicationError(false);
       } else if(resp.data.status === 500){
@@ -264,11 +263,13 @@ export default function SignUp() {
           {senddata}
         </Alert>
       )}
+
       {showSuccessAlert === "error" && (
         <Alert severity="error" sx={{ mt: 2 }}>
           {senddata}
         </Alert>
       )}
+      
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
             {/* 이메일 주소 입력란 */}

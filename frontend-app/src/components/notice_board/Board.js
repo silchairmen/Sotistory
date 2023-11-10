@@ -24,6 +24,36 @@
     padding-top: 70px;
   `
 
+  const ScrollableDiv = styled.div`
+    height: 290px;
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    align-items: flex-start; /* 아래쪽 정렬을 위해 사용 */
+    white-space: nowrap; /* 수평 스크롤을 사용하려면 내부 요소를 인라인 블록으로 설정합니다. */
+    border-top: 1px solid rgba(0, 0, 0, 0.2); /* 상단에 1px의 검은 테두리 추가 */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* 상단에 1px의 검은 테두리 추가 */
+    
+  `;
+
+  const Content = styled.div`
+    width: 100%; /* 내부 컨텐츠의 너비가 스크린 너비를 초과할 경우 스크롤이 활성화됩니다. */
+    height: 100%;
+  `;
+
+
+  const imageStyle = {
+    width: '100%',
+    height: '35%',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-end', // 이미지를 아래에 정렬합니다.
+    objectFit: 'cover',
+  };
+
+
   const Board = ({address}) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -38,12 +68,6 @@
     useEffect(() => {
       getBoard();
       const navbar = document.querySelector('#navbar');
-      const thumbs = document.querySelectorAll(".thumb");
-      thumbs.forEach((thumb, index) => {
-        setTimeout(() => {
-          thumb.classList.add("animate"); // animate 클래스 추가
-        }, 2000 * index); // 0.2초 간격으로 애니메이션 시작
-      });
       if (navbar) {
         navbar.classList.add('bg-gogo');
       }
@@ -51,13 +75,13 @@
 
     const getBoard = async () => {
       try {
-        const resp = await axios.get("http://192.168.0.16:8888/api/question/");
-        console.log(resp);
-        setBoardData(resp.data.pageInfo.content);
+        const resp = await axios.get("/api/promotional/");
+        console.log(resp.data);
+        setBoardData(resp.data.postInfoDtoList);
         setLoading(false); // Set loading to false after data is fetched
-        console.log(resp.data.pageInfo);
-        setLimit(resp.data.pageInfo.pagesize);
-        setTotal(resp.data.pageInfo.totalPages);
+        setLimit(resp.data.totalCount);
+        setTotal(resp.data.totalPages);
+        console.log(resp.data)
       } catch (error) {
         console.error("Error fetching board data:", error);
         setLoading(false); // Set loading to false on error as well
@@ -73,6 +97,11 @@
       console.log(boardData);
       console.log(paginatedData);
     }
+
+    const handleRegpage=()=> {
+      window.location.href="/Notice/Edit/post"
+    }
+
     const paginatedData = boardData.slice(0, boardData.totalElements);
     return (
       <LoadingOverlay
@@ -81,31 +110,69 @@
       text='게시판을 불러오는 중입니다.'
     >
       <ContainerFragment>
-          <ContainerFragment>
-            <center><h1>공지사항</h1></center>
+            <center><h1>공지 게시판</h1></center>
             <center>지금 SOTI의 공지사항을 확인하세요!</center>
-            <br />
-            <div class="gallery">
-            {paginatedData.map((boardDetail, index) => {
+            <ScrollableDiv>
+              <Content>
+              {paginatedData
+              .filter((boardDetail) => boardDetail.postType === "NOTICE")
+              .map((boardDetail, index) => {
               if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
-                return (
-                  <div className={`thumb ${index % 2 === 0 ? 'even' : 'odd'}`}>
-                    <div class="overlay"></div>
-                    <div class="title">
-                      <TruncateText text={boardDetail.title} maxLength={10} />
+                  return (
+                    <div className="thumbnotice">
+                      <div class="overlaynotice"></div>
+                      <div class="title">
+                        <TruncateText text={boardDetail.title} maxLength={10} size={16} />
+                      </div>
+                      <div class="author">
+                        작성자 {boardDetail.writer}
+                      </div>
+                      <div class="content">
+                        <TruncateText text={boardDetail.content} maxLength={100} size={16} />
+                      </div>
+                      <div class="regdate">
+                        작성일 {boardDetail.regDate}
+                      </div>
+                       <img
+                        src={image}
+                        alt="이미지 설명"
+                        style={imageStyle}
+                      />
                     </div>
-                    <div class="author">
-                      작성자 {boardDetail.author}
+              );
+            }
+          })}
+              </Content>
+            </ScrollableDiv>
+            <center><h1>홍보 게시판</h1></center>
+            <center>지금 SOTI의 홍보글을 확인하세요!</center>
+            <div class="reg_button" onClick={handleRegpage}>등록</div>
+            <div class="gallery">
+            {paginatedData
+              .filter((boardDetail) => boardDetail.postType === "NORMAL")
+              .map((boardDetail, index) => {
+              if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
+                  return (
+                    <div className="thumb">
+                      <div class="overlay"></div>
+                      <div class="title">
+                        <TruncateText text={boardDetail.title} maxLength={10} size={16} />
+                      </div>
+                      <div class="author">
+                        작성자 {boardDetail.writer}
+                      </div>
+                      <div class="content">
+                        <TruncateText text={boardDetail.content} maxLength={100} size={16} />
+                      </div>
+                      <div class="regdate">
+                        작성일 {boardDetail.regDate}
+                      </div>
                     </div>
-                    <div class="content">
-                      <TruncateText text={boardDetail.content} maxLength={100} />
-                    </div>
-                  </div>
-            );
+              );
             }
           })}
             </div>
-          </ContainerFragment>
+            
       </ContainerFragment>
       </LoadingOverlay>
 

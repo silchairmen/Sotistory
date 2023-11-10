@@ -19,7 +19,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import storageSession from 'redux-persist/lib/storage/session'
 import { useCookies } from 'react-cookie';
-const pages = ['FreeBoard', 'History','Notice'];
+const pages = ['FreeBoard', 'Notice', 'History', ];
 
 
 function MenuExampleSizeLarge() {
@@ -61,7 +61,8 @@ const toggleCategoryMenu = () => {
 
   useEffect(() => {
     async function session(){
-      const response = await axios.get('http://localhost:80/api/auth/validate', {withCredentials: true});
+      const response = await axios.get('/api/auth/validate', {withCredentials: true});
+      console.log(response.data)
       if(response.data.status === 200){
         dispatch({type:"LOGIN_SUCCESS"});
         
@@ -83,7 +84,7 @@ const toggleCategoryMenu = () => {
     window.addEventListener('scroll', handleScroll);
 
     async function findNickname(){
-        const response = await axios.get('http://localhost:80/api/auth/validate', {withCredentials: true});
+        const response = await axios.get('/api/auth/validate', {withCredentials: true});
         if(response.data.status === 200){
           setNickname(response.data.message);
         }else{
@@ -118,7 +119,7 @@ const toggleCategoryMenu = () => {
   };
   const handleLogOut =async() =>{
     setAuth(false);
-    await axios.get('http://localhost:80/api/auth/logout', {withCredentials: true});
+    await axios.get('/api/auth/logout', {withCredentials: true});
     window.location.reload();
   };
 

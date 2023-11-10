@@ -55,11 +55,13 @@ const TextField = styled.textarea`
 
 
 const BoardEditor = () => {
-    const [hidden,setHidden] = useState(false);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
+    const [boardpass, setBoardPass] = useState("");
+    const [selectedValue, setSelectedValue] = useState("freeBoard"); // 초기 선택 값
     const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+
 
     const location = useLocation();
     const splitUrl = location?.pathname?.split('/') ?? null;
@@ -71,9 +73,10 @@ const BoardEditor = () => {
     const getBoard = async () => {
         const indexNum = splitUrl[splitUrl.length-1];
         try {
-            const resp = await axios.get(`http://localhost:80/api/post/freeBoard/post/${indexNum}`);
+            const resp = await axios.get(`/api/post/freeBoard/post/${indexNum}`);
             setBoardText(resp.data.content);
             setBoardTitle(resp.data.title);
+            setBoardPass(resp.data.password);
         } catch (error) {
             console.error("Error fetching board data:", error);
         }
@@ -100,18 +103,15 @@ const BoardEditor = () => {
     const handleTitle = (e) => {
         setBoardTitle(e.target.value);
     }
-    const handleChangeHidden = () => {
-        if (hidden===false){
-            setHidden(true);
-            console.log(hidden);
-        }else {
-            setHidden(false);
-            console.log(hidden);
-        }
+    const handleSelectChange = (event) => {
+        setSelectedValue(event.target.value);
     }
 
     const handleTest= () => {
         console.log(splitUrl[splitUrl.length-1]);
+    }
+    const handlePasswordChange = (event) => {
+        setBoardPass(event.target.value);
     }
 
     const submitReview = async()=>{
@@ -119,10 +119,15 @@ const BoardEditor = () => {
         try{
             const data = new FormData();
 
-            data.append('content',editorToHtml);
-            data.append('title',titles);
-            data.append('postType',"NORMAL");
-            const response = await axios.post('http://localhost:80/api/post/freeBoard/create', data, {withCredentials: true});
+            if (boardpass.trim() === ""){
+                data.append('content',editorToHtml);
+                data.append('title',titles);
+            }else{
+                data.append('content',editorToHtml);
+                data.append('title',titles);
+                data.append('password',boardpass);
+            }
+            const response = await axios.post('/api/question/', data, {withCredentials: true});
             window.location.href = '/Freeboard';
             // 응답 처리
             if (response.data.status === 200) {
@@ -154,28 +159,38 @@ const BoardEditor = () => {
                 />
             </div>
             <button
-                    style={{
-                        backgroundColor: "black",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                        display: "inline-block",
-                        marginBottom: "5px", // 아래쪽 여백을 설정
-                        float: "right",
-                        height: "50px",
-                        width: "55px",
-                        fontWeight: "bold",
-                    }}
+                style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    display: "inline-block",
+                    marginBottom: "5px", // 아래쪽 여백을 설정
+                    float: "right",
+                    height: "50px",
+                    width: "55px",
+                    fontWeight: "bold",
+                    margin: "10px",
+                    boxShadow: "0 5px 10px rgba(0, 0, 0, 0.3)",
+                }}
                     className="submit-button"
                     onClick={submitReview}
                 >작성</button>
             <EditorForm>
-                <input type='checkbox' name="SecretCheck" value="SecretCheck" checked={hidden} onChange={handleChangeHidden}/>비밀 글
-                <select name="boardname" className="select" defaultValue="freeBoard">
-                    <option enabled="true" value="freeBoard">freeBoard</option>
-                    <option enabled="true" value="freeBoard2">freeBorad2</option>
-                </select>
+                
+            <select name="boardname" className="select" value={selectedValue} onChange={handleSelectChange}>
+                <option value="freeBoard">freeBoard</option>
+                <option value="freeBoard2">freeBoard2</option>
+            </select>
+            비밀번호:
+            <input
+                type="BoardPass"
+                id="passwordInput"
+                name="BoardPass"
+                value={boardpass}
+                onChange={handlePasswordChange}
+            />
                 <Editor
                     wrapperClassName="wrapper-class"
                     editorClassName="editor"

@@ -14,7 +14,7 @@
   const H1 = styled.h1`
     font-size:40px;
     padding-top:80px;
-    padding-bottom:100px;
+    padding-bottom:100px;Selector
   `;
 
   const ContainerFragment = styled.div`
@@ -33,7 +33,8 @@
     const loaddata=useSelector(state => state.search.keyword);
     const loadtype=useSelector(state => state.search.type);
     const [postId,setPostId] = useState(1);
-    const [numCount,setnumCount] = useState(2);
+    const [currentDate,setCurrentDate] = useState("");
+
 
     useEffect(() => {
       getBoard();
@@ -44,12 +45,13 @@
     }, [address]);
 
     const getBoard = async () => {
-      const resp = await axios.get("http://192.168.0.16:8888/api/question/");
+      const resp = await axios.get("/api/question/");
       setBoardData(resp.data.postInfoDtoList)
       setPostId(resp.data.postInfoDtoList.postId);
       setLoading(false); // Set loading to false after data is fetched
       setLimit(resp.data.postInfoDtoList.totalpages);
       setTotal(resp.data.postInfoDtoList.totalCount);
+
       try {
       } catch (error) {
         console.error("Error fetching board data:", error);
@@ -100,15 +102,22 @@
                   {paginatedData.map((boardDetail) => {
                     if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
                       console.log(boardDetail);
+                      const createDate = new Date(boardDetail.createDate);
+                      const year = createDate.getFullYear();
+                      const month = String(createDate.getMonth() + 1).padStart(2, '0');
+                      const day = String(createDate.getDate()).padStart(2, '0');
+                      const hours = String(createDate.getHours()).padStart(2, '0');
+                      const minutes = String(createDate.getMinutes()).padStart(2, '0');
+                      const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}`;
                       return (
                         <div class="board_middle">
                           <div class="middle">
-                          {boardDetail.postType == "HIDDEN" && (<div class="num">Y</div>)}
-                          {boardDetail.postType != "HIDDEN" && (<div class="num">N</div>)}
+                          {boardDetail.postType == "HIDDEN" && (<div class="num">🔐</div>)}
+                          {boardDetail.postType != "HIDDEN" && (<div class="num">🔓</div>)}
                             <div class="titles" type="primary" onClick={() => {navigate(`/FreeBoard/${boardDetail.postId}`)}}>{boardDetail.title}</div>
                             <div class="writer">{boardDetail.writer}</div>
-                            <div class="date">{boardDetail.createDate}</div>
-                            <div class="count">{boardDetail.count}</div>
+                            <div class="date">{formattedDateTime}</div>
+                            <div class="count">{boardDetail.commentSize}</div>
                           </div>
                         </div>
                     );

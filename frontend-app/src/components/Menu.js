@@ -197,85 +197,62 @@ const toggleCategoryMenu = () => {
           {isMobile ?  (
     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
       <IconButton
-        size="large"
-        aria-label="Menu Button"
-        aria-controls="menu-board"
+        ref={anchorRef}
+        id="composition-button"
+        aria-controls={open ? 'composition-menu' : undefined}
+        aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleOpenNavMenu}
         sx={{
           color: 'white',
+          display: 'block',
+          fontFamily: 'Helvetica Neue, sans-serif',
         }}
+        onClick={handleToggle}
       >
         <MenuIcon />
       </IconButton>
-      <Menu
-        id="menu-board"
-        anchorEl={anchorElNav}
-        anchorOrigin={{
-          vertical:40 // 상단에서 열도록 수
-        }}
-        keepMounted
-        open={Boolean(anchorElNav)}
-        onClose={handleCloseNavMenu}
-        sx={{
-          color: 'white',
-        }}
-      >
-        <MenuItem className='anker'>
-          <Button
-            sx={{
-              color: 'black',
-              display: 'block',
-              fontFamily: 'Helvetica Neue, sans-serif',
-              width: '100%',
-              textAlign: 'left',
-              zIndex:1
-            }}
-          >
-            Category 1
-          </Button>
-        </MenuItem>
-        <MenuItem className='anker'>
-          <Button
-            sx={{
-              color: 'black',
-              display: 'block',
-              fontFamily: 'Helvetica Neue, sans-serif',
-              width: '100%',
-              textAlign: 'left',
-              zIndex:1
-            }}
-          >
-            Category 2
-          </Button>
-        </MenuItem>
-        <MenuItem className='anker'>
-          <Button
-            sx={{
-              color: 'black',
-              display: 'block',
-              fontFamily: 'Helvetica Neue, sans-serif',
-              width: '100%',
-              textAlign: 'left',
-            }}
-          >
-            Category 3
-          </Button>
-        </MenuItem>
-        <MenuItem className='anker' component="a" href="/History" onClick={handleCloseNavMenu}>
-          <Button
-            sx={{
-              color: 'black',
-              display: 'block',
-              fontFamily: 'Helvetica Neue, sans-serif',
-              width: '100%',
-              textAlign: 'left',
-            }}
-          >
-            History
-          </Button>
-        </MenuItem>
-      </Menu>
+      <Popper
+          open={open}
+          anchorEl={anchorRef.current}
+          role={undefined}
+          placement="bottom-start"
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === 'bottom-start' ? 'left top' : 'left bottom',
+              }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList
+                    autoFocusItem={open}
+                    id="composition-menu"
+                    aria-labelledby="composition-button"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    <a className="aconfig" href="/FreeBoard">
+                    <MenuItem onClick={handleClose} >FreeBoard</MenuItem>
+                    </a>
+                    <a className="aconfig"href="">
+                    <MenuItem onClick={handleClose}>test1</MenuItem>
+                    </a>
+                    <a className="aconfig" href="">
+                    <MenuItem onClick={handleClose}>test2</MenuItem>
+                    </a>
+                    <a className="aconfig" href="/History">
+                    <MenuItem onClick={handleClose}>history</MenuItem>
+                    </a>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
     </Box>
   )
 :
@@ -293,7 +270,7 @@ const toggleCategoryMenu = () => {
           }}
           onClick={handleToggle}
         >
-          Dashboard
+          Board
         </Button>
         <Popper
           open={open}
@@ -319,14 +296,14 @@ const toggleCategoryMenu = () => {
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                   >
-                    <a className="aconfig" href="">
-                    <MenuItem onClick={handleClose} >Profile</MenuItem>
+                    <a className="aconfig" href="/FreeBoard">
+                    <MenuItem onClick={handleClose} >FreeBoard</MenuItem>
                     </a>
                     <a className="aconfig"href="">
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={handleClose}>test1</MenuItem>
                     </a>
                     <a className="aconfig" href="">
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    <MenuItem onClick={handleClose}>test2</MenuItem>
                     </a>
                   </MenuList>
                 </ClickAwayListener>

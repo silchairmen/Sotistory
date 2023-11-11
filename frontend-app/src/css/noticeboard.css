@@ -3,7 +3,7 @@
     width:25%; 
     height:250px; 
     display:inline-block; 
-    border-radius: 2px;
+    border-radius: 8px;
     outline:1px solid #ddd;
     box-shadow: 0 0px 5px rgba(0, 0, 0, 1);
     margin: 20px;
@@ -19,10 +19,10 @@
 
 .thumbnotice {
     position:relative; 
-    width:18%; 
+    width:34%; 
     height:250px; 
     display:inline-block; 
-    border-radius: 2px;
+    border-radius: 8px;
     outline:1px solid #ddd;
     box-shadow: 0 0px 5px rgba(0, 0, 0, 1);
     margin: 20px;
@@ -86,15 +86,20 @@
     margin: auto;
 }
 .title{
+    display: flex;
+    align-items: center; /* 수직 가운데 정렬 */
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-    height:10%;
+    height: 15%;
+    width: 65%;
     text-align: left;
     padding-top: 2.5px;
     padding-left: 10px;
+    
 }
 .content{
     display: flex;
     height: 38%;
+    width: 65%;
     margin-top: 8px;
     text-align: left;
 }
@@ -131,4 +136,29 @@
     font-size: 10px;
     line-height: 200%;
     color: rgba(0,0,0,0.5);
+}
+.modal {
+    background: white;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    animation: modalAnimation 0.2s ease-out; /* 애니메이션 적용 */
+}
+
+@keyframes modalAnimation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.1); /* 초기 크기, 작아진 상태 */
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1); /* 최종 크기, 확대된 상태 */
+  }
+}
+
+.modal_text {
+    margin: 10px;
 }

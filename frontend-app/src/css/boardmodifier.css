@@ -1,0 +1,15 @@
+.modifier_title {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin: 10px;
+    float: left;
+    width: 60%;
+    height: 50px;
+    resize: none; /* 크기 조절 비활성화 */
+    text-align: center; /* 가로 중앙 정렬 */
+    line-height: 48px; /* 높이와 동일한 값으로 설정 */
+
+}
+
+.inputtext {
+    height: 5%;
+}

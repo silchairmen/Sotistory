@@ -1,6 +1,15 @@
 .board_list_wrap {
     height: 100%;
-    width: 100%;
+    width: 70%;
+    z-index: 5;
+    background-color: rgb(243, 238, 238);
+    opacity: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 1);
 
 }
 
@@ -8,11 +17,13 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    
+    
 }
 
 
 .board_top {
-    width: 60%;
+    width: 80%;
     height: 10%;
     display: flex;
     white-space: nowrap;
@@ -24,7 +35,7 @@
 }
 
 .middle {
-    width: 60%;
+    width: 80%;
     height: 10%;
     display: flex;
     white-space: nowrap;
@@ -78,13 +89,23 @@
   }
 
 .middle:hover {
-    background-color: rgb(239, 238, 238); /* 마우스 호버 상태에서 배경 색상 변경 */
+    background-color: rgb(255, 255, 255, 1); /* 마우스 호버 상태에서 배경 색상 변경 */
     cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+    transition: box-shadow 1s ease, background 1s ease; /* 두 개의 속성에 대한 애니메이션 효과 설정 */
+    position: relative; /* 위치 설정을 위해 필요함 */
+}
+
+.middle:hover {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)); /* 강렬한 검은색에서 점차 투명하게 변환하는 그라데이션 */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1), 0 0 30px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 증가 */
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 .board_button_wrap {
     position: relative;
-    left: 85%;
+    left: 77.3%;
     width: 45px;
     height: 42px;
 
@@ -102,4 +123,5 @@
     height: 100vh;
     margin: 0;
     padding: 0;
+    margin-top: 100px;
 }

@@ -5,7 +5,9 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 import { useLocation } from 'react-router-dom';
+import '../../css/boardmodifier.css';
 
 const Background = styled.div`
     padding-top: 5%;
@@ -52,7 +54,6 @@ const Boardmodifier = () => {
     const [boardTitle, setBoardTitle] = useState("");
     const [boardId, setBoardId] = useState("");
     const [boardpass, setBoardPass] = useState("");
-    const [selectedValue, setSelectedValue] = useState("freeBoard"); // 초기 선택 값
     const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
     const location = useLocation();
@@ -70,7 +71,7 @@ const Boardmodifier = () => {
             setBoardTitle(resp.data.title);
             setBoardId(resp.data.postId);
 
-            console.log(resp.data.content)
+            console.log(resp.data)
         } catch (error) {
             console.error("Error fetching board data:", error);
         }
@@ -87,13 +88,14 @@ const Boardmodifier = () => {
 
     useEffect(() => {
         // 글 내용(boardText)을 Draft.js 형식으로 변환하여 에디터의 초기값으로 설정
-        const contentState = ContentState.createFromText(boardText);
-        const newEditorState = EditorState.createWithContent(contentState);
+        const blocksFromHtml = htmlToDraft(boardText);
+        const { contentBlocks, entityMap } = blocksFromHtml;
+        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+        const editorState = EditorState.createWithContent(contentState);
+        setEditorState(editorState);
 
 
         console.log(contentState)
-        console.log(newEditorState)
-        setEditorState(newEditorState);
 
     }, [boardText]);
 
@@ -103,9 +105,6 @@ const Boardmodifier = () => {
     }
     const handlePasswordChange = (event) => {
         setBoardPass(event.target.value);
-    }
-    const handleSelectChange = (event) => {
-        setSelectedValue(event.target.value);
     }
 
     const handleTest= () => {
@@ -118,10 +117,11 @@ const Boardmodifier = () => {
 
         try {
           const data = new FormData();
+          console.log(editorToHtml)
           data.append('content', editorToHtml);
           data.append('title', titles);
           const response = await axios.put(`/api/question/${postId}`, data, { withCredentials: true });
-          window.location.href = '/Freeboard';
+          window.location.href = '/Question';
           
           // 응답 처리
           if (response.data.status === 200) {
@@ -142,13 +142,7 @@ const Boardmodifier = () => {
             <MainHeader>
                 질문 수정
             </MainHeader>
-            <div>
-                <TextField
-                    placeholder="제목을 입력해주세요."
-                    value={boardTitle}
-                    onChange={handleTitle}
-                />
-            </div>
+
             <button
                     style={{
                         backgroundColor: "black",
@@ -162,17 +156,24 @@ const Boardmodifier = () => {
                         float: "right",
                         margin: "10px",
                         boxShadow: "0 5px 10px rgba(0, 0, 0, 0.3)",
+                        height: "60px",
                     }}
                     className="submit-button"
                     onClick={submitReview}
                 >작성</button>
             <EditorForm>
-            <select name="boardname" className="select" value={selectedValue} onChange={handleSelectChange}>
-                <option value="freeBoard">freeBoard</option>
-                <option value="freeBoard2">freeBoard2</option>
-            </select>
-            비밀번호:
+            <div>
+                <TextField
+                    className="modifier_title"
+                    placeholder="제목을 입력해주세요."
+                    value={boardTitle}
+                    onChange={handleTitle}
+                />
+            </div>
+            비밀번호(비밀글)
+            <br />
             <input
+                className="inputtext"
                 type="BoardPass"
                 id="passwordInput"
                 name="BoardPass"

@@ -27,12 +27,15 @@ const FileUpload = ({ onFilesSelected }) => {
     display: 'flex', // div 요소 사이의 줄바꿈을 방지하려면 'flex'를 사용합니다.
     marginRight: '10px',
   };
+  const paragraphStyle = {
+    cursor: 'pointer',
+  };
 
   return (
     <div style={containerStyle}>
       <div style={containerStyle} {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
-        <p>파일을 여기로 끌어다 놓거나 클릭하여 업로드하세요.</p>
+        <p style={paragraphStyle}>파일을 여기로 끌어다 놓거나 클릭하여 업로드하세요.</p>
       </div>
       <div style={containerStyle}>
         <p>업로드한 파일:</p>

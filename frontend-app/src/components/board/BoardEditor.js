@@ -118,7 +118,7 @@ const BoardEditor = () => {
         const titles = boardTitle;
         try{
             const data = new FormData();
-
+            
             if (boardpass.trim() === ""){
                 data.append('content',editorToHtml);
                 data.append('title',titles);

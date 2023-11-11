@@ -239,15 +239,12 @@ function MenuExampleSizeLarge() {
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                   >
-                    <a className="aconfig" href="/FreeBoard">
-                    <MenuItem onClick={handleClose} >FreeBoard</MenuItem>
+                    <a className="aconfig" href="/Question">
+                    <MenuItem onClick={handleClose} >Question</MenuItem>
                     </a>
-                    <a className="aconfig"href="">
-                    <MenuItem onClick={handleClose}>test1</MenuItem>
-                    </a>
-                    <a className="aconfig" href="">
-                    <MenuItem onClick={handleClose}>test2</MenuItem>
-                    </a>
+                    <a className="aconfig"href="/Post">
+                    <MenuItem onClick={handleClose}>Post</MenuItem>
+                    </a>                
                     <a className="aconfig" href="/History">
                     <MenuItem onClick={handleClose}>history</MenuItem>
                     </a>
@@ -300,14 +297,11 @@ function MenuExampleSizeLarge() {
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                   >
-                    <a className="aconfig" href="/FreeBoard">
-                    <MenuItem onClick={handleClose} >FreeBoard</MenuItem>
+                    <a className="aconfig" href="/Question">
+                    <MenuItem onClick={handleClose} >Question</MenuItem>
                     </a>
-                    <a className="aconfig"href="">
-                    <MenuItem onClick={handleClose}>test1</MenuItem>
-                    </a>
-                    <a className="aconfig" href="">
-                    <MenuItem onClick={handleClose}>test2</MenuItem>
+                    <a className="aconfig"href="/Post">
+                    <MenuItem onClick={handleClose}>Post</MenuItem>
                     </a>
                   </MenuList>
                 </ClickAwayListener>

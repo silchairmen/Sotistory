@@ -10,6 +10,7 @@ const Board=styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 `
 
 const Footer=styled.div`
@@ -114,7 +115,7 @@ function Boardinfo({address}) {
         <div className="boardcontainer board_mt-5">
                 <div className="board_col-lg-8">
                     <article>
-                        <header className="board_mb-4c">
+                        <header className="board_mb-4c" style={{height:"10vh"}}>
 
                             <h1 className="board_fw-bolder board_mb-1">{boardInfo.title}</h1>
 

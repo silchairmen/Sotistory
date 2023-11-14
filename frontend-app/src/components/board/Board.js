@@ -58,17 +58,12 @@
       console.error("Error fetching board data:", error);
       setLoading(false); // Set loading to false on error as well
     }
-  };
+  }
 
   const handleLimitChange = (e) => {
     setLimit(Number(e.target.value));
     setPage(1);
   };
-  
-  const handleBoardCheck=()=> {
-    console.log(boardData);
-    console.log(paginatedData);
-  }
 
     const handleWrite=()=> {
       window.location.href='Question/edit/post';
@@ -77,8 +72,6 @@
 
     const paginatedData = boardData.slice((page - 1) * limit, page * limit);
     return (
-
-      
       <LoadingOverlay
       active={loading}
       spinner
@@ -104,7 +97,7 @@
         <source src={video} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-            <div class="loadingset">
+          <div class="loadingset">
           <div class="board_wrap">
 
         <div class="board_list_wrap">
@@ -159,7 +152,6 @@
       </ContainerFragment>
       </LoadingOverlay>
 
-    
   );
 };
 

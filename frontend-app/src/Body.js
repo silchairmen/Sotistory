@@ -27,7 +27,7 @@ function Body() {
       <Layout>
           <Routes>
             <Route path="/Question" element={<Content style={contentStyle}><FreeBoard /></Content>} />
-            <Route path="/notice" element={<Content style={contentStyle}><Noticeboard /></Content>} />
+            <Route path="/Post" element={<Content style={contentStyle}><Noticeboard /></Content>} />
             <Route path="/Question/:id" element={<Content style={contentStyle}><FreeBoardInfo /></Content>} />
             <Route path="/SignIn" element={<Content style={contentStyle}><SignIn /></Content>} />
             <Route path="/SignUp" element={<Content style={contentStyle}><SignUp /></Content>} />

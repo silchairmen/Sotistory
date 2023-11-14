@@ -2,7 +2,9 @@ import { useState,useEffect,useRef } from 'react';
 import axios from 'axios';
 import './TestPage.scss';
 import profile from '../img/profile_img_A.png';
-
+import UseLottie from '../components/Lottie';
+import profile_img from '../img/profile_img.json'
+import profile_img_2 from '../img/profile_img_2.json'
 const TestPage=()=> {
   const [nickname,setNickname] = useState("");
   const [name,setName] = useState("");
@@ -18,6 +20,8 @@ const TestPage=()=> {
   const [skills,setSkills] = useState("");
   const [award,setAward] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
+  const [HoveredMenuA,setHoveredMenuA] = useState(false);
+  const [HoveredMenuB,setHoveredMenuB] = useState(false);
 
   const imgRef = useRef();
 
@@ -68,7 +72,7 @@ const TestPage=()=> {
           setJoinyear(response.data.memberInfo.joinYear);
           setStunum(response.data.memberInfo.stuNum);
           setEmail(response.data.memberInfo.email);
-          setAddress(response.data.memberInfo.a1ddress);
+          setAddress(response.data.memberInfo.address);
         }
       }else if(menuNum==="1"){
         const response = await axios.get('/api/member/profile', {withCredentials: true});
@@ -133,7 +137,11 @@ const TestPage=()=> {
         break;
     }
   };
-  
+  const ListItem = ({ menuNum, onClick, onMouseEnter, onMouseLeave, lottie }) => (
+    <li className='list__box' onClick={() => onClick(menuNum)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <UseLottie lottie={lottie} isHovered={menuNum === "1" ? HoveredMenuB : HoveredMenuA} />
+    </li>
+  );
   if (menuNum==="0"){
     return (
       <div className='background'>
@@ -143,15 +151,10 @@ const TestPage=()=> {
           <div className="menu__mypage__content">
             <div className="menu__mypage__forms">
               <form action="" className="menu__mypage__register" id="menu__mypage-up"style={{width:"500px"}}> 
-                <ul className='list' style={{width:"20%"}}>
-                  <li className='list__box'onClick={()=>handleMenuClick("0")}>
-                    <img className='menu__profile' src={profile} alt='menu__profile'/>
-                  </li>
-                  <li className='list__box'onClick={()=>handleMenuClick("1")}>
-                    <p className='list__font' >자기 소개</p>
-                  </li>
-                </ul>
-                <div></div>
+              <ul className='list' style={{ width: "20%" }}>
+        <ListItem menuNum="0" onClick={handleMenuClick} onMouseEnter={() => setHoveredMenuA(true)} onMouseLeave={() => setHoveredMenuA(false)} lottie={profile_img} />
+        <ListItem menuNum="1" onClick={handleMenuClick} onMouseEnter={() => setHoveredMenuB(true)} onMouseLeave={() => setHoveredMenuB(false)} lottie={profile_img_2} />
+      </ul>
                   
             <div className="menu__mypage__box" style={{marginLeft:"20%",width:"80%"}}>
               <div className="menu__mypage__inbox">
@@ -197,14 +200,10 @@ const TestPage=()=> {
           <div className="menu__mypage__content">
             <div className="menu__mypage__forms">
               <form action="" className="menu__mypage__register" id="menu__mypage-up" style={{width:"1000px"}} encType='multipart/form-data'>
-                <ul className='list' style={{width:"10%"}}>
-                  <li className='list__box'onClick={()=>handleMenuClick("0")}>
-                    <img className='menu__profile' src={profile} alt='profile_menu_img'/>
-                  </li>
-                  <li className='list__box'onClick={()=>handleMenuClick("1")}>
-                    <p className='list__font' >자기 소개</p>
-                  </li>
-                </ul>
+              <ul className='list' style={{ width: "10%" }}>
+              <ListItem menuNum="0" onClick={handleMenuClick} onMouseEnter={() => setHoveredMenuA(true)} onMouseLeave={() => setHoveredMenuA(false)} lottie={profile_img} />
+              <ListItem menuNum="1" onClick={handleMenuClick} onMouseEnter={() => setHoveredMenuB(true)} onMouseLeave={() => setHoveredMenuB(false)} lottie={profile_img_2} />
+              </ul>
                 <div></div>
                 <p style={{position:"absolute",fontSize:"20px",left:"28%"}}>[{position}]{nickname}</p>
                   <div className='mypage_profile__box'>

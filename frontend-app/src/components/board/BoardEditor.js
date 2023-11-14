@@ -59,7 +59,7 @@ const BoardEditor = () => {
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
     const [boardpass, setBoardPass] = useState("");
-    const [selectedValue, setSelectedValue] = useState("freeBoard"); // 초기 선택 값
+    const [selectedValue, setSelectedValue] = useState("Question"); // 초기 선택 값
     const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
 
@@ -73,7 +73,7 @@ const BoardEditor = () => {
     const getBoard = async () => {
         const indexNum = splitUrl[splitUrl.length-1];
         try {
-            const resp = await axios.get(`/api/post/freeBoard/post/${indexNum}`);
+            const resp = await axios.get(`/api/post/Question/post/${indexNum}`);
             setBoardText(resp.data.content);
             setBoardTitle(resp.data.title);
             setBoardPass(resp.data.password);
@@ -128,7 +128,7 @@ const BoardEditor = () => {
                 data.append('password',boardpass);
             }
             const response = await axios.post('/api/question/', data, {withCredentials: true});
-            window.location.href = '/Freeboard';
+            window.location.href = '/Question';
             // 응답 처리
             if (response.data.status === 200) {
                 alert(response.data.responseMessage);
@@ -180,8 +180,8 @@ const BoardEditor = () => {
             <EditorForm>
                 
             <select name="boardname" className="select" value={selectedValue} onChange={handleSelectChange}>
-                <option value="freeBoard">freeBoard</option>
-                <option value="freeBoard2">freeBoard2</option>
+                <option value="Question">Question</option>
+                <option value="Notice">Notice</option>
             </select>
             비밀번호:
             <input

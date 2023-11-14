@@ -134,7 +134,7 @@ const BoardEditor = () => {
                 data.append(`uploadFile`, file);
             });
             const response = await axios.post('/api/promotional/', data, {withCredentials: true});
-            window.location.href = '/Freeboard';
+            window.location.href = '/Post';
             // 응답 처리
             if (response.data.status === 200) {
                 alert(response.data.responseMessage);

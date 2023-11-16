@@ -5,6 +5,7 @@ import com.soti.sotistory.post.cond.PostSearchCondition;
 import com.soti.sotistory.post.question.dto.QuestionPostSaveDto;
 import com.soti.sotistory.post.question.dto.QuestionPostUpdateDto;
 import com.soti.sotistory.post.question.service.QuestionPostService;
+import com.soti.sotistory.utils.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -23,21 +24,27 @@ public class QuestionPostController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
-    public void save(@Valid @ModelAttribute QuestionPostSaveDto postSaveDto) {
+    public ResponseEntity<SuccessResponse> save(@Valid @ModelAttribute QuestionPostSaveDto postSaveDto) {
+        SuccessResponse response = new SuccessResponse("저장 성공");
         postService.save(postSaveDto);
+        return ResponseEntity.ok().body(response);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{postId}")
-    public void update(@PathVariable("postId") Long postId,
+    public ResponseEntity<SuccessResponse> update(@PathVariable("postId") Long postId,
                        @ModelAttribute QuestionPostUpdateDto updateDto){
+        SuccessResponse response = new SuccessResponse("수정 성공");
         postService.update(postId, updateDto);
+        return ResponseEntity.ok().body(response);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{postId}")
-    public void delete(@PathVariable("postId") Long postId){
+    public ResponseEntity<SuccessResponse> delete(@PathVariable("postId") Long postId){
+        SuccessResponse response = new SuccessResponse("삭제 성공");
         postService.delete(postId);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/{postId}")

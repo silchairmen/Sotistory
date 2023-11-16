@@ -22,6 +22,8 @@ public class QuestionPostSaveDto {
 
     private String password;
 
+    private Boolean answerCompleted;
+
     public QuestionPost toEntity() {
         return QuestionPost.builder().title(title).content(content).build();
     }

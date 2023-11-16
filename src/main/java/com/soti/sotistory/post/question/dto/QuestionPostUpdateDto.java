@@ -12,5 +12,6 @@ public class QuestionPostUpdateDto {
     private Optional<String> title;
     private Optional<String> content;
     private Optional<String> password;
+    private Optional<Boolean> answerCompleted;
 
 }

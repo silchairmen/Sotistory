@@ -17,6 +17,7 @@ public class QuestionPostInfoDto {
     private String lastModifiedDate;
     private String writer;//작성자에 대한 정보
     private Long commentSize;
+    private Boolean answerCompleted;
 
 
     public QuestionPostInfoDto(QuestionPost post) {
@@ -31,5 +32,6 @@ public class QuestionPostInfoDto {
         this.createDate = post.getCreateDate().toString();
         this.lastModifiedDate = post.getLastModifiedDate().toString();
         this.commentSize = (long) post.getCommentsList().size();
+        this.answerCompleted = post.getAnswerCompleted();
     }
 }

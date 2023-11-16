@@ -42,6 +42,8 @@ public class QuestionPost extends BaseTimeEntity {
 
     private String password;
 
+    private Boolean answerCompleted;
+
     @Builder
     public QuestionPost(String title, String content){
         this.title = title;
@@ -61,6 +63,10 @@ public class QuestionPost extends BaseTimeEntity {
         commentsList.add(comment);
     }
 
+    public void addAnswerCompleted() {
+        this.answerCompleted = false;
+    }
+
     /*내용 수정*/
     public void updateTitle(String title) {
         this.title = title;
@@ -76,5 +82,9 @@ public class QuestionPost extends BaseTimeEntity {
 
     public void updatePassword(String password){
         this.password=password;
+    }
+
+    public void updateAnswerCompleted(Boolean answerCompleted){
+        this.answerCompleted=answerCompleted;
     }
 }

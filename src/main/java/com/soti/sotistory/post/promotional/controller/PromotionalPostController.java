@@ -5,6 +5,7 @@ import com.soti.sotistory.post.promotional.service.PromotionalPostService;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostListDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostSaveDto;
 import com.soti.sotistory.post.promotional.dto.PromotionalPostUpdateDto;
+import com.soti.sotistory.utils.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -23,21 +24,27 @@ public class PromotionalPostController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
-    public void save(@Valid @ModelAttribute PromotionalPostSaveDto saveDto) {
+    public ResponseEntity<SuccessResponse> save(@Valid @ModelAttribute PromotionalPostSaveDto saveDto) {
+        SuccessResponse response = new SuccessResponse("저장 성공");
         postService.save(saveDto);
+        return ResponseEntity.ok().body(response);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{postId}")
-    public void update(@PathVariable("postId") Long postId,
+    public ResponseEntity<SuccessResponse> update(@PathVariable("postId") Long postId,
                        @ModelAttribute PromotionalPostUpdateDto updateDto){
+        SuccessResponse response = new SuccessResponse("수정 성공");
         postService.update(postId, updateDto);
+        return ResponseEntity.ok().body(response);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{postId}")
-    public void delete(@PathVariable("postId") Long postId){
+    public ResponseEntity<SuccessResponse> delete(@PathVariable("postId") Long postId){
+        SuccessResponse response = new SuccessResponse("삭제 성공");
         postService.delete(postId);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/{postId}")

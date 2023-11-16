@@ -46,6 +46,8 @@ public class QuestionPostServiceImpl implements QuestionPostService {
             post.updatePostType(PostType.NORMAL);
         }
 
+        post.addAnswerCompleted();
+
         postRepository.save(post);
     }
 
@@ -58,6 +60,7 @@ public class QuestionPostServiceImpl implements QuestionPostService {
         //제목, 내용 처리
         postUpdateDto.getTitle().ifPresent(post::updateTitle);
         postUpdateDto.getContent().ifPresent(post::updateContent);
+        postUpdateDto.getAnswerCompleted().ifPresent(post::updateAnswerCompleted);
 
         if(postUpdateDto.getPassword().isEmpty()){
           post.updatePostType(PostType.NORMAL);

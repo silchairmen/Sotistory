@@ -20,6 +20,7 @@ public class QuestionPostDetailInfoDto {
     private String lastModifiedDate;
     private String writer;//작성자에 대한 정보
     private List<QuestionCommentInfoDto> commentInfoDtoList;
+    private Boolean answerCompleted;
 
     public QuestionPostDetailInfoDto(QuestionPost post) {
         this.postId = post.getId();
@@ -29,6 +30,7 @@ public class QuestionPostDetailInfoDto {
         this.createDate = post.getCreateDate().toString();
         this.lastModifiedDate = post.getLastModifiedDate().toString();
         this.writer = post.getWriter().getNickname();
+        this.answerCompleted = post.getAnswerCompleted();
 
         List<QuestionComment> comments = post.getCommentsList();
         commentInfoDtoList = comments.stream()

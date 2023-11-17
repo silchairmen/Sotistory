@@ -4,8 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import '../../css/Board.css';
 import { useSelector} from "react-redux";
-import { Viewer } from '@toast-ui/react-editor';
-import '@toast-ui/editor/dist/toastui-editor-viewer.css';
+
 const Board=styled.div`
   background-color:white;
   display: flex;
@@ -14,10 +13,21 @@ const Board=styled.div`
   height: auto;
 `
 
+const Footer=styled.div`
+  padding:15px;
+  background-color:white;
+  align-items:center;
+  background-position:center;
+  height:10%;
+  outline:auto;
+  text-align:left;
+`
+const UserId=styled.div`
+  align-items:center;
+`
 function Boardinfo({address}) {
-  const [boardData, setBoardData] = useState({});
+  const [boardInfo, setBoardInfo] = useState({});
   const [commentInfo, setCommentInfo] = useState([]);
-  const [boardText,setBoardText] = useState();
   const [boardType, setBoardType] = useState("");
   const { id } = useParams();
   const [showPasswordForm, setShowPasswordForm] = useState(false);
@@ -55,8 +65,7 @@ function Boardinfo({address}) {
       console.log(resps.data);
       if (resps.data.postId >= 1) {
         setBoardType(resps.data.postType);
-        setBoardData(resps.data);
-        setBoardText(resps.data.content)
+        setBoardInfo(resps.data);
       } else {
         // 비밀번호가 틀렸을 때 모달 창을 표시
         setModalContent('비밀번호가 틀렸습니다.');
@@ -68,22 +77,20 @@ function Boardinfo({address}) {
   };
 
   
-  const testhandle=()=>{
-    setBoardText(boardData.content)
-  }
+  
 
   useEffect(() => {
     const getInfo = async () => {
       try {
         const resp = await axios.get(`/api/question/${id}`);
         console.log(resp.data);
-        console.log("asd")
-        if (resp.status === 200 ){
+        if (resp.data.status !== 203){
           setBoardType(resp.data.postType);
-          setBoardData(resp.data);
+          setBoardInfo(resp.data);
           setCommentInfo(resp.data.commentInfoDtoList)
         } else {
           setShowModal(true);
+          
         }
         
       } catch (error) {
@@ -91,12 +98,9 @@ function Boardinfo({address}) {
       }
     };
     getInfo();
-  },[id]);
-  useEffect(()=>{
-    setBoardText(boardData.content)
-  },[boardData])
+  }, [id]);
   const slicecomment = commentInfo.slice(0);
-  console.log(slicecomment); 
+  console.log(slicecomment);
   return (
     <Board>
       {showModal && (
@@ -109,35 +113,23 @@ function Boardinfo({address}) {
         </div>
       )}
       <div className="black-box"></div>
-      <div className="boardcontainer board_mt-5">
-        <div className="board_col-lg-8">
-          <article>
-            <header className="board_mb-4c" style={{ height: "10vh" }}>
-              <h1 className="board_fw-bolder board_mb-1">{boardData.title}</h1>
-              <div className="board_text-muted board_fst-italic board_mb-2">
-                작성자 {boardData.writer}
-              </div>
-            </header>
-            <section className="board_mb-5">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "left",
-                  marginBottom: "-17px",
-                }}
-              >
-                <h4>
-                  <p className="board_mb-4" style={{ color: "gray" }}>
-                    본문
-                  </p>
-                </h4>
-              </div>
-              <div className="board_textbox">
-                {/* boardText가 값이 있는 경우에만 Viewer를 렌더링 */}
-                {boardText && <Viewer events={["load", "change"]} initialValue={boardText} />}
-              </div>
-            </section>
-          </article>
+        <div className="boardcontainer board_mt-5">
+                <div className="board_col-lg-8">
+                    <article>
+                        <header className="board_mb-4c" style={{height:"10vh"}}>
+
+                            <h1 className="board_fw-bolder board_mb-1">{boardInfo.title}</h1>
+
+                            <div className="board_text-muted board_fst-italic board_mb-2">작성자 {boardInfo.writer}</div>
+                            
+                        </header>
+                        
+                        <section className="board_mb-5">
+                          <div style={{ display: 'flex', justifyContent: 'left', marginBottom: '-17px'}}><h4><p className="board_mb-4" style={{color: 'gray',}}>본문</p></h4></div>
+                          <div className="board_textbox" dangerouslySetInnerHTML={{ __html: boardInfo.content }}></div>
+                          
+                        </section>
+                    </article>
                     <Link to={{pathname:`/Question/modifier/${id}`,state:{id: id}}}><p style={{color: 'blue',}}>글 수정</p></Link>
 
                     <section className="board_mb-5s">
@@ -145,7 +137,7 @@ function Boardinfo({address}) {
                             <div style={{ display: 'flex', justifyContent: 'left', marginBottom: '-17px'}}><h4><p style={{color: 'green',}}></p></h4></div>
                                 <form className="board_mb-4 board_ms-4"><textarea className="board_form-control" rows="3" placeholder="댓글을 입력해주세요." value={comment} onChange={handleCommentChange}></textarea></form>
                                 <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '10px', cursor: 'pointer' }} onClick={handleButtonClick}><p style={{ color: 'green', fontSize: '14px', marginTop: '-15px' }}>작성</p></div>
-                    {slicecomment.map((commentDetail, index) => {
+                    {slicecomment.map((commentDetail) => {
                     if (loadtype === "" || (commentDetail[loadtype].includes(loaddata))) {
                       return (
                         <div className="board_d-flex board_mb-4s board_lh-1">
@@ -163,7 +155,6 @@ function Boardinfo({address}) {
 
       
         </div>
-        <Viewer initialValue={boardData.content}/>
       </Board>
       
       

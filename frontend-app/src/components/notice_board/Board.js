@@ -125,7 +125,7 @@ const Board = ({address}) => {
   }
 
   const handleRegpage=()=> {
-    window.location.href="/Post/Edit/post"
+    window.location.href="/Notice/Edit/post"
   }
 
   const paginatedData = boardData.slice(0, boardData.totalElements);

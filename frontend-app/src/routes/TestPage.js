@@ -1,6 +1,7 @@
 import { useState,useEffect,useRef } from 'react';
 import axios from 'axios';
 import './TestPage.scss';
+import profile from '../img/profile_img_A.png';
 import UseLottie from '../components/Lottie';
 import profile_img from '../img/profile_img.json'
 import profile_img_2 from '../img/profile_img_2.json'
@@ -56,8 +57,6 @@ const TestPage=()=> {
   
   const handleMenuClick = (num) => {
     setMenuNum(num);
-    setHoveredMenuA(false)
-    setHoveredMenuB(false)
   }
   useEffect(()=>{
     const navbar = document.querySelector('#navbar');

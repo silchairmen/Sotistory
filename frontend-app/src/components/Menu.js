@@ -37,7 +37,7 @@ function MenuExampleSizeLarge() {
   const [nickname,setNickname] = useState("");
   const [auth, setAuth] = useState(false);
   const [anchorElUser, setAnchorElUser] =useState(null);
-  const [loading, setLoading] = useState(true);
+
   const [isBoardMenuOpen, setIsBoardMenuOpen] = useState(false);
   
 
@@ -60,6 +60,7 @@ function MenuExampleSizeLarge() {
   useEffect(() => {
     async function session(){
       const response = await axios.get('/api/auth/validate', {withCredentials: true});
+      console.log(response.data)
       if(response.data.status === 200){
         dispatch({type:"LOGIN_SUCCESS"});
       }else{
@@ -83,15 +84,17 @@ function MenuExampleSizeLarge() {
         const response = await axios.get('/api/auth/validate', {withCredentials: true});
         if(response.data.status === 200){
           setNickname(response.data.message);
-          setLoading(false);
         }else{
           setAuth(false);
-          setLoading(false);
         }
     }
     findNickname();
-    
+    console.log(nickname);
   },[]);
+  useEffect(()=>{
+    setAuth(sessionCheck);
+  },[sessionCheck])
+
   // anchorElNav 변수를 초기화
   const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -319,14 +322,9 @@ function MenuExampleSizeLarge() {
     History
   </Button>
           </Box>)}
-          {/*
-            세션 체크하는 부분 auth 안쓰고 session써도 돼서 수정했습니다.
-            추가적으로 loading추가해서 버벅이면서 로딩되는건 개선했는데
-            로딩속도가 느려서 추가적으로 수정해야돼여
-            */}
-            
+
           {/*오른쪽 상단 부분*/}
-          {!loading&&sessionCheck ? (
+          {auth ? (
             <>          
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Button
@@ -334,7 +332,7 @@ function MenuExampleSizeLarge() {
                 sx={{ color: 'white', display: 'block', fontFamily: 'Helvetica Neue, sans-serif' }}
                 href={`/Mypage`}
               >
-                Mypage
+                 Mypage
               </Button>
               <Button
                 className='anker'
@@ -375,8 +373,7 @@ function MenuExampleSizeLarge() {
           </Box>
           </>
           ) : (
-            <>
-            {!loading&&!sessionCheck?(
+            <>          
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Button
                 className='anker'
@@ -392,8 +389,9 @@ function MenuExampleSizeLarge() {
               >
                 SignUp
               </Button>
-          </Box>):(null)}
-          {!loading&&!sessionCheck?(<Box sx={{ display: { xs: 'flex', md: 'none', flexGrow: 1 }, justifyContent: 'flex-end'}}>
+          </Box>
+
+          <Box sx={{ display: { xs: 'flex', md: 'none', flexGrow: 1 }, justifyContent: 'flex-end'}}>
             <Button
               className='anker'
               variant="contained"
@@ -422,8 +420,7 @@ function MenuExampleSizeLarge() {
             >
             SignUp
             </Button>
-          </Box>):(null)}
-          
+          </Box>
           </>)
             }
         </Toolbar>

@@ -11,9 +11,17 @@ import TestPage from "./routes/TestPage";
 import Boardmodifier from "./components/board/Boardmodifier";
 import Noticeboard from "./routes/notice/noticeboard";
 import NoticeEditor from "./components/notice_board/BoardEditor";
+import Testboard from "./components/board/Testboard";
 const { Content } = Layout;
 const contentStyle = {
   textAlign: 'center',
+  minHeight: 120,
+  lineHeight: '40px',
+  color: '#000',
+  width: '100%',
+  height: '100%',
+};
+const contentStyle1 = {
   minHeight: 120,
   lineHeight: '40px',
   color: '#000',
@@ -32,11 +40,12 @@ function Body() {
             <Route path="/SignIn" element={<Content style={contentStyle}><SignIn /></Content>} />
             <Route path="/SignUp" element={<Content style={contentStyle}><SignUp /></Content>} />
             <Route path="/History" element={<History />} />
-            <Route path="/Question/Edit/:id" element={<Content style={contentStyle}><BoardEditor/></Content>} />
-            <Route path="/notice/Edit/:id" element={<Content style={contentStyle}><NoticeEditor/></Content>} />
-            <Route path="/Question/modifier/:id" element={<Content style={contentStyle}><Boardmodifier/></Content>} />
+            <Route path="/Question/Edit/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
+            <Route path="/Post/Edit/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
+            <Route path="/Question/modifier/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
             <Route path="/" element={<Content style={contentStyle}><Intro /></Content>} />
             <Route path="/MyPage" element ={<Content style={contentStyle}><TestPage /></Content>} />
+            <Route path="/Test" element={<Content style={contentStyle1}><Testboard/></Content>}/>
           </Routes>
       </Layout>
     </BrowserRouter>

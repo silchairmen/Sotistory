@@ -82,9 +82,10 @@ const BoardEditor = () => {
         }
     };
 
-
     useEffect(() => {
-        getBoard();
+        if(splitUrl[splitUrl.length-1]!=="post"){
+            getBoard();
+        }
         const navbar = document.querySelector('#navbar');
         if (navbar) {
             navbar.classList.add('bg-gogo');
@@ -127,8 +128,13 @@ const BoardEditor = () => {
                 data.append('title',titles);
                 data.append('password',boardpass);
             }
-            const response = await axios.post('/api/question/', data, {withCredentials: true});
-            window.location.href = '/Question';
+            const response = await axios.post(`/api/${selectedValue}/`, data, {withCredentials: true});
+            if (selectedValue==="question"){
+                window.location.href = '/Question';
+            }else if(selectedValue==="notice"){
+                window.location.href = '/Post';
+            }
+            
             // 응답 처리
             if (response.data.status === 200) {
                 alert(response.data.responseMessage);
@@ -180,8 +186,8 @@ const BoardEditor = () => {
             <EditorForm>
                 
             <select name="boardname" className="select" value={selectedValue} onChange={handleSelectChange}>
-                <option value="Question">Question</option>
-                <option value="Notice">Notice</option>
+                <option value="question">Question</option>
+                <option value="notice">Notice</option>
             </select>
             비밀번호:
             <input

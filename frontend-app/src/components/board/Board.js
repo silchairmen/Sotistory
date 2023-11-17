@@ -25,7 +25,6 @@
 
   const Board = ({address}) => {
     const navigate = useNavigate();
-    const location = useLocation();
     const [boardData, setBoardData] = useState([]);
     const [loading, setLoading] = useState(true); // Add loading state
     const [page, setPage] = useState(1);
@@ -34,8 +33,6 @@
     const loaddata=useSelector(state => state.search.keyword);
     const loadtype=useSelector(state => state.search.type);
     const [postId,setPostId] = useState(1);
-    const [currentDate,setCurrentDate] = useState("");
-
 
   useEffect(() => {
     getBoard();
@@ -52,12 +49,6 @@
       setLoading(false); // Set loading to false after data is fetched
       setTotal(resp.data.totalCount);
       console.log(resp.data)
-
-    try {
-    } catch (error) {
-      console.error("Error fetching board data:", error);
-      setLoading(false); // Set loading to false on error as well
-    }
   }
 
   const handleLimitChange = (e) => {
@@ -124,21 +115,22 @@
                       const hours = String(createDate.getHours()).padStart(2, '0');
                       const minutes = String(createDate.getMinutes()).padStart(2, '0');
                       const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}`;
+                      const answer = new Boolean(boardDetail.createDate)
                       return (
                         <div class="board_middle">
                           <div class="middle">
                           {boardDetail.postType == "HIDDEN" && (<div class="num">🔐</div>)}
                           {boardDetail.postType != "HIDDEN" && (<div class="num"></div>)}
-                            <div class="titles" type="primary" onClick={() => {navigate(`/Question/${boardDetail.postId}`)}}>{boardDetail.title}</div>
+                            <div class="titles" type="primary" style={{textAlign:"left"}} onClick={() => {navigate(`/Question/${boardDetail.postId}`)}}>{boardDetail.title} [{boardDetail.commentSize}]</div>
                             <div class="writer">{boardDetail.writer}</div>
                             <div class="date">{formattedDateTime}</div>
-                            <div class="count">{boardDetail.commentSize}</div>
+                            <div class="count" style={{ color: boardDetail.answerCompleted ? 'green' : 'red' }}>{boardDetail.answerCompleted ? "완료" : "대기"}</div>
                           </div>
                         </div>
                     );
                     }
                   })}
-            <div class="board_button_wrap" onClick={handleWrite}>
+            <div class="board_button_wrap" onClick={handleWrite} style={{right:"100"}}>
               등록
             </div>
               <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />

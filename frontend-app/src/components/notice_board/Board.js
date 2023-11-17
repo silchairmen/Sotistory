@@ -71,8 +71,6 @@ const containerStyle = {
 
 
 const Board = ({address}) => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [boardData, setBoardData] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
   const [page, setPage] = useState(1);
@@ -144,7 +142,7 @@ const Board = ({address}) => {
                   <div className="thumbnotice">
                     <div class="overlaynotice"></div>
                     <div style={containerStyle}>
-                     <img src={image} alt="이미지 설명" style={imageStyle} />
+                    <img src={image} alt="이미지 설명" style={imageStyle} />
                     </div>
                     <div class="title">
                       <TruncateText text={boardDetail.title} maxLength={10} size={16} />

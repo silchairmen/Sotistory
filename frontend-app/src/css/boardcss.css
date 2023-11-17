@@ -62,7 +62,8 @@
     width: 25%;
 }
 .count {
-    width: 5%;
+    width: 12%;
+    text-align: center;
 }
 
 
@@ -105,8 +106,8 @@
 
 .board_button_wrap {
     position: relative;
-    left: 77.3%;
-    width: 45px;
+    left: 83%;
+    width: 90px;
     height: 42px;
 
     background-color: black;

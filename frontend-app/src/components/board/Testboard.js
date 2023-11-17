@@ -18,6 +18,10 @@ import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import '@toast-ui/editor-plugin-table-merged-cell/dist/toastui-editor-plugin-table-merged-cell.css';
 import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
 
+import Prism from 'prismjs';
+// 여기 css를 수정해서 코드 하이라이팅 커스텀 가능
+import 'prismjs/themes/prism.css';
+
 const Background = styled.div`
     padding-top: 3rem;
     width: 100%;
@@ -166,7 +170,6 @@ const Testboard = () => {
         }else if(!isNaN(checkInt) && Number.isInteger(checkInt) && checkInt.toString() === lastSegment){
             try{
                 const data = new FormData();
-                console.log("1")
                 if (boardpass === undefined){
                     data.append('content',editorRef.current.getInstance().getMarkdown());
                     data.append('title',boardTitle);
@@ -175,7 +178,6 @@ const Testboard = () => {
                     data.append('title',boardTitle);
                     data.append('password',boardpass);
                 }
-                console.log("2")
                 const response = await axios.put(`/api/${selectedValue}/${lastSegment}`, data, {withCredentials: true});
                 window.location.href = `/${PostAddress}`;
                 
@@ -227,9 +229,9 @@ const Testboard = () => {
                             initialValue={loadText}
                             previewStyle='vertical'
                             height="70vh"
-                            initialEditType="wysiwyg"
+                            initialEditType="wisiwyg"
                             useCommandShortcut={true}
-                            plugins={[fontSize, codeSyntaxHighlight, colorSyntax, tableMergedCell]}
+                            plugins={[fontSize, colorSyntax, tableMergedCell,[codeSyntaxHighlight,{ highlighter: Prism }]]}
                             ref={editorRef}
                         />
                     )
@@ -240,7 +242,7 @@ const Testboard = () => {
                         height="70vh"
                         initialEditType="wysiwyg"
                         useCommandShortcut={true}
-                        plugins={[fontSize, codeSyntaxHighlight, colorSyntax, tableMergedCell]}
+                        plugins={[fontSize, colorSyntax, tableMergedCell,[codeSyntaxHighlight,{ highlighter: Prism }]]}
                         ref={editorRef}
                     />
                 )}

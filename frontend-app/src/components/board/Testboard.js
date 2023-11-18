@@ -179,14 +179,14 @@ const Testboard = () => {
                     data.append('password',boardpass);
                 }
                 const response = await axios.put(`/api/${selectedValue}/${lastSegment}`, data, {withCredentials: true});
-                window.location.href = `/${PostAddress}`;
+                window.location.href = `/${PostAddress}/${lastSegment}`;
                 
                 // 응답 처리
                 if (response.data.status === 200) {
-                    alert(response.data.responseMessage);
+                    alert("작성 완료");
                     
                 } else{
-                    alert(response.data.responseMessage);
+                    alert("작성 실패");
                     // ... (에러 처리)
                 }
             } catch (error) {

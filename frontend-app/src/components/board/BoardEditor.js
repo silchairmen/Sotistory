@@ -108,9 +108,6 @@ const BoardEditor = () => {
         setSelectedValue(event.target.value);
     }
 
-    const handleTest= () => {
-        console.log(splitUrl[splitUrl.length-1]);
-    }
     const handlePasswordChange = (event) => {
         setBoardPass(event.target.value);
     }

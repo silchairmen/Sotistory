@@ -95,7 +95,6 @@
           <br />
         <div class="board_titles">
             <strong><h1>Q&A 게시판</h1> </strong>
-            <p>Example</p>
         </div>
           <div class="board_title">
               <div class="board_top">

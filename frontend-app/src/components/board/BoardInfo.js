@@ -36,7 +36,9 @@ function Boardinfo({ address }) {
   const [comment, setComment] = useState('');
   const [textboxHeight, setTextboxHeight] = useState(0);
   const [requestAddress,setRequestAddress] = useState("");
+  const [sessionCheck,setSessionCheck] = useState(false);
   const [session,setSession] = useState(false);
+  const [answerCompleted,setAnswerCompleted] = useState(false);
 
   const location = useLocation();
   const splitUrl = location?.pathname?.split('/') ?? null;
@@ -45,11 +47,11 @@ function Boardinfo({ address }) {
         const response = await axios.get('/api/auth/validate', {withCredentials: true});
         if(response.data.status === 200){
           if(response.data.message===boardData.writer){
-            setSession(true)
+            setSessionCheck(true)
           }
         }else{
           console.log("error")
-          setSession(false);
+          setSessionCheck(false);
         }
     }
   const [buttonStates, setButtonStates] = useState({
@@ -66,7 +68,6 @@ function Boardinfo({ address }) {
     data.append("answerCompleted",true);
     data.append('content',boardText);
     data.append('title',boardData.title);
-    
     console.log(PostAddress)
     if (PostAddress === "Question"){
       setRequestAddress("question")
@@ -113,7 +114,8 @@ function Boardinfo({ address }) {
       if (resps.data.postId >= 1) {
         setBoardType(resps.data.postType);
         setBoardData(resps.data);
-        setBoardText(resps.data.content)
+        setBoardText(resps.data.content);
+        setAnswerCompleted(resps.data.answerCompleted);
       } else {
         setModalContent('비밀번호가 틀렸습니다.');
         setModalOpen(true);
@@ -139,7 +141,9 @@ function Boardinfo({ address }) {
     e.target.style.height= e.target.scrollHeight + 'px';
   };
 
-
+  useEffect(()=>{
+    checkSession()
+  })
   useEffect(() => {
     const getInfo = async () => {
       try {
@@ -158,7 +162,7 @@ function Boardinfo({ address }) {
       }
     };
     getInfo();
-    checkSession()
+    
   }, [id]);
   const formatDate=(dateString)=> {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
@@ -167,8 +171,8 @@ function Boardinfo({ address }) {
   }
   useEffect(() => {
     setBoardText(boardData.content);
-    
-  }, [boardData]);
+    setSession(sessionCheck)
+  }, [boardData,sessionCheck]);
 
   const slicecomment = commentInfo.slice(0);
   const handleButtonMouseEnter = (button) => {
@@ -231,7 +235,7 @@ function Boardinfo({ address }) {
                 <Link to={{ pathname: `/Question/modifier/${id}`, state: { id: id } }} style={{ width: "5rem", color: 'blue',  textAlign: "center", marginLeft: "1rem",color: 'inherit', textDecoration: 'none'}}>
                     <p onMouseEnter={() => handleButtonMouseEnter("modify")} onMouseLeave={() => handleButtonMouseLeave("modify")} style={{textDecoration: buttonStates.modify ? "underline" : "none",backgroundColor:"#666",textShadow: "0px -1px #474747",borderColor:"#444",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>수정</p>
                 </Link>
-                <p onClick={submitAnswer} onMouseEnter={() => handleButtonMouseEnter("answer")} onMouseLeave={() => handleButtonMouseLeave("answer")} style={{textDecoration: buttonStates.answer ? "underline" : "none", backgroundColor:"#3b4890", width: "5.8rem", cursor: "pointer", textAlign: "center", marginLeft: "1rem",textShadow: "0px -1px #474747",borderColor:"#29367c",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>답변 완료</p>
+                {answerCompleted ? (null):(<p onClick={submitAnswer} onMouseEnter={() => handleButtonMouseEnter("answer")} onMouseLeave={() => handleButtonMouseLeave("answer")} style={{textDecoration: buttonStates.answer ? "underline" : "none", backgroundColor:"#3b4890", width: "5.8rem", cursor: "pointer", textAlign: "center", marginLeft: "1rem",textShadow: "0px -1px #474747",borderColor:"#29367c",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>답변 완료</p>)}
               </div>):(null)}
               
             </section>

@@ -5,16 +5,12 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem';
-import Avatar from '@mui/material/Avatar';
 import '../css/commena.css';
 import logo from '../img/logo.png';
-import photo from '../img/myphoto.jpg';
 import axios from 'axios';
 import { useSelector,useDispatch } from 'react-redux';
 
@@ -25,7 +21,6 @@ import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import MenuList from '@mui/material/MenuList';
-import Stack from '@mui/material/Stack';
 
 const pages = ['FreeBoard', 'History'];
 

@@ -10,6 +10,8 @@ import 'prismjs/themes/prism.css';
 import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
+import UseLottie from '../Lottie';
+import loading from '../../img/loding.json';
 
 const Board = styled.div`
   background-color: white;
@@ -38,22 +40,30 @@ function Boardinfo({ address }) {
   const [requestAddress,setRequestAddress] = useState("");
   const [sessionCheck,setSessionCheck] = useState(false);
   const [session,setSession] = useState(false);
-  const [answerCompleted,setAnswerCompleted] = useState(false);
+  const [loading,setLoading] = useState(true);
+
 
   const location = useLocation();
   const splitUrl = location?.pathname?.split('/') ?? null;
 
   const checkSession=async()=>{
-        const response = await axios.get('/api/auth/validate', {withCredentials: true});
-        if(response.data.status === 200){
-          if(response.data.message===boardData.writer){
-            setSessionCheck(true)
-          }
-        }else{
-          console.log("error")
-          setSessionCheck(false);
+    try {
+      setLoading(true); // Step 1: Set loading to true before the request
+      const response = await axios.get('/api/auth/validate', {withCredentials: true});
+      if(response.data.status === 200){
+        if(response.data.message===boardData.writer){
+          setSessionCheck(true)
         }
+      }else{
+        console.log("error")
+        setSessionCheck(false);
+      }
+    } catch (error) {
+      console.error('Error while checking session:', error);
+    } finally {
+      setLoading(false); // Step 2: Set loading to false after the request (whether success or error)
     }
+  }
   const [buttonStates, setButtonStates] = useState({
     delete: false,
     modify: false,
@@ -115,7 +125,6 @@ function Boardinfo({ address }) {
         setBoardType(resps.data.postType);
         setBoardData(resps.data);
         setBoardText(resps.data.content);
-        setAnswerCompleted(resps.data.answerCompleted);
       } else {
         setModalContent('비밀번호가 틀렸습니다.');
         setModalOpen(true);
@@ -141,12 +150,10 @@ function Boardinfo({ address }) {
     e.target.style.height= e.target.scrollHeight + 'px';
   };
 
-  useEffect(()=>{
-    checkSession()
-  })
   useEffect(() => {
     const getInfo = async () => {
       try {
+        setLoading(true)
         const resp = await axios.get(`/api/question/${id}`);
         console.log(resp.data);
         console.log("asd")
@@ -162,7 +169,7 @@ function Boardinfo({ address }) {
       }
     };
     getInfo();
-    
+    checkSession()
   }, [id]);
   const formatDate=(dateString)=> {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
@@ -185,7 +192,9 @@ function Boardinfo({ address }) {
 
   return (
     <Board>
-      {showModal && (
+      {!loading ?(
+        <>
+        {showModal && (
         <div className="modal">
           <div className="modal-content">
             <h2>비밀번호</h2>
@@ -200,7 +209,7 @@ function Boardinfo({ address }) {
           <article>
             <header style={{ height: "auto", textAlign:"left",lineHeight:"3.3rem"}}>
               <></>
-              <p className="board_fw-bolder board_mb-1" style={{fontSize:"3rem"}} >{boardData.title}</p>
+              <p className="board_fw-bolder board_mb-1" style={{fontSize:"3rem"}} >{boardData.answerCompleted?("[답변 완료] "):("[답변 대기] ")}{boardData.title}</p>
               <div style={{position:"relative",paddingBottom:"10px"}}>
                 <div style={{marginTop:"20px"}}>
                   <p style={{position:"absolute",fontSize:"1.5rem"}}>{boardData.writer}</p>
@@ -228,14 +237,14 @@ function Boardinfo({ address }) {
                 </h4>
               </div>
               <div className="board_textbox" style={{paddingBottom:"5rem",paddingRight:"10px",paddingTop:"3.2rem"}}>
-                {boardText && <Viewer events={["load", "change"]} plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]} initialValue={boardText} onChange={handleTextChange}/>}
+                <Viewer events={["load", "change"]} plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]} initialValue={boardText} onChange={handleTextChange}/>
               </div>
               {session?(<div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "1rem",marginRight:"0.5rem" }}>
                 <p onClick={submitDelete} onMouseEnter={() => handleButtonMouseEnter("delete")} onMouseLeave={() => handleButtonMouseLeave("delete")} style={{textDecoration: buttonStates.delete ? "underline" : "none", backgroundColor:"#666", width: "5rem", cursor: "pointer", textAlign: "center", marginLeft: "1rem",textShadow: "0px -1px #474747",borderColor:"#444",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>삭제</p>
                 <Link to={{ pathname: `/Question/modifier/${id}`, state: { id: id } }} style={{ width: "5rem", color: 'blue',  textAlign: "center", marginLeft: "1rem",color: 'inherit', textDecoration: 'none'}}>
                     <p onMouseEnter={() => handleButtonMouseEnter("modify")} onMouseLeave={() => handleButtonMouseLeave("modify")} style={{textDecoration: buttonStates.modify ? "underline" : "none",backgroundColor:"#666",textShadow: "0px -1px #474747",borderColor:"#444",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>수정</p>
                 </Link>
-                {answerCompleted ? (null):(<p onClick={submitAnswer} onMouseEnter={() => handleButtonMouseEnter("answer")} onMouseLeave={() => handleButtonMouseLeave("answer")} style={{textDecoration: buttonStates.answer ? "underline" : "none", backgroundColor:"#3b4890", width: "5.8rem", cursor: "pointer", textAlign: "center", marginLeft: "1rem",textShadow: "0px -1px #474747",borderColor:"#29367c",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>답변 완료</p>)}
+                {boardData.answerCompleted ? (null):(<p onClick={submitAnswer} onMouseEnter={() => handleButtonMouseEnter("answer")} onMouseLeave={() => handleButtonMouseLeave("answer")} style={{textDecoration: buttonStates.answer ? "underline" : "none", backgroundColor:"#3b4890", width: "5.8rem", cursor: "pointer", textAlign: "center", marginLeft: "1rem",textShadow: "0px -1px #474747",borderColor:"#29367c",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>답변 완료</p>)}
               </div>):(null)}
               
             </section>
@@ -277,6 +286,8 @@ function Boardinfo({ address }) {
           </section>
         </div>
       </div>
+      </>):(null)}
+      
     </Board>
   );
 }

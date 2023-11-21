@@ -6,7 +6,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import data from './AppData.json'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import axios from 'axios';
+import axios, { all } from 'axios';
 
 
 const Body = styled.div`
@@ -19,13 +19,12 @@ const Body = styled.div`
 
 const History = () => {
 const [currentGeneration, setCurrentGeneration] = useState(1);
-const [totalGenerations, setTotalGenerations] = useState(data.totalGenerations); // 총 기수 개수
-const [generationInfo, setGenerationInfo] = useState(data.generationInfo);
-
+const [totalGenerations, setTotalGenerations] = useState(0); // 총 기수 개수
+const [allMemberInfo , setAllMemberInfo] = useState([]);
 //position에 따른 순서 배열 정의
 
 
-const currentGenerationImages = generationInfo.filter((image) => image.num === currentGeneration);
+
 const [clickedImage, setClickedImage] = useState(null);
 const [modalClass, setModalClass] = useState('modal-window');
 
@@ -41,40 +40,24 @@ const handleModalClick = () => {
 		setModalActive(false);
 	};
 
-const [imageCount, setImageCount] = useState(currentGenerationImages.length);
-
-  const goToPreviousGeneration = () => {
-    if (currentGeneration > 1) {
-      setCurrentGeneration(currentGeneration - 1);
-    }
-  };
-
-  // 다음 기수로 이동하는 함수
-  const goToNextGeneration = () => {
-    if (currentGeneration < totalGenerations) {
-      setCurrentGeneration(currentGeneration + 1);
-    }
-  };
-
-
-
-  useEffect(() => {
-	// currentGeneration에 따라 currentGenerationImages를 필터링하고 imageCount를 업데이트합니다.
-	const currentGenerationImages = generationInfo.filter((image) => image.num === currentGeneration);
-	const updatedImageCount = currentGenerationImages.length;
-	// imageCount를 업데이트합니다.
-	setImageCount(updatedImageCount);
-  }, [currentGeneration, generationInfo]);
-
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.innerHTML = `
-      .carousel-item {
-        --items: ${generationInfo.filter((image) => image.num === currentGeneration).length};
-      }
-    `;
-    document.head.appendChild(style);
-  }, [currentGeneration, generationInfo]);
+useEffect(() => {
+		const fetchData = async () => {
+		  try {
+			const response = await axios.get('/api/member/all', { withCredentials: true });
+			if (response.data.status === 200) {
+			  setAllMemberInfo(response.data.allMemberInfo);
+			  const maxJoinYear = Math.max(...response.data.allMemberInfo.map(member => parseInt(member.joinYear)));
+			  setTotalGenerations(maxJoinYear);
+			
+				// imageCount를 업데이트합니다.
+			}
+		  } catch (error) {
+			console.error('Error fetching data:', error);
+		  }
+		};
+	
+		fetchData();
+	  }, []);
 
   useEffect(()=>{
 		const navbar = document.querySelector('.footer');
@@ -95,18 +78,39 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
       "position": null
     }
       */
-    const loadProfileData = async() =>{
-		const response = await axios.get('/api/member/all', {withCredentials: true});
-		
-		console.log(response.data);
-		if (response.data.status === 200){
-  
-		}
-	  }
-	  loadProfileData();
+
   },[]);
 
-	  
+  const currentGenerationImages = allMemberInfo.filter((member) => parseInt(member.joinYear) === currentGeneration);
+  const [imageCount, setImageCount] = useState(currentGenerationImages.length);
+
+  const goToPreviousGeneration = () => {
+    if (currentGeneration > 1) {
+      setCurrentGeneration(currentGeneration - 1);
+    }
+  };
+
+  // 다음 기수로 이동하는 함수
+  const goToNextGeneration = () => {
+    if (currentGeneration < totalGenerations) {
+      setCurrentGeneration(currentGeneration + 1);
+    }
+  };
+
+
+
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .carousel-item {
+        --items: ${(allMemberInfo.filter((member) => parseInt(member.joinYear) === currentGeneration)).length};
+      }
+    `;
+    document.head.appendChild(style);
+  }, [currentGeneration, allMemberInfo]);
+
+
+  console.log(allMemberInfo);
 	useEffect(() => {
 		/*--------------------
 		Vars
@@ -163,8 +167,9 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 				  // 클릭된 아이템이 현재 progress 값을 가진 아이템일 경우
 				  // 클릭 이벤트 처리를 수행
 				  // 이 부분에 클릭 이벤트 처리 코드 추가
-				  const clickedImageInfo = generationInfo.filter((image) => image.num === currentGeneration)[currentIndex];
+				  const clickedImageInfo = allMemberInfo.filter((member) => parseInt(member.joinYear) === currentGeneration)[currentIndex];
 				  setClickedImage(clickedImageInfo);
+				  console.log(clickedImageInfo);
 				  handleButtonClick('target');
 				}
 			  });
@@ -179,44 +184,20 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 		   };
 
 
-		   const handleMouseMove=(e)=>{
-			 if(e.type==='mousemove'){
-			   cursorsData.forEach(($cursor)=>{
-				 $cursor.style.transform=`translate(${e.clientX}px,${e.clientY}px)`;
-			   });
-			 }
-			 if(!isDown)return;
 	
-			const x=e.clientX||(e.touches&&e.touches[0].clientX)||0; 
-			const mouseProgress=(x-startX)*speedDrag; 
-			progress+=mouseProgress; 
-			startX=x; 
-			animate();  
-		   };
+		  
 	
-		   const handleMouseDown=(e)=>{
-			 isDown=true; 
-			 startX=e.clientX||(e.touches&& e.touches[0].clientX)||0; 
-		   };
-	
-		   const handleMouseUp=()=>{
-			 isDown=false;  
-		   };
+		  
 	
 		   /*-- Listeners --*/
 	
 		document.addEventListener('mousewheel',handleWheel);
-		document.addEventListener('mousedown',handleMouseDown);
-		document.addEventListener('mousemove',handleMouseMove);
-		document.addEventListener('mouseup',handleMouseUp);
-	
+		
 		return () => {
 		   document.removeEventListener('mousewheel', handleWheel);
-		   document.removeEventListener('mousedown', handleMouseDown);
-		   document.removeEventListener('mousemove', handleMouseMove);
-		   document.removeEventListener('mouseup', handleMouseUp);	
+
 		};
-	 }, [currentGeneration, generationInfo]);
+	 }, [currentGeneration, allMemberInfo]);
 
 
 	 useEffect(() => {
@@ -304,25 +285,25 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 	<div className="grid-7 element-animation" onClick={handleModalContentClick}>
     <div className="card color-card-2">
 		<div className='card-header'>
-      <img src={clickedImage.img} alt="profile-pic" className="profile"/>
-      <h1 className="title-2">{clickedImage.title}</h1>
+      <img src={clickedImage.profileImageName} alt="profile-pic" className="profile"/>
+      <h1 className="title-2">{clickedImage.nickname}</h1>
       <p className="job-title">Woosuk University</p>
       <div className="desc top">
-        <p>SOTI {clickedImage.num}기</p>
+        <p>SOTI {clickedImage.joinYear}기</p>
       </div>
 	  <div className="profile-card-social">
-      <a href="https://www.instagram.com/iamuhammederdem" className="profile-card-social__item instagram" target="_blank">
+      <a href={clickedImage.dreamhackAddr} className="profile-card-social__item instagram" target="_blank">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-instagram"></use></svg>
         </span>
       </a>
 
-      <a href="https://www.behance.net/iaMuhammedErdem" className="profile-card-social__item tistory" target="_blank">
+      <a href={clickedImage.tistoryAddr} className="profile-card-social__item tistory" target="_blank">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-behance"></use></svg>
         </span>
       </a>
-      <a href="https://github.com/muhammederdem" className="profile-card-social__item github" target="_blank">
+      <a href="${clickedImage.githubAddr}" className="profile-card-social__item github" target="_blank">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-github"></use></svg>
         </span>
@@ -333,10 +314,13 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 	  <div className='card-section is-active' id="about">
 			<div className='skill-subtitle'>Skills</div>
 				<div className="skills">
-		{/*{clickedImage.skills.map((skill, index) => (
-                    <span key={index}>{skill}</span>
-		))} 받은 데이터중 skills 배열에 있는 개수만큼 <spen> 생성 백 연결시 아래 코드 지우고 주석 코드로 변경*/}
-					<span>HTML</span> <span>CSS</span> <span>Javascript</span>
+				{Array.isArray(clickedImage.skills) ? (
+    clickedImage.skills.map((skill, index) => (
+      <span key={index}>{skill}</span>
+    ))
+  ) : (
+    <span>{clickedImage.skills}</span>
+  )}
 				</div>
 	</div>
 
@@ -344,16 +328,13 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 	  <div className='resume-subtitle'>History</div>
 	  <div className='history'>
 	  <ol className="dicey">
-		{/*{clickedImage.history.map((historys, index) => (
-                    <li key={index}>{historys}</li>
-					해당 부분도 아래 지우고 위로 대체 
-		))}*/}
-			<li>I rolled a one.</li>
-			<li>I rolled a two.</li>
-			<li>I rolled a three.</li>
-			<li>I rolled a four.</li>
-			<li>I rolled a five.</li>
-			<li>I rolled a six.</li>
+	  {Array.isArray(clickedImage.awards) ? (
+    clickedImage.awards.map((award, index) => (
+      <li key={index}>{award}</li>
+    ))
+  ) : (
+    <li>{clickedImage.awards}</li>
+  )}
 		</ol>
 	  </div>
 	  </div>
@@ -373,14 +354,14 @@ const [imageCount, setImageCount] = useState(currentGenerationImages.length);
 			1.데이터 반환시 기수에 있는 숫자를 판별하고 가장 높은수를 뽑아서 지정하려고 계획 중 */ }
 	{currentGeneration < totalGenerations && (<PlayArrowIcon className="next-button" onClick={goToNextGeneration}></PlayArrowIcon>)}
 	</div>
-	{generationInfo
-  .filter((image) => image.num === currentGeneration)
-  .map((image, index) => (
+	{allMemberInfo
+  .filter((member) => parseInt(member.joinYear) === currentGeneration)
+  .map((member, index) => (
     <div key={index} className="carousel-item" >
       <div className="carousel-box">
-        <div className="title">{image.title}</div>
-        <div className="num">{image.num}</div>
-        <img src={image.img} alt=""/>
+        <div className="title">{member.nickname}</div>
+        <div className="num">{member.joinYear}</div>
+        <img src={member.profileImageName} alt=""/>
       </div>
     </div>
   ))

@@ -12,7 +12,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { CookiesProvider } from "react-cookie";
 
 
-const store = createStore(rootReducer,composeWithDevTools());
+const store = createStore(rootReducer);
 const persistor = persistStore(store);
 
 const Background = styled.div`

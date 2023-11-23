@@ -6,11 +6,8 @@ import SignUp from "./routes/SignUp";
 import History from "./routes/History";
 import { Layout } from 'antd';
 import Intro from './routes/intro/index';
-import BoardEditor from "./components/board/BoardEditor";
 import TestPage from "./routes/TestPage";
-import Boardmodifier from "./components/board/Boardmodifier";
 import Noticeboard from "./routes/notice/noticeboard";
-import NoticeEditor from "./components/notice_board/BoardEditor";
 import Testboard from "./components/board/Testboard";
 const { Content } = Layout;
 const contentStyle = {

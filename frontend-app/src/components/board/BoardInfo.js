@@ -48,6 +48,7 @@ function Boardinfo({ address }) {
     try {
       setLoading(true); // Step 1: Set loading to true before the request
       const response = await axios.get('/api/auth/validate', {withCredentials: true});
+
       if(response.data.status === 200){
         if(response.data.message===boardData.writer){
           setSessionCheck(true)
@@ -184,6 +185,7 @@ function Boardinfo({ address }) {
         setSession(sessionCheck)
         setBoardText(boardData.content);
       }finally{
+        
         setLoading(false)
       }
     }
@@ -246,7 +248,7 @@ function Boardinfo({ address }) {
                 </h4>
               </div>
               <div className="board_textbox" style={{paddingBottom:"5rem",paddingRight:"10px",paddingTop:"3.2rem"}}>
-                <Viewer events={["load", "change"]} plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]} initialValue={boardText} onChange={handleTextChange}/>
+                {boardText&&<Viewer events={["load", "change"]} plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]} initialValue={boardText} onChange={handleTextChange}/>}
               </div>
               {session?(<div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "1rem",marginRight:"0.5rem" }}>
                 <p onClick={submitDelete} onMouseEnter={() => handleButtonMouseEnter("delete")} onMouseLeave={() => handleButtonMouseLeave("delete")} style={{textDecoration: buttonStates.delete ? "underline" : "none", backgroundColor:"#666", width: "5rem", cursor: "pointer", textAlign: "center", marginLeft: "1rem",textShadow: "0px -1px #474747",borderColor:"#444",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>삭제</p>

@@ -59,7 +59,7 @@ function Boardinfo({ address }) {
     } catch (error) {
       console.error('Error while checking session:', error);
     } finally {
-      setLoading(false); // Step 2: Set loading to false after the request (whether success or error)
+      //setLoading(false); // Step 2: Set loading to false after the request (whether success or error)
     }
   }
   const [buttonStates, setButtonStates] = useState({
@@ -70,7 +70,21 @@ function Boardinfo({ address }) {
   });
   const PostAddress = splitUrl[1];
   const Id = splitUrl[splitUrl.length-1]
-
+  const getInfo = async () => {
+    try {
+      setLoading(true)
+      const resp = await axios.get(`/api/question/${id}`);
+      if (resp.status === 200) {
+        setBoardType(resp.data.postType);
+        setBoardData(resp.data);
+        setCommentInfo(resp.data.commentInfoDtoList);
+      } else {
+        setShowModal(true);
+      }
+    } catch (error) {
+      console.error("Error fetching board info:", error);
+    }
+  };
   const submitAnswer=async()=>{
     const data = new FormData();
     data.append("answerCompleted",true);
@@ -110,8 +124,8 @@ function Boardinfo({ address }) {
     data.append('content', comment);
     const cresp = await axios.post(`/api/question/comment/${id}`, data, { withCredentials: true });
     console.log(cresp.data);
-    window.location.reload();
     alert("댓글이 입력되었습니다.");
+    window.location.reload();
   };
 
   const handlePasswordSubmit = async () => {
@@ -131,7 +145,7 @@ function Boardinfo({ address }) {
       console.error('Error while checking password:', error);
     }
   };
-
+  
   useEffect(() => {
     // 여기서 boardText의 내용에 따라 높이를 계산하고 업데이트합니다.
     if (boardText) {
@@ -153,34 +167,27 @@ function Boardinfo({ address }) {
     if (navbar) {
       navbar.classList.add('bg-gogo');
     }
-    const getInfo = async () => {
-      try {
-        setLoading(true)
-        const resp = await axios.get(`/api/question/${id}`);
-        console.log(resp.data);
-        console.log("asd")
-        if (resp.status === 200) {
-          setBoardType(resp.data.postType);
-          setBoardData(resp.data);
-          setCommentInfo(resp.data.commentInfoDtoList);
-        } else {
-          setShowModal(true);
-        }
-      } catch (error) {
-        console.error("Error fetching board info:", error);
-      }
-    };
+    
     getInfo();
-    checkSession()
   }, [id]);
+  useEffect(()=>{
+    checkSession()
+  },[boardData])
   const formatDate=(dateString)=> {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
     const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
     return formattedDate;
   }
   useEffect(() => {
-    setBoardText(boardData.content);
-    setSession(sessionCheck)
+    const test=async()=>{
+      try{
+        setSession(sessionCheck)
+        setBoardText(boardData.content);
+      }finally{
+        setLoading(false)
+      }
+    }
+    test()
   }, [boardData,sessionCheck]);
 
   const slicecomment = commentInfo.slice(0);
@@ -215,10 +222,10 @@ function Boardinfo({ address }) {
               <div style={{position:"relative",paddingBottom:"10px"}}>
                 <div style={{marginTop:"20px"}}>
                   <p style={{position:"absolute",fontSize:"1.5rem"}}>{boardData.writer}</p>
-                  {boardData.createDate && boardData.lastModifiedDate ? (
-                    <p style={{float:"right", width:"10rem",position:"relative"}}>{formatDate(boardData.createDate)}</p>
+                  {boardData.createDate === boardData.lastModifiedDate ? (
+                    <p style={{float:"right", width:"13rem",position:"relative"}}>작성일 : {formatDate(boardData.createDate)}</p>
                   ) : (
-                    <p style={{float:"right"}}>{formatDate(boardData.lastModifiedDate)}</p>
+                    <p style={{float:"right"}}> 최근 수정일 : {formatDate(boardData.lastModifiedDate)}</p>
                   )}
                 </div>
               </div>
@@ -290,8 +297,8 @@ function Boardinfo({ address }) {
       </div>
       </>):(
         <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh"}}>
-        <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-        <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+        <svg className="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+        <circle className="path" fill="none" strokeWidth="6" strokeLinecap="round" cx="33" cy="33" r="30"></circle>
     </svg></div>)}
       
     </Board>

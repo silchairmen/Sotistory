@@ -13,7 +13,6 @@ import { useLocation } from 'react-router-dom';
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
-import LoadingOverlay from 'react-loading-overlay';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import '@toast-ui/editor-plugin-table-merged-cell/dist/toastui-editor-plugin-table-merged-cell.css';
 import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
@@ -21,6 +20,7 @@ import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
 import Prism from 'prismjs';
 // 여기 css를 수정해서 코드 하이라이팅 커스텀 가능
 import 'prismjs/themes/prism.css';
+import '../../css/spinner.scss';
 
 const Background = styled.div`
     padding-top: 3rem;
@@ -66,7 +66,6 @@ const Testboard = () => {
     const [boardTitle, setBoardTitle] = useState("");
     const [boardpass, setBoardPass] = useState();
     const [selectedValue, setSelectedValue] = useState("question"); // 초기 선택 값
-    const [loadText,setLoadText] = useState("");
     const [showPasswordInput, setShowPasswordInput] = useState(false);
     const [checkModifier,setCheckModifier] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -77,33 +76,37 @@ const Testboard = () => {
     const location = useLocation();
     const splitUrl = location?.pathname?.split('/') ?? null;
     const PostAddress = splitUrl[1];
-    const getBoard = async () => {
-        const lastSegment = splitUrl[splitUrl.length - 1];
-        const checkInt = Number(lastSegment);
 
-        // 숫자로 변환 가능하고, 변환된 값이 원래 값과 같은지 확인
-        if (!isNaN(checkInt) && Number.isInteger(checkInt) && checkInt.toString() === lastSegment) {
-            try {
-                const resp = await axios.get(`/api/question/${lastSegment}`);
-                setBoardText(resp.data.content);
-                setBoardTitle(resp.data.title);
-                setBoardPass(resp.data.password);
-                setCheckModifier(true);
-            } catch (error) {
-                console.error("Error fetching board data:", error);
-            } finally {
-                setLoading(false);
-            }
-        } else {
-            console.log(lastSegment);
-            setLoading(false);
-        }
-    };
+    
 
 
     useEffect(() => {
         setLoading(true)
-        getBoard();
+        const getBoard = async () => {
+            const lastSegment = splitUrl[splitUrl.length - 1];
+            const checkInt = Number(lastSegment);
+    
+            // 숫자로 변환 가능하고, 변환된 값이 원래 값과 같은지 확인
+            if (!isNaN(checkInt) && Number.isInteger(checkInt) && checkInt.toString() === lastSegment) {
+                try {
+                    setLoading(true)
+                    const resp = await axios.get(`/api/question/${lastSegment}`);
+                    setBoardText(resp.data.content);
+                    setBoardTitle(resp.data.title);
+                    setBoardPass(resp.data.password);
+                    setCheckModifier(true);
+                    
+                    console.log(boardText);
+                } catch (error) {
+                    console.error("Error fetching board data:", error);
+                } finally {
+                    setLoading(false);
+                    console.log(boardText)
+                }
+            }else{
+                setLoading(false)
+            }
+        };
         const navbar = document.querySelector('#navbar');
         if (navbar) {
             navbar.classList.add('bg-gogo');
@@ -113,11 +116,18 @@ const Testboard = () => {
         }else if(PostAddress==="Post"){
             setSelectedValue("promotional")
         }
+        getBoard();
+        
     }, []);
-    useEffect(()=>{
-        setLoadText(boardText);
-    },[boardText,checkModifier,loading])
+    useEffect(() => {
+        // boardText의 업데이트된 값을 로그로 출력
+        console.log("업데이트된 boardText:", boardText);
+    // Editor 컴포넌트의 초기화가 완료된 후에 값을 설정
+        if (editorRef.current) {
+            editorRef.current.getInstance().setMarkdown(boardText);
+        }
 
+    }, [boardText]);
     const handleTitle = (e) => {
         e.target.style.height='auto'
         e.target.style.height= e.target.scrollHeight + 'px';
@@ -199,10 +209,10 @@ const Testboard = () => {
     return (
         <Background>
             {loading ? (
-                <LoadingOverlay
-                active={loading}
-                spinner
-                text='게시판을 불러오는 중입니다.'/>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh"}}>
+                <svg className="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                <circle className="path" fill="none" strokeWidth="6" strokeLinecap="round" cx="33" cy="33" r="30"></circle>
+            </svg></div>
             ) :(
             <EditorForm>
                 {!loading&&checkModifier ? (
@@ -224,20 +234,18 @@ const Testboard = () => {
                 )}
                 <hr style={{ width: "8rem", left: "-0.5%", position: "relative", height: "0.5rem", border: "0", backgroundColor: "black" }} />
                 {!loading&&checkModifier ? (
-                    loadText && (
                         <Editor
-                            initialValue={loadText}
+                            initialValue={boardText}
                             previewStyle='vertical'
                             height="70vh"
-                            initialEditType="wisiwyg"
+                            initialEditType="wysiwyg"
                             useCommandShortcut={true}
                             plugins={[fontSize, colorSyntax, tableMergedCell,[codeSyntaxHighlight,{ highlighter: Prism }]]}
                             ref={editorRef}
                         />
-                    )
                 ) : (
                     <Editor
-                        initialValue={loadText}
+                        initialValue={boardText}
                         previewStyle='vertical'
                         height="70vh"
                         initialEditType="wysiwyg"

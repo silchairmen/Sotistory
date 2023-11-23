@@ -6,6 +6,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { useLocation } from 'react-router-dom';
+import '../../css/spinner.scss';
 
 
 const Background = styled.div`
@@ -62,6 +63,7 @@ const BoardEditor = () => {
     const [boardpass, setBoardPass] = useState("");
     const [selectedValue, setSelectedValue] = useState("Question"); // 초기 선택 값
     const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    const [loading,setLoading] = useState(true);
 
 
     const location = useLocation();
@@ -81,6 +83,9 @@ const BoardEditor = () => {
         } catch (error) {
             console.error("Error fetching board data:", error);
         }
+        finally{
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -98,7 +103,6 @@ const BoardEditor = () => {
         const contentState = ContentState.createFromText(boardText);
         const newEditorState = EditorState.createWithContent(contentState);
         setEditorState(newEditorState);
-
     }, [boardText]);
 
 
@@ -152,7 +156,7 @@ const BoardEditor = () => {
 
     return (
         <Background>
-            <MainHeader>
+            {loading?(<MainHeader>
                 질문 작성
             </MainHeader>
             <div>
@@ -225,7 +229,8 @@ const BoardEditor = () => {
                     // 에디터의 값이 변경될 때마다 onEditorStateChange 호출
                     onEditorStateChange={onEditorStateChange}
                 />
-            </EditorForm>
+            </EditorForm></>):()}
+            
         </Background>
     )
 }

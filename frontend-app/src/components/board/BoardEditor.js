@@ -7,6 +7,7 @@ import { EditorState, ContentState, convertToRaw, convertFromHTML } from 'draft-
 import draftToHtml from 'draftjs-to-html';
 import { useLocation } from 'react-router-dom';
 
+
 const Background = styled.div`
     padding-top: 5%;
     width: 70%;

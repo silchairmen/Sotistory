@@ -10,9 +10,7 @@ import 'prismjs/themes/prism.css';
 import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
-import UseLottie from '../Lottie';
-import loading from '../../img/loding.json';
-
+import '../../css/spinner.scss';
 const Board = styled.div`
   background-color: white;
   display: flex;
@@ -151,6 +149,10 @@ function Boardinfo({ address }) {
   };
 
   useEffect(() => {
+    const navbar = document.querySelector('#navbar');
+    if (navbar) {
+      navbar.classList.add('bg-gogo');
+    }
     const getInfo = async () => {
       try {
         setLoading(true)
@@ -286,7 +288,11 @@ function Boardinfo({ address }) {
           </section>
         </div>
       </div>
-      </>):(null)}
+      </>):(
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh"}}>
+        <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+        <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+    </svg></div>)}
       
     </Board>
   );

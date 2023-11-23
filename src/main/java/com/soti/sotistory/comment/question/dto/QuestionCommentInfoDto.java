@@ -10,6 +10,8 @@ public class QuestionCommentInfoDto {
     private Long commentId;//해당 댓글의 ID
     private String content;//내용
     private String writer;//댓글 작성자에 대한 정보
+    private String created;
+    private String modified;
 
     public QuestionCommentInfoDto(QuestionComment comment) {
 
@@ -17,5 +19,7 @@ public class QuestionCommentInfoDto {
         this.commentId = comment.getId();
         this.content = comment.getContent();
         this.writer = comment.getWriter().getNickname();
+        this.modified = comment.getLastModifiedDate().toString();
+        this.created = comment.getCreateDate().toString();
     }
 }

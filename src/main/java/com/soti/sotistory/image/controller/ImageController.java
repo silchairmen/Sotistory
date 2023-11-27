@@ -23,8 +23,7 @@ public class ImageController {
 
     @PostMapping("/img")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-        imageService.saveImage(file);
-        String imageUrl = "/images/" + file.getOriginalFilename(); // 예시 URL
-        return ResponseEntity.ok(imageUrl);
+        String imageURL = imageService.saveImage(file);
+        return ResponseEntity.ok("/images/" + imageURL);
     }
 }

@@ -1,5 +1,7 @@
 package com.soti.sotistory.image.service;
 
+import com.soti.sotistory.post.file.exception.FileErrorCode;
+import com.soti.sotistory.post.file.exception.FileException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,11 +18,29 @@ public class ImageService {
     @Value("${file.dir}") // application.properties에 설정된 저장 경로
     private String uploadPath;
 
-    public String saveImage(MultipartFile file) throws IOException {
-        byte[] bytes = file.getBytes();
-        String returnUrl = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(file.getOriginalFilename());
-        Path path = Paths.get(uploadPath + returnUrl);
-        Files.write(path, bytes);
-        return returnUrl;
+    public String saveImage(MultipartFile file) {
+        try {
+            byte[] bytes = file.getBytes();
+            String fileType = StringUtils.getFilenameExtension(file.getOriginalFilename());
+
+            if (!isValidImageType(fileType)) {
+                throw new FileException(FileErrorCode.FILE_CAN_NOT_SAVE);
+            }
+
+            String returnUrl = UUID.randomUUID() + "." + fileType;
+
+            Path path = Paths.get(uploadPath + returnUrl);
+            Files.write(path, bytes);
+
+            return returnUrl;
+        } catch (IOException ex) {
+            throw new FileException(FileErrorCode.FILE_CAN_NOT_SAVE);
+        }
     }
+
+    private boolean isValidImageType(String fileType) {
+        return "jpg".equalsIgnoreCase(fileType) || "png".equalsIgnoreCase(fileType);
+    }
+
+
 }

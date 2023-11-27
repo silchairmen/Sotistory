@@ -242,6 +242,14 @@ const Testboard = () => {
                             useCommandShortcut={true}
                             plugins={[fontSize, colorSyntax, tableMergedCell,[codeSyntaxHighlight,{ highlighter: Prism }]]}
                             ref={editorRef}
+                            hooks={{
+                                addImageBlobHook: async (blob, callback) => {
+                                    const data = new FormData();
+                                    data.append("file",blob)
+                                    const url = await axios.post('/api/img',data)
+                                    callback(url.data);
+                                }
+                            }}
                         />
                 ) : (
                     <Editor
@@ -252,6 +260,14 @@ const Testboard = () => {
                         useCommandShortcut={true}
                         plugins={[fontSize, colorSyntax, tableMergedCell,[codeSyntaxHighlight,{ highlighter: Prism }]]}
                         ref={editorRef}
+                        hooks={{
+                            addImageBlobHook: async (blob, callback) => {
+                                const data = new FormData();
+                                data.append("file",blob)
+                                const url = await axios.post('/api/img',data)
+                                callback(url.data);
+                            }
+                        }}
                     />
                 )}
                 <div style={{ alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', width: '20rem', position: "absolute", right: '0.5em', height: '10%', alignContent: 'center' }}>

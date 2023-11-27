@@ -39,7 +39,8 @@ function Boardinfo({ address }) {
   const [sessionCheck,setSessionCheck] = useState(false);
   const [session,setSession] = useState(false);
   const [loading,setLoading] = useState(true);
-
+  const [editState,setEditState] = useState({});
+  const [modifyComment,setModifyComment] = useState({});
 
   const location = useLocation();
   const splitUrl = location?.pathname?.split('/') ?? null;
@@ -119,7 +120,12 @@ function Boardinfo({ address }) {
     e.target.style.height='auto';
     e.target.style.height= e.target.scrollHeight + 'px';
   };
-
+  const handleModifyCommentChange = (e, dynamicClass) => {
+    setModifyComment((prevState) => ({
+      ...prevState,
+      [dynamicClass]: e.target.value,
+    }));
+  };
   const handleButtonClick = async () => {
     const data = new FormData();
     data.append('content', comment);
@@ -191,15 +197,143 @@ function Boardinfo({ address }) {
     }
     test()
   }, [boardData,sessionCheck]);
-
   const slicecomment = commentInfo.slice(0);
+  const commentButtonState = slicecomment.reduce((acc, _, index) => {
+    acc[`commentModify${index + 1}`] = false;
+    return acc;
+  }, {});
+  const [commentButtonStates, setCommentButtonStates] = useState(commentButtonState);
+
+  
   const handleButtonMouseEnter = (button) => {
     setButtonStates((prevState) => ({ ...prevState, [button]: true }));
   };
 
+  const handleModifyButtonEnter = (modify) =>{
+    setEditState((prevState)=> ({...prevState,[modify]:true}))
+    
+  }
+  const handleDeleteButton = async(commentId) => {
+    const res=await axios.delete(`/api/question/comment/${commentId}`, {withCredentials: true});
+    if (res.data.status === 200){
+      alert("댓글 삭제 완료")
+      window.location.reload();
+    }else{
+      alert("삭제 실패")
+    }
+  }
+  const handleModifyButtonLeave = async(modify,commentId,content) =>{
+    
+    try{
+      const data = new FormData();
+      data.append("content",content);
+      const response = await axios.put(`/api/question/comment/${commentId}`, data, {withCredentials: true}); 
+      if (response.data.status===200){
+        alert("수정 성공")
+        window.location.reload();
+      }else{
+        alert("수정 실패")
+      }
+    }catch(error){
+      console.log(error)
+    }
+    finally{
+      setEditState((prevState)=> ({...prevState,[modify]:false}))
+    }
+  }
+
   const handleButtonMouseLeave = (button) => {
     setButtonStates((prevState) => ({ ...prevState, [button]: false }));
   };
+
+  const renderCommentDetail = (commentDetail, index) => {
+    const dynamicClass = `commentModify${index + 1}`;
+    const deleteDynamicClass = `deleteButton${index +1}`;
+  
+    const handleModifyCommentChange = (e) => {
+      const newHeight = e.target.scrollHeight;
+      setModifyComment((prevState) => ({
+        ...prevState,
+        [dynamicClass]: e.target.value,
+      }));
+      e.target.style.height='auto';
+      e.target.style.height= newHeight + 'px';
+    };
+  
+    if (loadtype === "" || (commentDetail[loadtype].includes(loaddata))) {
+      return (
+        <div className="board_mb-4s board_lh-1" key={index}>
+          <div className="board_ms-3">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+              <p className="board_fw-bold" style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>{commentDetail.writer}</p>
+              {commentDetail.created === commentDetail.modified ? (
+                <p className="board_fw-bold2" style={{ fontSize: "0.8rem",paddingBottom:"13px"}}>{formatDate(commentDetail.created)}</p>
+              ) : (
+                <p className="board_fw-bold2" style={{ fontSize: "0.8rem",paddingBottom:"13px"}}>{formatDate(commentDetail.modified)} - (수정 됨)</p>
+              )}
+            </div>
+            {editState[dynamicClass] ? (
+              <>
+                <textarea
+                  className="board_fw-bold2"
+                  value={modifyComment[dynamicClass] !== undefined && modifyComment[dynamicClass] !== null ? modifyComment[dynamicClass] : commentDetail.content}
+                  onChange={(e)=>handleModifyCommentChange(e)}
+                  rows="1"
+                  style={{display:"flex",alignItems:"center", border: "1px solid #ccc", outline: "none",resize:"none",width:"80%",overflow:'hidden',marginLeft:"5px",fontSize:"1.3rem"}}
+                />
+
+                <div
+                  onMouseEnter={() => handleButtonMouseEnter(dynamicClass)}
+                  onMouseLeave={() => handleButtonMouseLeave(dynamicClass)}
+                  style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px', width: "100%" }}
+                >
+                  <p style={{
+                    textDecoration: buttonStates[dynamicClass] ? "underline" : "none",
+                    color: 'green',
+                    fontSize: '14px',
+                    marginTop: '-15px',
+                    cursor: 'pointer'
+                  }}
+                    onClick={() => handleModifyButtonLeave(dynamicClass,commentDetail.commentId,modifyComment[dynamicClass])}>수정 완료</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="board_fw-bold2" style={{width:"90%",fontSize:"1.3rem"}} >{commentDetail.content}</p>
+                
+                  {session?(<>
+                  <div
+                  style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px', width: "100%" }}
+                  >
+                    <p onMouseEnter={()=>handleButtonMouseEnter(deleteDynamicClass)} onMouseLeave={()=> handleButtonMouseLeave(deleteDynamicClass)} style={{textDecoration: buttonStates[deleteDynamicClass] ? "underline" : "none",cursor:'pointer',color:"#E82888",fontSize:"14px",marginTop:"-15px",marginRight:"40px"}}
+                    onClick={()=>handleDeleteButton(commentDetail.commentId)}>삭제</p>
+                  <p 
+                  onMouseEnter={() => handleButtonMouseEnter(dynamicClass)}
+                  onMouseLeave={() => handleButtonMouseLeave(dynamicClass)}
+                  style={{
+                    textDecoration: buttonStates[dynamicClass] ? "underline" : "none",
+                    color: '#7B66FF',
+                    fontSize: '14px',
+                    marginTop: '-15px',
+                    cursor: 'pointer'
+                  }}
+                    onClick={() => handleModifyButtonEnter(dynamicClass)}>수정</p>
+                    
+                    </div>
+                    
+                    </>
+                    ):(null)}
+                    
+              </>
+            )}
+          </div>
+        </div>
+      );
+    } else {
+      return null; // 댓글이 표시되지 않아야 하는 경우
+    }
+  };
+  
 
   return (
     <Board>
@@ -281,18 +415,8 @@ function Boardinfo({ address }) {
             <br/>
             <br/>
             <div style={{width:"100%", position:"relative",border:"1px solid #f0e8e8"}}>
-              {slicecomment.map((commentDetail, index) => {
-                  if (loadtype === "" || (commentDetail[loadtype].includes(loaddata))) {
-                    return (
-                      <div className="board_d-flex board_mb-4s board_lh-1" key={index}>
-                        <div className="board_ms-3">
-                          <p className="board_fw-bold" style={{fontSize:"1.5rem",marginBottom:"1rem"}}>{commentDetail.writer}</p>
-                          <p className="board_fw-bold2">{commentDetail.content}</p>
-                        </div>
-                      </div>
-                    );
-                  }
-                })}
+            {slicecomment.map((commentDetail, index) => renderCommentDetail(commentDetail, index))}
+
             </div>
           </section>
         </div>

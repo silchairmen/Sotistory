@@ -11,7 +11,6 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { CookiesProvider } from "react-cookie";
 
-
 const store = createStore(rootReducer);
 const persistor = persistStore(store);
 
@@ -24,7 +23,7 @@ const Background = styled.div`
 `;
 function App() {
   return (
-    <Provider store={store}>
+    <Provider store={store} >
       <CookiesProvider>
         <Background>
           <Fragment>

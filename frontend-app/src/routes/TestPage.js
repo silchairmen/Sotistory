@@ -184,7 +184,7 @@ const TestPage=()=> {
               <input type="text" name='address' id="address" className="menu__mypage__input" value={address} onChange={handleInputChange}/>
               </div>
               </div>
-              <button className='menu__mypage__button' type='submit' onClick={handleSave} style={{left:"25%",width:"72%",cursor:"pointer"}}>저장하기</button>
+              <button className='menu__mypage__button' type='submit' onClick={handleSave} style={{left:"25%",width:"72%",cursor:"pointer",backgroundColor: "#232926"}}>저장하기</button>
               <input type="hidden" name='email' id="email" className="menu__mypage__input" value={email}/>
               </form>
             </div>
@@ -239,7 +239,7 @@ const TestPage=()=> {
               <input type="text" name='awards' id="awards" className="menu__mypage__input" value={award} onChange={handleInputChange}/>
               </div>
               </div>
-                <button className='menu__mypage__button' type='submit' onClick={handleSave} style={{left: "47em",width: "30%",cursor:"pointer"}}>
+                <button className='menu__mypage__button' type='submit' onClick={handleSave} style={{left: "47em",width: "30%",cursor:"pointer",backgroundColor: "#232926"}}>
                   저장하기
                 </button>
               </form>

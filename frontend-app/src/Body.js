@@ -9,6 +9,7 @@ import Intro from './routes/intro/index';
 import TestPage from "./routes/TestPage";
 import Noticeboard from "./routes/notice/noticeboard";
 import Testboard from "./components/board/Testboard";
+import Error404 from "./routes/Error404";
 const { Content } = Layout;
 const contentStyle = {
   textAlign: 'center',
@@ -43,6 +44,7 @@ function Body() {
             <Route path="/" element={<Content style={contentStyle}><Intro /></Content>} />
             <Route path="/MyPage" element ={<Content style={contentStyle}><TestPage /></Content>} />
             <Route path="/Test" element={<Content style={contentStyle1}><Testboard/></Content>}/>
+            <Route path="/*" element={<Error404/>}/>
           </Routes>
       </Layout>
     </BrowserRouter>

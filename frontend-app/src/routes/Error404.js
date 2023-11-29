@@ -43,7 +43,7 @@ const Error404 = () => {
         position: relative;
         overflow: hidden;
         display: flex;
-        width: 100vw;
+        width: 100%;
         height: 100vh;
         align-items: center;
         justify-content: center;

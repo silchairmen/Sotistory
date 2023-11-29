@@ -11,6 +11,7 @@ import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import '../../css/spinner.scss';
+import Loading from "../LoadingView";
 const Board = styled.div`
   background-color: white;
   display: flex;
@@ -421,11 +422,7 @@ function Boardinfo({ address }) {
           </section>
         </div>
       </div>
-      </>):(
-        <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh"}}>
-        <svg className="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-        <circle className="path" fill="none" strokeWidth="6" strokeLinecap="round" cx="33" cy="33" r="30"></circle>
-    </svg></div>)}
+      </>):<Loading/>}
       
     </Board>
   );

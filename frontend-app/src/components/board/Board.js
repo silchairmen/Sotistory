@@ -1,27 +1,18 @@
   import { useEffect, useState } from "react";
   import axios from "axios";
-  import BoardList from "./BoardList";
   import Paginate from "../Paginate";
   import { useSelector} from "react-redux";
   import Search from "../Search";
   import styled from "styled-components";
   import LoadingOverlay from 'react-loading-overlay';
-  import { Button } from "@mui/material";
-  import { useNavigate,useLocation } from "react-router-dom";
+  import { useNavigate } from "react-router-dom";
   import '../../css/boardcss.css';
   import video from "../../img/boardvideo.mp4"
 
 
-  const H1 = styled.h1`
-    font-size:40px;
-    padding-top:80px;
-    padding-bottom:100px
-
-  `;
-
   const ContainerFragment = styled.div`
     height: 100%;
-  `
+  `;
 
   const Board = ({address}) => {
     const navigate = useNavigate();
@@ -98,7 +89,7 @@
         </div>
           <div class="board_title">
               <div class="board_top">
-                  <div class="num">비밀</div>
+                  <div class="num">비밀글</div>
                   <div class="titles">제목</div>
                   <div class="writer">글쓴이</div>
                   <div class="date">작성일</div>
@@ -116,20 +107,20 @@
                       const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}`;
                       const answer = new Boolean(boardDetail.createDate)
                       return (
-                        <div class="board_middle">
-                          <div class="middle">
-                          {boardDetail.postType == "HIDDEN" && (<div class="num">🔐</div>)}
-                          {boardDetail.postType != "HIDDEN" && (<div class="num"></div>)}
-                            <div class="titles" type="primary" style={{textAlign:"left"}} onClick={() => {navigate(`/Question/${boardDetail.postId}`)}}>{boardDetail.title} [{boardDetail.commentSize}]</div>
-                            <div class="writer">{boardDetail.writer}</div>
-                            <div class="date">{formattedDateTime}</div>
-                            <div class="count" style={{ color: boardDetail.answerCompleted ? 'green' : 'red' }}>{boardDetail.answerCompleted ? "완료" : "대기"}</div>
+                        <div className="board_middle">
+                          <div className="middle">
+                          {boardDetail.postType == "HIDDEN" && (<div className="num">🔐</div>)}
+                          {boardDetail.postType != "HIDDEN" && (<div className="num"></div>)}
+                            <div className="titles" type="primary" style={{textAlign:"left"}} onClick={() => {navigate(`/Question/${boardDetail.postId}`)}}>{boardDetail.title} [{boardDetail.commentSize}]</div>
+                            <div className="writer">{boardDetail.writer}</div>
+                            <div className="date">{formattedDateTime}</div>
+                            <div className="count" style={{ color: boardDetail.answerCompleted ? 'green' : 'red' }}>{boardDetail.answerCompleted ? "완료" : "대기"}</div>
                           </div>
                         </div>
                     );
                     }
                   })}
-            <div class="board_button_wrap" onClick={handleWrite} style={{right:"100"}}>
+            <div onClick={handleWrite} style={{display:"flex",backgroundColor:"#666", width: "5rem", cursor: "pointer", textAlign: "center", marginLeft: "auto",marginRight:"10%",marginTop:"1.2rem",textShadow: "0px -1px #474747",borderColor:"#444",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem",justifyContent:"center"}}>
               등록
             </div>
               <Paginate page={page} limit={isNaN(limit) ? 1 : limit} total={total} setPage={setPage} />

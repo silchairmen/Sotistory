@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:3000") // React 애플리케이션의 주소(클라이언트 주소)를 여기에 지정합니다.
+                .allowedOrigins("http://localhost:3000") // React 애플리케이션의 주소(클라이언트 주소)를 여기에 지정합니다.
                 .allowedMethods(HttpMethod.GET.name(),
                                 HttpMethod.HEAD.name(),
                                 HttpMethod.POST.name(),

@@ -2,6 +2,7 @@ package com.soti.sotistory.config;
 
 import com.soti.sotistory.config.handler.LoginFailureHandler;
 import com.soti.sotistory.config.handler.LoginSuccessHandler;
+import com.soti.sotistory.config.handler.UnauthorizedHandler;
 import com.soti.sotistory.member.service.MemberAuthService;
 import lombok.AllArgsConstructor;
 import org.aspectj.apache.bcel.classfile.Method;
@@ -63,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
+    private final UnauthorizedHandler unauthorizedHandler;
 
     @Autowired
     MemberAuthService memberAuthService;
@@ -73,6 +75,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(unauthorizedHandler)
+                .and()
                 .formLogin()
                 .successHandler(loginSuccessHandler)
                 .failureHandler(loginFailureHandler)
@@ -80,18 +85,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
-                .logoutSuccessUrl("/")
-                .deleteCookies();
+                .logoutUrl("/api/auth/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    // 아무것도 안적으면 아무것도 안됨... 따라서 redirect 문제 해결
+                })
+                .invalidateHttpSession(true)
+                .deleteCookies("JESESSIONID");
 
         //접근 권한 설정 관련
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/api/promotional/**", "/api/question/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/promotional/", "/api/question/").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/promotional/**", "/api/question/**","/api/img").authenticated()
-                .antMatchers(HttpMethod.PUT,"/api/promotional/**", "/api/question/**").authenticated()
-                .antMatchers(HttpMethod.DELETE,"/api/promotional/**", "/api/question/**").authenticated()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/promotional/**", "/api/question/**", "/api/member/all","/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/promotional/", "/api/question/","/api/auth/help/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/promotional/**", "/api/question/**","/api/img","/api/promotional/comment/**", "/api/question/comment/**").authenticated()
+                .antMatchers(HttpMethod.PUT,"/api/promotional/**", "/api/question/**","/api/promotional/comment/**", "/api/question/comment/**").authenticated()
+                .antMatchers(HttpMethod.DELETE,"/api/promotional/**", "/api/question/**", "/api/promotional/comment/**", "/api/question/comment/**").authenticated()
+                .antMatchers().permitAll()
                 .antMatchers("/api/member/info/**", "/api/member/profile/**").authenticated()
                 .antMatchers("/admin").hasRole("ADMIN").anyRequest().permitAll();// 마이페이지 접근은 인증된 사용자만 가능
     }

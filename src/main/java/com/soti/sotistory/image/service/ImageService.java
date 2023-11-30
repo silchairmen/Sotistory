@@ -1,7 +1,11 @@
 package com.soti.sotistory.image.service;
 
+import com.soti.sotistory.post.exception.PostErrorCode;
+import com.soti.sotistory.post.exception.PostException;
 import com.soti.sotistory.post.file.exception.FileErrorCode;
 import com.soti.sotistory.post.file.exception.FileException;
+import com.soti.sotistory.post.promotional.entity.PromotionalPost;
+import com.soti.sotistory.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -41,6 +45,5 @@ public class ImageService {
     private boolean isValidImageType(String fileType) {
         return "jpg".equalsIgnoreCase(fileType) || "png".equalsIgnoreCase(fileType);
     }
-
 
 }

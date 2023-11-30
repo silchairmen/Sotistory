@@ -104,7 +104,6 @@
                       const hours = String(createDate.getHours()).padStart(2, '0');
                       const minutes = String(createDate.getMinutes()).padStart(2, '0');
                       const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}`;
-                      const answer = new Boolean(boardDetail.createDate)
                       return (
                         <div className="board_middle" onClick={() => {navigate(`/Question/${boardDetail.postId}`)}}>
                           <div className="middle">

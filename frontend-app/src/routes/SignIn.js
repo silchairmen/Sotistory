@@ -80,7 +80,6 @@ export default function SignIn() {
         // ... (에러 처리)
       }
     } catch (error) {
-      console.log("오류");
       setShowSuccessAlert('error');
       return 0;
       // ... (요청 실패 처리)

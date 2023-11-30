@@ -29,9 +29,7 @@ const TestPage=()=> {
     if (menuNum === "0") {
       const data = new FormData(event.currentTarget.form);
       const response = await axios.put(`/api/member/info/edit`,data, {withCredentials: true});
-      console.log(response)
       if (response.data.status === 200) {
-        console.log("저장성공");
       } else {
         // ... (에러 처리)
       }
@@ -50,7 +48,6 @@ const TestPage=()=> {
         // ... (에러 처리)
       }
     }else{
-      console.log(menuNum)
     }
   }
   
@@ -77,7 +74,6 @@ const TestPage=()=> {
         }
       }else if(menuNum==="1"){
         const response = await axios.get('/api/member/profile', {withCredentials: true});
-        console.log(response.data)
         if (response.data.status===200){
           setAward(response.data.memberProfileDto.awards);
           setDreamhack(response.data.memberProfileDto.dreamhackAddr);

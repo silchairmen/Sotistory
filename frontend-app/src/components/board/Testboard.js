@@ -95,13 +95,10 @@ const Testboard = () => {
                     setBoardTitle(resp.data.title);
                     setBoardPass(resp.data.password);
                     setCheckModifier(true);
-                    
-                    console.log(boardText);
                 } catch (error) {
                     console.error("Error fetching board data:", error);
                 } finally {
                     setLoading(false);
-                    console.log(boardText)
                 }
             }else{
                 setLoading(false)
@@ -120,8 +117,6 @@ const Testboard = () => {
         
     }, []);
     useEffect(() => {
-        // boardText의 업데이트된 값을 로그로 출력
-        console.log("업데이트된 boardText:", boardText);
     // Editor 컴포넌트의 초기화가 완료된 후에 값을 설정
         if (editorRef.current) {
             editorRef.current.getInstance().setMarkdown(boardText);
@@ -141,7 +136,6 @@ const Testboard = () => {
         
         const lastSegment = splitUrl[splitUrl.length - 1];
         const checkInt = Number(lastSegment);
-        console.log(selectedValue)
         {/* 새 글 작성 로직 */}
         if(lastSegment==="post"){
             try{
@@ -252,6 +246,10 @@ const Testboard = () => {
                             }}
                         />
                 ) : (
+
+
+
+
                     <Editor
                         initialValue={boardText}
                         previewStyle='vertical'

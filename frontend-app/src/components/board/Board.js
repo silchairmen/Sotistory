@@ -39,7 +39,6 @@
       setPostId(resp.data.postInfoDtoList.postId);
       setLoading(false); // Set loading to false after data is fetched
       setTotal(resp.data.totalCount);
-      console.log(resp.data)
   }
 
   const handleLimitChange = (e) => {
@@ -107,11 +106,11 @@
                       const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}`;
                       const answer = new Boolean(boardDetail.createDate)
                       return (
-                        <div className="board_middle">
+                        <div className="board_middle" onClick={() => {navigate(`/Question/${boardDetail.postId}`)}}>
                           <div className="middle">
                           {boardDetail.postType == "HIDDEN" && (<div className="num">🔐</div>)}
                           {boardDetail.postType != "HIDDEN" && (<div className="num"></div>)}
-                            <div className="titles" type="primary" style={{textAlign:"left"}} onClick={() => {navigate(`/Question/${boardDetail.postId}`)}}>{boardDetail.title} [{boardDetail.commentSize}]</div>
+                            <div className="titles" type="primary" style={{textAlign:"left"}}>{boardDetail.title} [{boardDetail.commentSize}]</div>
                             <div className="writer">{boardDetail.writer}</div>
                             <div className="date">{formattedDateTime}</div>
                             <div className="count" style={{ color: boardDetail.answerCompleted ? 'green' : 'red' }}>{boardDetail.answerCompleted ? "완료" : "대기"}</div>

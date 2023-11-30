@@ -56,7 +56,6 @@ function Boardinfo({ address }) {
           setSessionCheck(true)
         }
       }else{
-        console.log("error")
         setSessionCheck(false);
       }
     } catch (error) {
@@ -93,7 +92,6 @@ function Boardinfo({ address }) {
     data.append("answerCompleted",true);
     data.append('content',boardText);
     data.append('title',boardData.title);
-    console.log(PostAddress)
     if (PostAddress === "Question"){
       setRequestAddress("question")
     }else if (PostAddress === "Post"){
@@ -128,19 +126,26 @@ function Boardinfo({ address }) {
     }));
   };
   const handleButtonClick = async () => {
+    if (session===false){
+      alert("로그인이 필요한 서비스입니다.")
+    }
     const data = new FormData();
     data.append('content', comment);
     const cresp = await axios.post(`/api/question/comment/${id}`, data, { withCredentials: true });
-    console.log(cresp.data);
-    alert("댓글이 입력되었습니다.");
-    window.location.reload();
+    if(cresp.data.status === 200){
+      alert("댓글이 입력되었습니다.");
+      window.location.reload();
+    }else{
+      alert("잘못된 접근입니다.")
+    }
+    
+    return 0;
   };
 
   const handlePasswordSubmit = async () => {
     try {
       setShowModal(false);
       const resps = await axios.get(`/api/question/${id}?password=${password}`);
-      console.log(resps.data);
       if (resps.data.postId >= 1) {
         setBoardType(resps.data.postType);
         setBoardData(resps.data);

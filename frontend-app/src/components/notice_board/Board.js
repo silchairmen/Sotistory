@@ -28,13 +28,11 @@ const SpecificPage = () => {
         const resp = await axios.get('/api/promotional/', { withCredentials: true });
         if (resp.status === 200) {
           setPromoData(resp.data.postInfoDtoList);
-          console.log(resp.data)
         } 
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
-        console.log(promoData)
       }
     };;
 

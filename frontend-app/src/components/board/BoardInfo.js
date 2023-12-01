@@ -60,10 +60,12 @@ function Boardinfo({ address }) {
         setUsername(response.data.message);
         if(response.data.message===boardData.writer){
           setSessionCheck(true)
+          
         }
       }else{
         setSessionCheck(false);
       }
+
     } catch (error) {
       console.error('Error while checking session:', error);
     } finally {
@@ -131,6 +133,7 @@ function Boardinfo({ address }) {
       [dynamicClass]: e.target.value,
     }));
   };
+
   const handleButtonClick = async () => {
     if (loginSessionCheck===false){
       toast.warning("로그인이 필요한 서비스입니다.")

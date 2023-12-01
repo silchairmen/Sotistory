@@ -42,7 +42,8 @@ function Boardinfo({ address }) {
   const [loading,setLoading] = useState(true);
   const [editState,setEditState] = useState({});
   const [modifyComment,setModifyComment] = useState({});
-
+  const [username,setUsername] = useState("");
+  const loginSessionCheck=useSelector(state=> state.session.session);
   const location = useLocation();
   const splitUrl = location?.pathname?.split('/') ?? null;
 
@@ -52,12 +53,15 @@ function Boardinfo({ address }) {
       const response = await axios.get('/api/auth/validate', {withCredentials: true});
 
       if(response.data.status === 200){
+        setUsername(response.data.message);
         if(response.data.message===boardData.writer){
           setSessionCheck(true)
+          
         }
       }else{
         setSessionCheck(false);
       }
+
     } catch (error) {
       console.error('Error while checking session:', error);
     } finally {
@@ -125,9 +129,10 @@ function Boardinfo({ address }) {
       [dynamicClass]: e.target.value,
     }));
   };
-  const handleButtonClick = async () => {
-    if (session===false){
-      alert("로그인이 필요한 서비스입니다.")
+  const handleButtonClick = async () => {//댓글 입력 부분
+    if (loginSessionCheck===false){
+      alert("로그인을 해야 사용 가능한 기능입니다.")
+      return 0;
     }
     const data = new FormData();
     data.append('content', comment);
@@ -307,7 +312,7 @@ function Boardinfo({ address }) {
               <>
                 <p className="board_fw-bold2" style={{width:"90%",fontSize:"1.3rem"}} >{commentDetail.content}</p>
                 
-                  {session?(<>
+                  {username===commentDetail.writer?(<>
                   <div
                   style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px', width: "100%" }}
                   >

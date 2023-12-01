@@ -18,10 +18,6 @@ const SpecificPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const navbar = document.querySelector('#navbar');
-    if (navbar) {
-      navbar.classList.add('bg-gogo');
-    }
     const loadTextData = async () => {
       setLoading(true);
       try {

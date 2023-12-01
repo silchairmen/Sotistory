@@ -12,6 +12,11 @@ import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import '../../css/spinner.scss';
 import Loading from "../LoadingView";
+
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
+
 const Board = styled.div`
   background-color: white;
   display: flex;
@@ -27,14 +32,13 @@ function Boardinfo({ address }) {
   const [boardText, setBoardText] = useState();
   const [boardType, setBoardType] = useState("");
   const { id } = useParams();
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [password, setPassword] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState('');
   const [showModal, setShowModal] = useState(false);
   const loaddata = useSelector(state => state.search.keyword);
   const loadtype = useSelector(state => state.search.type);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState([]);
   const [textboxHeight, setTextboxHeight] = useState(0);
   const [requestAddress,setRequestAddress] = useState("");
   const [sessionCheck,setSessionCheck] = useState(false);
@@ -42,7 +46,8 @@ function Boardinfo({ address }) {
   const [loading,setLoading] = useState(true);
   const [editState,setEditState] = useState({});
   const [modifyComment,setModifyComment] = useState({});
-
+  const [username,setUsername] = useState("");
+  const loginSessionCheck=useSelector(state=> state.session.session);
   const location = useLocation();
   const splitUrl = location?.pathname?.split('/') ?? null;
 
@@ -52,6 +57,7 @@ function Boardinfo({ address }) {
       const response = await axios.get('/api/auth/validate', {withCredentials: true});
 
       if(response.data.status === 200){
+        setUsername(response.data.message);
         if(response.data.message===boardData.writer){
           setSessionCheck(true)
         }
@@ -76,7 +82,7 @@ function Boardinfo({ address }) {
     try {
       setLoading(true)
       const resp = await axios.get(`/api/question/${id}`);
-      if (resp.status === 200) {
+      if (resp.data.status !== 203) {
         setBoardType(resp.data.postType);
         setBoardData(resp.data);
         setCommentInfo(resp.data.commentInfoDtoList);
@@ -99,16 +105,16 @@ function Boardinfo({ address }) {
     }
     const response = await axios.put(`/api/question/${Id}`, data, {withCredentials: true}); 
     if (response.status===200){
-      alert("저장 성공")
+      toast.success("저장 성공")
     }
   }
   const submitDelete=async()=>{
     const res=await axios.delete(`/api/question/${Id}`, {withCredentials: true});
     if(res.data.status===200){
-      alert("삭제 성공")
+      toast.success("삭제 성공")
       window.location.href=`/${PostAddress}`
     }else{
-      alert("잘못된 접근입니다.")
+      toast.error("잘못된 접근입니다.")
     }
   }
   const handlePasswordChange = (e) => {
@@ -126,17 +132,18 @@ function Boardinfo({ address }) {
     }));
   };
   const handleButtonClick = async () => {
-    if (session===false){
-      alert("로그인이 필요한 서비스입니다.")
+    if (loginSessionCheck===false){
+      toast.warning("로그인이 필요한 서비스입니다.")
+      return 0;
     }
     const data = new FormData();
     data.append('content', comment);
     const cresp = await axios.post(`/api/question/comment/${id}`, data, { withCredentials: true });
     if(cresp.data.status === 200){
-      alert("댓글이 입력되었습니다.");
+      toast.success("댓글이 입력되었습니다.");
       window.location.reload();
     }else{
-      alert("잘못된 접근입니다.")
+      toast.error("잘못된 접근입니다.")
     }
     
     return 0;
@@ -144,14 +151,14 @@ function Boardinfo({ address }) {
 
   const handlePasswordSubmit = async () => {
     try {
-      setShowModal(false);
       const resps = await axios.get(`/api/question/${id}?password=${password}`);
-      if (resps.data.postId >= 1) {
+      if (resps.data.status !== 203) {
         setBoardType(resps.data.postType);
         setBoardData(resps.data);
         setBoardText(resps.data.content);
+        setShowModal(false);
       } else {
-        setModalContent('비밀번호가 틀렸습니다.');
+        toast.warn("비밀번호가 올바르지 않습니다.");
         setModalOpen(true);
       }
     } catch (error) {
@@ -222,10 +229,10 @@ function Boardinfo({ address }) {
   const handleDeleteButton = async(commentId) => {
     const res=await axios.delete(`/api/question/comment/${commentId}`, {withCredentials: true});
     if (res.data.status === 200){
-      alert("댓글 삭제 완료")
+      toast.success("댓글 삭제 성공")
       window.location.reload();
     }else{
-      alert("삭제 실패")
+      toast.error("삭제 실패")
     }
   }
   const handleModifyButtonLeave = async(modify,commentId,content) =>{
@@ -235,10 +242,10 @@ function Boardinfo({ address }) {
       data.append("content",content);
       const response = await axios.put(`/api/question/comment/${commentId}`, data, {withCredentials: true}); 
       if (response.data.status===200){
-        alert("수정 성공")
+        toast.success("수정 성공")
         window.location.reload();
       }else{
-        alert("수정 실패")
+        toast.error("수정 실패")
       }
     }catch(error){
       console.log(error)
@@ -255,7 +262,6 @@ function Boardinfo({ address }) {
   const renderCommentDetail = (commentDetail, index) => {
     const dynamicClass = `commentModify${index + 1}`;
     const deleteDynamicClass = `deleteButton${index +1}`;
-  
     const handleModifyCommentChange = (e) => {
       const newHeight = e.target.scrollHeight;
       setModifyComment((prevState) => ({
@@ -265,7 +271,6 @@ function Boardinfo({ address }) {
       e.target.style.height='auto';
       e.target.style.height= newHeight + 'px';
     };
-  
     if (loadtype === "" || (commentDetail[loadtype].includes(loaddata))) {
       return (
         <div className="board_mb-4s board_lh-1" key={index}>
@@ -306,8 +311,7 @@ function Boardinfo({ address }) {
             ) : (
               <>
                 <p className="board_fw-bold2" style={{width:"90%",fontSize:"1.3rem"}} >{commentDetail.content}</p>
-                
-                  {session?(<>
+                  {username===commentDetail.writer?(<>
                   <div
                   style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px', width: "100%" }}
                   >
@@ -324,12 +328,9 @@ function Boardinfo({ address }) {
                     cursor: 'pointer'
                   }}
                     onClick={() => handleModifyButtonEnter(dynamicClass)}>수정</p>
-                    
                     </div>
-                    
                     </>
                     ):(null)}
-                    
               </>
             )}
           </div>
@@ -349,8 +350,8 @@ function Boardinfo({ address }) {
         <div className="modal">
           <div className="modal-content">
             <h2>비밀번호</h2>
-            <p><input placeholder="비밀번호 입력" value={password} onChange={handlePasswordChange} /></p>
-            <button onClick={handlePasswordSubmit}>입력</button>
+            <p><input type="password" placeholder="비밀번호 입력" value={password} onChange={handlePasswordChange} /></p>
+            <button className="button" onClick={handlePasswordSubmit}>입력</button>
           </div>
         </div>
       )}
@@ -413,11 +414,10 @@ function Boardinfo({ address }) {
                   style={{ border: 0, outline: "none",resize:"none",width:"100%"}}
                 ></textarea>
               </form>
-              <div onMouseEnter={() => handleButtonMouseEnter("submit")} onMouseLeave={() => handleButtonMouseLeave("submit")} onClick={handleButtonClick} style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px', width: "100%", }} >
-                <p  style={{textDecoration: buttonStates.submit ? "underline" : "none" ,color: 'green', fontSize: '14px', marginTop: '-15px', cursor: 'pointer'}}>댓글 작성</p>
+              <div onMouseEnter={() => handleButtonMouseEnter("submit")} onMouseLeave={() => handleButtonMouseLeave("submit")}  style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px', width: "100%", }} >
+                <p  style={{textDecoration: buttonStates.submit ? "underline" : "none" ,color: 'green', fontSize: '14px', marginTop: '-15px', cursor: 'pointer'}} onClick={handleButtonClick}>댓글 작성</p>
               </div>
             </div>
-            
             <br/>
             <br/>
             <div style={{width:"100%", position:"relative",border:"1px solid #f0e8e8"}}>
@@ -427,6 +427,19 @@ function Boardinfo({ address }) {
           </section>
         </div>
       </div>
+      <ToastContainer
+                position="top-right"
+                limit={4}
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover={false}
+                theme="light"
+              />
       </>):<Loading/>}
       
     </Board>

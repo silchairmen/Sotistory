@@ -214,7 +214,7 @@ export default function SignUp() {
       const resp = await axios.post('/api/auth/help/check_nickname', Data1);
       if (resp.data.status === 200) {
         setNickNameDuplicationError(false);
-      } else if(resp.data.status === 500){
+      } else if(resp.data.status === 202){
         setNickNameDuplicationError(true);
       }
     } catch (error) {
@@ -225,10 +225,10 @@ export default function SignUp() {
     try {
       const Data2 = new FormData();
       Data2.append('email', email);
-      const resp = await axios.post('/api/member/help/check_email', Data2);
+      const resp = await axios.post('/api/auth/help/check_email', Data2);
       if (resp.data.status === 200) {
         setEmailDuplicationError(false);
-      } else if(resp.data.status === 500){
+      } else if(resp.data.status === 202){
         setEmailDuplicationError(true);
       }
     } catch (error) {

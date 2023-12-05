@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const SpecificPage = () => {
   const [promoData, setPromoData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -51,11 +52,13 @@ const SpecificPage = () => {
     event.preventDefault();
 
     if (sessionValid) {
-      window.location.href = '/post/edit/post'; // 세션이 유효한 경우 글 작성 페이지로 이동
+      window.location.href = '/Post/edit/post'; // 세션이 유효한 경우 글 작성 페이지로 이동
     } else {
       toast.warn("로그인이 필요합니다!"); // 세션이 유효하지 않은 경우 알림
     }
   };
+
+  console.log(promoData)
 
   return (
     <>
@@ -94,7 +97,7 @@ const SpecificPage = () => {
           </div>
           <div className="grid grid-cols-1 xl:grid-cols-3 md:grid-cols-2 py-10 m-6 gap-x-12 gap-y-16 border-t-2 border-gray-500">
             {promoData.map((boardDetail) => (
-              <ProjectItem key={boardDetail.id} writer={boardDetail.writer} title={boardDetail.title} />
+              <ProjectItem key={boardDetail.id} writer={boardDetail.writer} title={boardDetail.title} idx={boardDetail.postId}/>
             ))}
           </div>
         </div>

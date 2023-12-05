@@ -22,6 +22,7 @@ import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
 import '../../css/spinner.scss';
 
+
 const Background = styled.div`
     padding-top: 3rem;
     width: 100%;
@@ -65,7 +66,7 @@ const Testboard = () => {
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
     const [boardpass, setBoardPass] = useState();
-    const [selectedValue, setSelectedValue] = useState("question"); // 초기 선택 값
+    const [selectedValue, setSelectedValue] = useState(""); // 초기 선택 값
     const [showPasswordInput, setShowPasswordInput] = useState(false);
     const [checkModifier,setCheckModifier] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -73,11 +74,10 @@ const Testboard = () => {
     const handleCheckboxChange = (e) => {
         setShowPasswordInput(e.target.checked);
     };
+
     const location = useLocation();
     const splitUrl = location?.pathname?.split('/') ?? null;
     const PostAddress = splitUrl[1];
-
-    
 
 
     useEffect(() => {
@@ -85,12 +85,20 @@ const Testboard = () => {
         const getBoard = async () => {
             const lastSegment = splitUrl[splitUrl.length - 1];
             const checkInt = Number(lastSegment);
+
+            let selectedValueToUpdate = ''; // Define or use state for selectedValue
+
+            if (PostAddress === "Question") {
+                selectedValueToUpdate = "question";
+            } else if (PostAddress === "Post") {
+                selectedValueToUpdate = "promotional";
+            }
     
             // 숫자로 변환 가능하고, 변환된 값이 원래 값과 같은지 확인
             if (!isNaN(checkInt) && Number.isInteger(checkInt) && checkInt.toString() === lastSegment) {
                 try {
                     setLoading(true)
-                    const resp = await axios.get(`/api/question/${lastSegment}`);
+                    const resp = await axios.get(`/api/${selectedValueToUpdate}/${lastSegment}`);
                     setBoardText(resp.data.content);
                     setBoardTitle(resp.data.title);
                     setBoardPass(resp.data.password);
@@ -108,10 +116,12 @@ const Testboard = () => {
         if (navbar) {
             navbar.classList.add('bg-gogo');
         }
-        if (PostAddress==="Question"){
+    if (PostAddress==="Question"){
             setSelectedValue("question")
         }else if(PostAddress==="Post"){
             setSelectedValue("promotional")
+            console.log('hello')
+
         }
         getBoard();
         
@@ -134,7 +144,7 @@ const Testboard = () => {
 
     const submitReview = async()=>{
         
-        const lastSegment = splitUrl[splitUrl.length - 1];
+        const lastSegment = splitUrl[splitUrl.length-1];
         const checkInt = Number(lastSegment);
         {/* 새 글 작성 로직 */}
         if(lastSegment==="post"){
@@ -153,17 +163,14 @@ const Testboard = () => {
                     data.append('content',editorRef.current.getInstance().getMarkdown());
                     data.append('title',boardTitle);
                 }
-                
                 const response = await axios.post(`/api/${selectedValue}/`, data, {withCredentials: true});
                 window.location.href = `/${PostAddress}`;
-                
+
                 // 응답 처리
                 if (response.status === 200) {
                     alert("작성 완료");
-                    
                 } else{
                     alert("작성 실패");
-                    // ... (에러 처리)
                 }
             } catch (error) {
                 console.log(error);
@@ -184,11 +191,10 @@ const Testboard = () => {
                 }
                 const response = await axios.put(`/api/${selectedValue}/${lastSegment}`, data, {withCredentials: true});
                 window.location.href = `/${PostAddress}/${lastSegment}`;
-                
+
                 // 응답 처리
                 if (response.data.status === 200) {
                     alert("작성 완료");
-                    
                 } else{
                     alert("작성 실패");
                     // ... (에러 처리)
@@ -269,7 +275,7 @@ const Testboard = () => {
                     />
                 )}
                 <div style={{ alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', width: '20rem', position: "absolute", right: '0.5em', height: '10%', alignContent: 'center' }}>
-                    <div style={{ display: 'relative', alignItems: 'center' }}>
+                {selectedValue==='question' && (<div style={{ display: 'relative', alignItems: 'center' }}>
                         <p style={{ width: '4rem', }}>비밀 글 :</p>
                         <input
                             type="checkbox"
@@ -277,8 +283,8 @@ const Testboard = () => {
                             onChange={handleCheckboxChange}
                             style={{ position: "absolute", bottom: "4.4rem", left: "3.5rem" }}
                         />
-                    </div>
-                    {showPasswordInput && (
+                    </div>)}
+                    { showPasswordInput && (
                         <input
                             type="password"
                             id="passwordInput"

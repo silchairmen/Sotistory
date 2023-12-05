@@ -71,7 +71,7 @@ import 'react-toastify/dist/ReactToastify.css';
     event.preventDefault();
 
     if (sessionValid) {
-      window.location.href = '/post/edit/post'; // 세션이 유효한 경우 글 작성 페이지로 이동
+      window.location.href = '/Question/edit/post'; // 세션이 유효한 경우 글 작성 페이지로 이동
     } else {
       toast.warn("로그인이 필요합니다!"); // 세션이 유효하지 않은 경우 알림
     }

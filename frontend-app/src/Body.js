@@ -8,6 +8,7 @@ import { Layout } from 'antd';
 import Intro from './routes/intro/index';
 import TestPage from "./routes/TestPage";
 import Noticeboard from "./routes/notice/noticeboard";
+import NoticeboardInfo from "./routes/notice/noticeboardInfo";
 import Testboard from "./components/board/Testboard";
 import Error404 from "./routes/Error404";
 const { Content } = Layout;
@@ -34,12 +35,14 @@ function Body() {
           <Routes>
             <Route path="/Question" element={<Content style={contentStyle}><FreeBoard /></Content>} />
             <Route path="/Post" element={<Content style={contentStyle}><Noticeboard /></Content>} />
+            <Route path="/Post/:id" element={<Content style={contentStyle}><NoticeboardInfo /></Content>} />
             <Route path="/Question/:id" element={<Content style={contentStyle}><FreeBoardInfo /></Content>} />
             <Route path="/SignIn" element={<Content style={contentStyle}><SignIn /></Content>} />
             <Route path="/SignUp" element={<Content style={contentStyle}><SignUp /></Content>} />
             <Route path="/History" element={<History />} />
             <Route path="/Question/Edit/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
             <Route path="/Post/Edit/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
+            <Route path="/Post/modifier/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
             <Route path="/Question/modifier/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
             <Route path="/" element={<Content style={contentStyle}><Intro /></Content>} />
             <Route path="/MyPage" element ={<Content style={contentStyle}><TestPage /></Content>} />

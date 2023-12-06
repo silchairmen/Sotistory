@@ -43,7 +43,7 @@ const EditorForm = styled.div`
 
 
 const TextField = styled.textarea`
-    width: 50rem;
+    width: auto;
     height: 80px;
     border: 0px solid rgba(0, 0, 0, 0.3);
     border-radius: 5px;

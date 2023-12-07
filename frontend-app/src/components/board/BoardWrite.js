@@ -61,7 +61,7 @@ const TextField = styled.textarea`
 `
 
 
-const Testboard = () => {
+const BoardWrite = () => {
     const editorRef = useRef();
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
@@ -322,4 +322,4 @@ const Testboard = () => {
     )
 }
 
-export default Testboard;
+export default BoardWrite;

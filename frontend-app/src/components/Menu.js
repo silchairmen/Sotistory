@@ -22,7 +22,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import MenuList from '@mui/material/MenuList';
 
-const pages = ['FreeBoard', 'History'];
+
 
 
 function MenuExampleSizeLarge() {

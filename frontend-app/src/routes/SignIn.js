@@ -99,15 +99,15 @@ export default function SignIn() {
 
   const [senddata,setSendData]= React.useState("");
   
-  const handleEmailChange = (e) => {
+  const handleEmailChange = React.useMemo(() => (e) => {
     setEmail(e.target.value);
     setEmailError(!regEmail.test(e.target.value));
-  };
+  }, [setEmail, setEmailError, regEmail]);
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = React.useMemo(() => (e) => {
     setPassword(e.target.value);
     setPasswordError(!regPassword.test(e.target.value));
-  };
+  }, [setPassword, setPasswordError, regPassword]);
 
   return (
     <ThemeProvider theme={defaultTheme}>

@@ -6,10 +6,10 @@ import SignUp from "./routes/SignUp";
 import History from "./routes/History";
 import { Layout } from 'antd';
 import Intro from './routes/intro/index';
-import TestPage from "./routes/TestPage";
+import MyPage from "./routes/MyPage";
 import Noticeboard from "./routes/notice/noticeboard";
 import NoticeboardInfo from "./routes/notice/noticeboardInfo";
-import Testboard from "./components/board/Testboard";
+import BoardWrite from "./components/board/BoardWrite";
 import Error404 from "./routes/Error404";
 const { Content } = Layout;
 const contentStyle = {
@@ -40,13 +40,12 @@ function Body() {
             <Route path="/SignIn" element={<Content style={contentStyle}><SignIn /></Content>} />
             <Route path="/SignUp" element={<Content style={contentStyle}><SignUp /></Content>} />
             <Route path="/History" element={<History />} />
-            <Route path="/Question/Edit/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
-            <Route path="/Post/Edit/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
-            <Route path="/Post/modifier/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
-            <Route path="/Question/modifier/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
+            <Route path="/Question/Edit/:id" element={<Content style={contentStyle1}><BoardWrite/></Content>} />
+            <Route path="/Post/Edit/:id" element={<Content style={contentStyle1}><BoardWrite/></Content>} />
+            <Route path="/Post/modifier/:id" element={<Content style={contentStyle1}><BoardWrite/></Content>} />
+            <Route path="/Question/modifier/:id" element={<Content style={contentStyle1}><BoardWrite/></Content>} />
             <Route path="/" element={<Content style={contentStyle}><Intro /></Content>} />
-            <Route path="/MyPage" element ={<Content style={contentStyle}><TestPage /></Content>} />
-            <Route path="/Test" element={<Content style={contentStyle1}><Testboard/></Content>}/>
+            <Route path="/MyPage" element ={<Content style={contentStyle}><MyPage /></Content>} />
             <Route path="/*" element={<Error404/>}/>
           </Routes>
       </Layout>

@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import axios, { all } from 'axios';
 
 
+
 const Body = styled.div`
 	overflow:hidden;
 	font-family: 'Roboto', serif;
@@ -24,6 +25,7 @@ const [allMemberInfo , setAllMemberInfo] = useState([]);
 //position에 따른 순서 배열 정의
 
 
+const getImagePath = (imageName) => `../uploads/`+`${imageName}`;
 
 const [clickedImage, setClickedImage] = useState(null);
 const [modalClass, setModalClass] = useState('modal-window');
@@ -285,25 +287,25 @@ useEffect(() => {
 	<div className="grid-7 element-animation" onClick={handleModalContentClick}>
     <div className="card color-card-2">
 		<div className='card-header'>
-      <img src={clickedImage.profileImageName} alt="profile-pic" className="profile"/>
+		<img src={require('../uploads/' + clickedImage.profileImageName)} alt="profile-pic" className="profile" />
       <h1 className="title-2">{clickedImage.nickname}</h1>
       <p className="job-title">Woosuk University</p>
       <div className="desc top">
         <p>SOTI {clickedImage.joinYear}기</p>
       </div>
 	  <div className="profile-card-social">
-      <a href={clickedImage.dreamhackAddr} className="profile-card-social__item instagram" target="_blank">
+      <a href={clickedImage.dreamhackAddr} className="profile-card-social__item instagram" target="_blank" rel="noopener noreferrer">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-instagram"></use></svg>
         </span>
       </a>
 
-      <a href={clickedImage.tistoryAddr} className="profile-card-social__item tistory" target="_blank">
+      <a href={clickedImage.tistoryAddr} className="profile-card-social__item tistory" target="_blank" rel="noopener noreferrer">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-behance"></use></svg>
         </span>
       </a>
-      <a href="${clickedImage.githubAddr}" className="profile-card-social__item github" target="_blank">
+      <a href={clickedImage.githubAddr} className="profile-card-social__item github" target="_blank" rel="noopener noreferrer">
         <span className="icon-font">
           <svg className="icon"><use xlinkHref="#icon-github"></use></svg>
         </span>
@@ -319,7 +321,9 @@ useEffect(() => {
       <span key={index}>{skill}</span>
     ))
   ) : (
-    <span>{clickedImage.skills}</span>
+    clickedImage.skills.split(',').map((skill, index) => (
+      <span key={index}>{skill.trim()}</span>
+    ))
   )}
 				</div>
 	</div>
@@ -328,14 +332,22 @@ useEffect(() => {
 	  <div className='resume-subtitle'>History</div>
 	  <div className='history'>
 	  <ol className="dicey">
-	  {Array.isArray(clickedImage.awards) ? (
-    clickedImage.awards.map((award, index) => (
-      <li key={index}>{award}</li>
+  {Array.isArray(clickedImage.awards) ? (
+    clickedImage.awards.map((awards, index) => (
+      <React.Fragment key={index}>
+        {awards.split(',').map((award, subIndex) => (
+          <li key={subIndex}>{award.trim()}</li>
+        ))}
+      </React.Fragment>
     ))
   ) : (
-    <li>{clickedImage.awards}</li>
+    <React.Fragment>
+      {clickedImage.awards.split(',').map((award, index) => (
+        <li key={index}>{award.trim()}</li>
+      ))}
+    </React.Fragment>
   )}
-		</ol>
+</ol>
 	  </div>
 	  </div>
 	  <div className="card-buttons">
@@ -361,7 +373,7 @@ useEffect(() => {
       <div className="carousel-box">
         <div className="title">{member.nickname}</div>
         <div className="num">{member.joinYear}</div>
-        <img src={member.profileImageName} alt=""/>
+		<img src={require('../uploads/' + member.profileImageName)} />
       </div>
     </div>
   ))

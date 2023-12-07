@@ -527,6 +527,7 @@ box-shadow: 10px 10px 44px 15px rgba(0,0,0,0.14);
 
 .skills span{
   margin-top: 10px;
+  margin: 3px;
   display: inline-block;
   border: 1px solid black;
   padding: 6px 15px;

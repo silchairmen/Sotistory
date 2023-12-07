@@ -1,7 +1,7 @@
-import BoardInfo from '../../components/board/BoardInfo'
+import BoardInfo from '../../components/notice_board/BoardInfo'
 
-const FreeBoardInfo=() => {
-    return <BoardInfo address="/api/post/freeBoard/post/"/>;
+const NoticeBoardInfo=() => {
+    return <BoardInfo/>;
 }
 
-export default FreeBoardInfo;
+export default NoticeBoardInfo;

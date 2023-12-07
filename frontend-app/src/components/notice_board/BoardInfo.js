@@ -83,7 +83,7 @@ function Boardinfo({ address }) {
   const getInfo = async () => {
     try {
       setLoading(true)
-      const resp = await axios.get(`/api/question/${id}`);
+      const resp = await axios.get(`/api/promotional/${id}`);
       if (resp.data.status !== 203) {
         setBoardType(resp.data.postType);
         setBoardData(resp.data);
@@ -105,13 +105,13 @@ function Boardinfo({ address }) {
     }else if (PostAddress === "Post"){
       setRequestAddress("promotional")
     }
-    const response = await axios.put(`/api/question/${Id}`, data, {withCredentials: true}); 
+    const response = await axios.put(`/api/promotional/${Id}`, data, {withCredentials: true}); 
     if (response.status===200){
       toast.success("저장 성공")
     }
   }
   const submitDelete=async()=>{
-    const res=await axios.delete(`/api/question/${Id}`, {withCredentials: true});
+    const res=await axios.delete(`/api/promotional/${Id}`, {withCredentials: true});
     if(res.data.status===200){
       toast.success("삭제 성공")
       window.location.href=`/${PostAddress}`
@@ -141,7 +141,7 @@ function Boardinfo({ address }) {
     }
     const data = new FormData();
     data.append('content', comment);
-    const cresp = await axios.post(`/api/question/comment/${id}`, data, { withCredentials: true });
+    const cresp = await axios.post(`/api/promotional/comment/${id}`, data, { withCredentials: true });
     if(cresp.data.status === 200){
       toast.success("댓글이 입력되었습니다.");
       window.location.reload();
@@ -154,7 +154,7 @@ function Boardinfo({ address }) {
 
   const handlePasswordSubmit = async () => {
     try {
-      const resps = await axios.get(`/api/question/${id}?password=${password}`);
+      const resps = await axios.get(`/api/promotional/${id}?password=${password}`);
       if (resps.data.status !== 203) {
         setBoardType(resps.data.postType);
         setBoardData(resps.data);
@@ -218,22 +218,18 @@ function Boardinfo({ address }) {
     acc[`commentModify${index + 1}`] = false;
     return acc;
   }, {});
-  const [commentButtonStates, setCommentButtonStates] = useState(commentButtonState);
 
-  
+
   const handleButtonMouseEnter = (button) => {
     setButtonStates((prevState) => ({ ...prevState, [button]: true }));
   };
 
-  const handleCommentModifyButton = (modify,state) =>{
-    if (state===true){
-      setEditState((prevState)=> ({...prevState,[modify]:true}))
-    }else if(state===false){
-      setEditState((prevState)=> ({...prevState,[modify]:false}))
-    }
+  const handleModifyButtonEnter = (modify) =>{
+    setEditState((prevState)=> ({...prevState,[modify]:true}))
+    
   }
   const handleDeleteButton = async(commentId) => {
-    const res=await axios.delete(`/api/question/comment/${commentId}`, {withCredentials: true});
+    const res=await axios.delete(`/api/promotional/comment/${commentId}`, {withCredentials: true});
     if (res.data.status === 200){
       toast.success("댓글 삭제 성공")
       window.location.reload();
@@ -241,12 +237,12 @@ function Boardinfo({ address }) {
       toast.error("삭제 실패")
     }
   }
-  const handleModifyCompleteButton = async(modify,commentId,content) =>{
+  const handleModifyButtonLeave = async(modify,commentId,content) =>{
     
     try{
       const data = new FormData();
       data.append("content",content);
-      const response = await axios.put(`/api/question/comment/${commentId}`, data, {withCredentials: true}); 
+      const response = await axios.put(`/api/promotional/comment/${commentId}`, data, {withCredentials: true}); 
       if (response.data.status===200){
         toast.success("수정 성공")
         window.location.reload();
@@ -268,8 +264,6 @@ function Boardinfo({ address }) {
   const renderCommentDetail = (commentDetail, index) => {
     const dynamicClass = `commentModify${index + 1}`;
     const deleteDynamicClass = `deleteButton${index +1}`;
-    const commentCancleClass = `commentCancle${index +1}`;
-  
     const handleModifyCommentChange = (e) => {
       const newHeight = e.target.scrollHeight;
       setModifyComment((prevState) => ({
@@ -292,44 +286,28 @@ function Boardinfo({ address }) {
               )}
             </div>
             {editState[dynamicClass] ? (
-              <>{/* value부분 로직을 함수로 변경후 데이터를 정제해서 뽑아내야함. */}
+              <>
                 <textarea
                   className="board_fw-bold2"
                   value={modifyComment[dynamicClass] !== undefined && modifyComment[dynamicClass] !== null ? modifyComment[dynamicClass] : commentDetail.content}
                   onChange={(e)=>handleModifyCommentChange(e)}
                   rows="1"
                   style={{display:"flex",alignItems:"center", border: "1px solid #ccc", outline: "none",resize:"none",width:"80%",overflow:'hidden',marginLeft:"5px",fontSize:"1.3rem"}}
-                  onLoad={(e)=>handleModifyCommentChange(e)}
                 />
-                
+
                 <div
-                  style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px', width: "100%" }}
-                >
-                  <p 
-                  onMouseEnter={() => handleButtonMouseEnter(commentCancleClass)}
-                  onMouseLeave={() => handleButtonMouseLeave(commentCancleClass)}
-                  onClick={()=>handleCommentModifyButton(dynamicClass,false)}
-                  style={{
-                    textDecoration: buttonStates[commentCancleClass] ? "underline" : "none",
-                    color: 'gray',
-                    fontSize: '14px',
-                    marginTop: '-15px',
-                    cursor: 'pointer',
-                    marginRight:'15px'
-                  }}>
-                    취소
-                  </p>
-                  <p 
                   onMouseEnter={() => handleButtonMouseEnter(dynamicClass)}
                   onMouseLeave={() => handleButtonMouseLeave(dynamicClass)}
-                  style={{
+                  style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px', width: "100%" }}
+                >
+                  <p style={{
                     textDecoration: buttonStates[dynamicClass] ? "underline" : "none",
                     color: 'green',
                     fontSize: '14px',
                     marginTop: '-15px',
                     cursor: 'pointer'
                   }}
-                    onClick={() => handleModifyCompleteButton(dynamicClass,commentDetail.commentId,modifyComment[dynamicClass])}>수정 완료</p>
+                    onClick={() => handleModifyButtonLeave(dynamicClass,commentDetail.commentId,modifyComment[dynamicClass])}>수정 완료</p>
                 </div>
               </>
             ) : (
@@ -351,8 +329,7 @@ function Boardinfo({ address }) {
                     marginTop: '-15px',
                     cursor: 'pointer'
                   }}
-                    onClick={() => handleCommentModifyButton(dynamicClass,true)}>수정</p>
-                    
+                    onClick={() => handleModifyButtonEnter(dynamicClass)}>수정</p>
                     </div>
                     </>
                     ):(null)}
@@ -386,7 +363,7 @@ function Boardinfo({ address }) {
           <article>
             <header style={{ height: "auto", textAlign:"left",lineHeight:"3.3rem"}}>
               <></>
-              <p className="board_fw-bolder board_mb-1" style={{fontSize:"3rem"}} >{boardData.answerCompleted?("[답변 완료] "):("[답변 대기] ")}{boardData.title}</p>
+              <p className="board_fw-bolder board_mb-1" style={{fontSize:"3rem"}} >{boardData.title}</p>
               <div style={{position:"relative",paddingBottom:"10px"}}>
                 <div style={{marginTop:"20px"}}>
                   <p style={{position:"absolute",fontSize:"1.5rem"}}>{boardData.writer}</p>
@@ -418,10 +395,9 @@ function Boardinfo({ address }) {
               </div>
               {session?(<div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "1rem",marginRight:"0.5rem" }}>
                 <p onClick={submitDelete} onMouseEnter={() => handleButtonMouseEnter("delete")} onMouseLeave={() => handleButtonMouseLeave("delete")} style={{textDecoration: buttonStates.delete ? "underline" : "none", backgroundColor:"#666", width: "5rem", cursor: "pointer", textAlign: "center", marginLeft: "1rem",textShadow: "0px -1px #474747",borderColor:"#444",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>삭제</p>
-                <Link to={{ pathname: `/Question/modifier/${id}`, state: { id: id } }} style={{ width: "5rem", color: 'blue',  textAlign: "center", marginLeft: "1rem",color: 'inherit', textDecoration: 'none'}}>
+                <Link to={{ pathname: `/Post/modifier/${id}`, state: { id: id } }} style={{ width: "5rem", color: 'blue',  textAlign: "center", marginLeft: "1rem",color: 'inherit', textDecoration: 'none'}}>
                     <p onMouseEnter={() => handleButtonMouseEnter("modify")} onMouseLeave={() => handleButtonMouseLeave("modify")} style={{textDecoration: buttonStates.modify ? "underline" : "none",backgroundColor:"#666",textShadow: "0px -1px #474747",borderColor:"#444",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>수정</p>
                 </Link>
-                {boardData.answerCompleted ? (null):(<p onClick={submitAnswer} onMouseEnter={() => handleButtonMouseEnter("answer")} onMouseLeave={() => handleButtonMouseLeave("answer")} style={{textDecoration: buttonStates.answer ? "underline" : "none", backgroundColor:"#3b4890", width: "5.8rem", cursor: "pointer", textAlign: "center", marginLeft: "1rem",textShadow: "0px -1px #474747",borderColor:"#29367c",color: "#fff",borderWidth:"1px 1px 3px 1px",borderStyle:"solid", borderradius: "2px",height:"2.5rem"}}>답변 완료</p>)}
               </div>):(null)}
               
             </section>

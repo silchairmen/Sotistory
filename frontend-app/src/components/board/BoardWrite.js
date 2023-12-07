@@ -13,7 +13,6 @@ import { useLocation } from 'react-router-dom';
 import "tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css";
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
-import LoadingOverlay from 'react-loading-overlay';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import '@toast-ui/editor-plugin-table-merged-cell/dist/toastui-editor-plugin-table-merged-cell.css';
 import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
@@ -21,6 +20,8 @@ import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
 import Prism from 'prismjs';
 // 여기 css를 수정해서 코드 하이라이팅 커스텀 가능
 import 'prismjs/themes/prism.css';
+import '../../css/spinner.scss';
+
 
 const Background = styled.div`
     padding-top: 3rem;
@@ -43,7 +44,7 @@ const EditorForm = styled.div`
 
 
 const TextField = styled.textarea`
-    width: 50rem;
+    width: auto;
     height: 80px;
     border: 0px solid rgba(0, 0, 0, 0.3);
     border-radius: 5px;
@@ -60,13 +61,12 @@ const TextField = styled.textarea`
 `
 
 
-const Testboard = () => {
+const BoardWrite = () => {
     const editorRef = useRef();
     const [boardText, setBoardText] = useState("");
     const [boardTitle, setBoardTitle] = useState("");
     const [boardpass, setBoardPass] = useState();
-    const [selectedValue, setSelectedValue] = useState("question"); // 초기 선택 값
-    const [loadText,setLoadText] = useState("");
+    const [selectedValue, setSelectedValue] = useState(""); // 초기 선택 값
     const [showPasswordInput, setShowPasswordInput] = useState(false);
     const [checkModifier,setCheckModifier] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -74,50 +74,65 @@ const Testboard = () => {
     const handleCheckboxChange = (e) => {
         setShowPasswordInput(e.target.checked);
     };
+
     const location = useLocation();
     const splitUrl = location?.pathname?.split('/') ?? null;
     const PostAddress = splitUrl[1];
-    const getBoard = async () => {
-        const lastSegment = splitUrl[splitUrl.length - 1];
-        const checkInt = Number(lastSegment);
-
-        // 숫자로 변환 가능하고, 변환된 값이 원래 값과 같은지 확인
-        if (!isNaN(checkInt) && Number.isInteger(checkInt) && checkInt.toString() === lastSegment) {
-            try {
-                const resp = await axios.get(`/api/question/${lastSegment}`);
-                setBoardText(resp.data.content);
-                setBoardTitle(resp.data.title);
-                setBoardPass(resp.data.password);
-                setCheckModifier(true);
-            } catch (error) {
-                console.error("Error fetching board data:", error);
-            } finally {
-                setLoading(false);
-            }
-        } else {
-            console.log(lastSegment);
-            setLoading(false);
-        }
-    };
 
 
     useEffect(() => {
         setLoading(true)
-        getBoard();
+        const getBoard = async () => {
+            const lastSegment = splitUrl[splitUrl.length - 1];
+            const checkInt = Number(lastSegment);
+
+            let selectedValueToUpdate = ''; // Define or use state for selectedValue
+
+            if (PostAddress === "Question") {
+                selectedValueToUpdate = "question";
+            } else if (PostAddress === "Post") {
+                selectedValueToUpdate = "promotional";
+            }
+    
+            // 숫자로 변환 가능하고, 변환된 값이 원래 값과 같은지 확인
+            if (!isNaN(checkInt) && Number.isInteger(checkInt) && checkInt.toString() === lastSegment) {
+                try {
+                    setLoading(true)
+                    const resp = await axios.get(`/api/${selectedValueToUpdate}/${lastSegment}`);
+                    setBoardText(resp.data.content);
+                    setBoardTitle(resp.data.title);
+                    setBoardPass(resp.data.password);
+                    setCheckModifier(true);
+                } catch (error) {
+                    console.error("Error fetching board data:", error);
+                } finally {
+                    setLoading(false);
+                }
+            }else{
+                setLoading(false)
+            }
+        };
         const navbar = document.querySelector('#navbar');
         if (navbar) {
             navbar.classList.add('bg-gogo');
         }
-        if (PostAddress==="Question"){
+    if (PostAddress==="Question"){
             setSelectedValue("question")
         }else if(PostAddress==="Post"){
             setSelectedValue("promotional")
-        }
-    }, []);
-    useEffect(()=>{
-        setLoadText(boardText);
-    },[boardText,checkModifier,loading])
+            console.log('hello')
 
+        }
+        getBoard();
+        
+    }, []);
+    useEffect(() => {
+    // Editor 컴포넌트의 초기화가 완료된 후에 값을 설정
+        if (editorRef.current) {
+            editorRef.current.getInstance().setMarkdown(boardText);
+        }
+
+    }, [boardText]);
     const handleTitle = (e) => {
         e.target.style.height='auto'
         e.target.style.height= e.target.scrollHeight + 'px';
@@ -129,9 +144,8 @@ const Testboard = () => {
 
     const submitReview = async()=>{
         
-        const lastSegment = splitUrl[splitUrl.length - 1];
+        const lastSegment = splitUrl[splitUrl.length-1];
         const checkInt = Number(lastSegment);
-        console.log(selectedValue)
         {/* 새 글 작성 로직 */}
         if(lastSegment==="post"){
             try{
@@ -149,17 +163,14 @@ const Testboard = () => {
                     data.append('content',editorRef.current.getInstance().getMarkdown());
                     data.append('title',boardTitle);
                 }
-                
                 const response = await axios.post(`/api/${selectedValue}/`, data, {withCredentials: true});
                 window.location.href = `/${PostAddress}`;
-                
+
                 // 응답 처리
                 if (response.status === 200) {
                     alert("작성 완료");
-                    
                 } else{
                     alert("작성 실패");
-                    // ... (에러 처리)
                 }
             } catch (error) {
                 console.log(error);
@@ -180,11 +191,10 @@ const Testboard = () => {
                 }
                 const response = await axios.put(`/api/${selectedValue}/${lastSegment}`, data, {withCredentials: true});
                 window.location.href = `/${PostAddress}/${lastSegment}`;
-                
+
                 // 응답 처리
                 if (response.data.status === 200) {
                     alert("작성 완료");
-                    
                 } else{
                     alert("작성 실패");
                     // ... (에러 처리)
@@ -199,10 +209,10 @@ const Testboard = () => {
     return (
         <Background>
             {loading ? (
-                <LoadingOverlay
-                active={loading}
-                spinner
-                text='게시판을 불러오는 중입니다.'/>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh"}}>
+                <svg className="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                <circle className="path" fill="none" strokeWidth="6" strokeLinecap="round" cx="33" cy="33" r="30"></circle>
+            </svg></div>
             ) :(
             <EditorForm>
                 {!loading&&checkModifier ? (
@@ -224,30 +234,48 @@ const Testboard = () => {
                 )}
                 <hr style={{ width: "8rem", left: "-0.5%", position: "relative", height: "0.5rem", border: "0", backgroundColor: "black" }} />
                 {!loading&&checkModifier ? (
-                    loadText && (
                         <Editor
-                            initialValue={loadText}
+                            initialValue={boardText}
                             previewStyle='vertical'
                             height="70vh"
-                            initialEditType="wisiwyg"
+                            initialEditType="wysiwyg"
                             useCommandShortcut={true}
                             plugins={[fontSize, colorSyntax, tableMergedCell,[codeSyntaxHighlight,{ highlighter: Prism }]]}
                             ref={editorRef}
+                            hooks={{
+                                addImageBlobHook: async (blob, callback) => {
+                                    const data = new FormData();
+                                    data.append("file",blob)
+                                    const url = await axios.post('/api/img',data)
+                                    callback(url.data);
+                                }
+                            }}
                         />
-                    )
                 ) : (
+
+
+
+
                     <Editor
-                        initialValue={loadText}
+                        initialValue={boardText}
                         previewStyle='vertical'
                         height="70vh"
                         initialEditType="wysiwyg"
                         useCommandShortcut={true}
                         plugins={[fontSize, colorSyntax, tableMergedCell,[codeSyntaxHighlight,{ highlighter: Prism }]]}
                         ref={editorRef}
+                        hooks={{
+                            addImageBlobHook: async (blob, callback) => {
+                                const data = new FormData();
+                                data.append("file",blob)
+                                const url = await axios.post('/api/img',data)
+                                callback(url.data);
+                            }
+                        }}
                     />
                 )}
                 <div style={{ alignItems: 'center', justifyContent: 'space-between', marginTop: '20px', width: '20rem', position: "absolute", right: '0.5em', height: '10%', alignContent: 'center' }}>
-                    <div style={{ display: 'relative', alignItems: 'center' }}>
+                {selectedValue==='question' && (<div style={{ display: 'relative', alignItems: 'center' }}>
                         <p style={{ width: '4rem', }}>비밀 글 :</p>
                         <input
                             type="checkbox"
@@ -255,8 +283,8 @@ const Testboard = () => {
                             onChange={handleCheckboxChange}
                             style={{ position: "absolute", bottom: "4.4rem", left: "3.5rem" }}
                         />
-                    </div>
-                    {showPasswordInput && (
+                    </div>)}
+                    { showPasswordInput && (
                         <input
                             type="password"
                             id="passwordInput"
@@ -294,4 +322,4 @@ const Testboard = () => {
     )
 }
 
-export default Testboard;
+export default BoardWrite;

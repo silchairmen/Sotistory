@@ -1,10 +1,16 @@
 import { useState,useEffect,useRef } from 'react';
 import axios from 'axios';
-import './TestPage.scss';
+import './MyPage.scss';
 import UseLottie from '../components/Lottie';
 import profile_img from '../img/profile_img.json'
 import profile_img_2 from '../img/profile_img_2.json'
-const TestPage=()=> {
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
+
+
+const MyPage=()=> {
   const [nickname,setNickname] = useState("");
   const [name,setName] = useState("");
   const [joinyear,setJoinyear] = useState("");
@@ -21,7 +27,7 @@ const TestPage=()=> {
   const [selectedImage, setSelectedImage] = useState("");
   const [HoveredMenuA,setHoveredMenuA] = useState(false);
   const [HoveredMenuB,setHoveredMenuB] = useState(false);
-
+  const loginSessionCheck=useSelector(state=> state.session.session);
   const imgRef = useRef();
 
   const handleSave = async(event) => {
@@ -29,10 +35,10 @@ const TestPage=()=> {
     if (menuNum === "0") {
       const data = new FormData(event.currentTarget.form);
       const response = await axios.put(`/api/member/info/edit`,data, {withCredentials: true});
-      console.log(response)
       if (response.data.status === 200) {
-        console.log("저장성공");
+        toast.success("저장 성공");
       } else {
+        toast.error("저장 실패");
         // ... (에러 처리)
       }
     } else if(menuNum === "1") {
@@ -45,12 +51,11 @@ const TestPage=()=> {
         },
       });
       if (response.data.status === 400) {
-        //console.log("저장성공");
+        toast.success("저장 성공")
       } else {
-        // ... (에러 처리)
+        toast.error("저장 실패")
       }
     }else{
-      console.log(menuNum)
     }
   }
   
@@ -64,6 +69,10 @@ const TestPage=()=> {
       if (navbar) {
         navbar.classList.add('bg-gogo');
       }
+
+    if (loginSessionCheck==false){
+      toast.error("로그인이 필요한 서비스입니다.")
+    }
     const loadMyData= async()=>{
       if (menuNum==="0"){
         const response = await axios.get('/api/member/info', {withCredentials: true});
@@ -77,7 +86,6 @@ const TestPage=()=> {
         }
       }else if(menuNum==="1"){
         const response = await axios.get('/api/member/profile', {withCredentials: true});
-        console.log(response.data)
         if (response.data.status===200){
           setAward(response.data.memberProfileDto.awards);
           setDreamhack(response.data.memberProfileDto.dreamhackAddr);
@@ -92,6 +100,7 @@ const TestPage=()=> {
 
     }
     loadMyData();
+    
   },[menuNum]);
   const handleImageInput = () => {
     const file = imgRef.current.files[0];
@@ -184,11 +193,25 @@ const TestPage=()=> {
               <input type="text" name='address' id="address" className="menu__mypage__input" value={address} onChange={handleInputChange}/>
               </div>
               </div>
-              <button className='menu__mypage__button' type='submit' onClick={handleSave} style={{left:"25%",width:"72%",cursor:"pointer"}}>저장하기</button>
+              <button className='menu__mypage__button' type='submit' onClick={handleSave} style={{left:"25%",width:"72%",cursor:"pointer",backgroundColor: "#232926"}}>저장하기</button>
               <input type="hidden" name='email' id="email" className="menu__mypage__input" value={email}/>
               </form>
             </div>
           </div>
+          <ToastContainer
+                style={{marginTop:"60px"}}
+                position="top-right"
+                limit={4}
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover={false}
+                theme="light"
+              />
         </div>
       </div>
       </div>
@@ -209,7 +232,7 @@ const TestPage=()=> {
                 <p style={{position:"absolute",fontSize:"20px",left:"28%"}}>[{position}]{nickname}</p>
                   <div className='mypage_profile__box'>
                     
-                    <img className='mypage_profile' src={selectedImage} alt='mypage_profile'/>
+                    <img className='mypage_profile' src={`/images/${selectedImage}`} alt='mypage_profile'/>
                   </div>
                   <input className='img_button' type='file' accept='image/*' id='profileImg' name='profileImg' onChange={handleImageInput} ref={imgRef} ></input>
                   <div className="menu__mypage__inbox1">
@@ -239,17 +262,31 @@ const TestPage=()=> {
               <input type="text" name='awards' id="awards" className="menu__mypage__input" value={award} onChange={handleInputChange}/>
               </div>
               </div>
-                <button className='menu__mypage__button' type='submit' onClick={handleSave} style={{left: "47em",width: "30%",cursor:"pointer"}}>
+                <button className='menu__mypage__button' type='submit' onClick={handleSave} style={{left: "47em",width: "30%",cursor:"pointer",backgroundColor: "#232926"}}>
                   저장하기
                 </button>
               </form>
             </div>
           </div>
         </div>
+        <ToastContainer
+                style={{marginTop:"60px"}}
+                position="top-right"
+                limit={4}
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover={false}
+                theme="light"
+              />
       </div>
     );
   }
   
 }
 
-export default TestPage;
+export default MyPage;

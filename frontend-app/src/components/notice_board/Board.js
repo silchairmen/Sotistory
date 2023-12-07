@@ -1,215 +1,109 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import BoardList from "../board/BoardList";
-import Paginate from "../Paginate";
-import { useSelector} from "react-redux";
-import Search from "../Search";
-import styled from "styled-components";
-import LoadingOverlay from 'react-loading-overlay';
-import { Button } from "@mui/material";
-import { useNavigate,useLocation } from "react-router-dom";
-import '../../css/noticeboard.css';
-import image from "../../img/1.png"
-import TruncateText from '../TruncateText'
+import React, { useState, useEffect } from 'react';
+import ProjectItem from './project-item';
+import axios from 'axios';
+import '../../css/index.css'
+import LoadingView from '../LoadingView';
 
-// 모달의 스타일을 정의합니다.
-const customModalStyle = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
+import { ToastContainer, toast } from 'react-toastify';
 
-const H1 = styled.h1`
-  font-size:40px;
-  padding-top:80px;
-  padding-bottom:100px;
-`;
-
-const ContainerFragment = styled.div`
-  background-color:whitesmoke;
-  padding-top: 70px;
-`
-
-const ScrollableDiv = styled.div`
-  height: 290px;
-  width: 100%;
-  display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
-  align-items: flex-start; /* 아래쪽 정렬을 위해 사용 */
-  white-space: nowrap; /* 수평 스크롤을 사용하려면 내부 요소를 인라인 블록으로 설정합니다. */
-  border-top: 1px solid rgba(0, 0, 0, 0.2); /* 상단에 1px의 검은 테두리 추가 */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* 상단에 1px의 검은 테두리 추가 */
-  
-`;
-
-const Content = styled.div`
-  width: 100%; /* 내부 컨텐츠의 너비가 스크린 너비를 초과할 경우 스크롤이 활성화됩니다. */
-  height: 100%;
-`;
-
-const imageStyle = {
-  height: '100%',
-  width: '100%',
-  marginRight: '-100px',
-  transform: 'translateX(220%)',
-  borderRadius: '4px',
-};
-
-const containerStyle = {
-  display: 'flex',
-  height: '92%',
-  width: '30%',
-  position: 'absolute',
-  zIndex: '5',
-};
+import 'react-toastify/dist/ReactToastify.css';
 
 
-const Board = ({address}) => {
-  const [boardData, setBoardData] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(20);
-  const [total, setTotal] = useState(1);
-  const loaddata=useSelector(state => state.search.keyword);
-  const loadtype=useSelector(state => state.search.type);
-  const [selectedBoard, setSelectedBoard] = useState(null);
-
-  const openModal = (boardDetail) => {
-    setSelectedBoard(boardDetail);
-    console.log(selectedBoard)
-  };
-
-  const closeModal = () => {
-    setSelectedBoard(null);
-  };
+const SpecificPage = () => {
+  const [promoData, setPromoData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [sessionValid, setSessionValid] = useState(false); // 세션 유효 여부 추가
 
   useEffect(() => {
-    getBoard();
-    const navbar = document.querySelector('#navbar');
-    if (navbar) {
-      navbar.classList.add('bg-gogo');
-    }
-  }, [address]);
+    const loadTextData = async () => {
+      setLoading(true);
+      try {
+        const resp = await axios.get('/api/promotional/', { withCredentials: true });
+        if (resp.status === 200) {
+          setPromoData(resp.data.postInfoDtoList);
+        } 
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const getBoard = async () => {
-    try {
-      const resp = await axios.get("/api/promotional/");
-      console.log(resp.data);
-      setBoardData(resp.data.postInfoDtoList);
-      setLoading(false); // Set loading to false after data is fetched
-      setLimit(resp.data.totalCount);
-      setTotal(resp.data.totalPages);
-      console.log(resp.data)
-    } catch (error) {
-      console.error("Error fetching board data:", error);
-      setLoading(false); // Set loading to false on error as well
+    const verifySession = async () => { // 세션 검증을 위한 함수
+      try {
+        const sessionResp = await axios.get('/api/auth/validate', { withCredentials: true });
+        if (sessionResp.data.status === 200) {
+          setSessionValid(true); // 세션이 유효한 경우 상태 변경
+        } else {
+          setSessionValid(false); // 세션이 유효하지 않은 경우 상태 변경
+        }
+      } catch (error) {
+        console.error("Error verifying session:", error);
+        setSessionValid(false); // 에러 발생 시 세션 유효하지 않은 것으로 처리
+      }
+    };
+
+    loadTextData();
+    verifySession(); // 페이지 로드 시 세션 검증 수행
+  }, []);
+
+  // 클릭 이벤트 핸들러: 세션이 유효한 경우에만 글 작성 페이지로 이동
+  const handleWriteButtonClick = (event) => {
+    event.preventDefault();
+
+    if (sessionValid) {
+      window.location.href = '/Post/edit/post'; // 세션이 유효한 경우 글 작성 페이지로 이동
+    } else {
+      toast.warn("로그인이 필요합니다!"); // 세션이 유효하지 않은 경우 알림
     }
   };
 
-  const handleLimitChange = (e) => {
-    setLimit(Number(e.target.value));
-    setPage(1);
-  };
-  
-  const handleBoardCheck=()=> {
-    console.log(boardData);
-    console.log(paginatedData);
-  }
+  console.log(promoData)
 
-  const handleRegpage=()=> {
-    window.location.href="/Post/Edit/post"
-  }
-
-  const paginatedData = boardData.slice(0, boardData.totalElements);
   return (
-    <LoadingOverlay active={loading} spinner text="게시판을 불러오는 중입니다.">  
-    <ContainerFragment>
-          <center><h1>공지 게시판</h1></center>
-          <center>지금 SOTI의 공지사항을 확인하세요!</center>
-          <ScrollableDiv>
-            <Content>
-            {paginatedData
-            .filter((boardDetail) => boardDetail.postType === "NOTICE")
-            .map((boardDetail, index) => {
-            if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
-                return (
-                  <div className="thumbnotice">
-                    <div class="overlaynotice"></div>
-                    <div style={containerStyle}>
-                    <img src={image} alt="이미지 설명" style={imageStyle} />
-                    </div>
-                    <div class="title">
-                      <TruncateText text={boardDetail.title} maxLength={10} size={16} />
-                    </div>
-                    <div class="author">
-                      작성자 {boardDetail.writer}
-                    </div>
-                    <div class="content">
-                      <TruncateText text={boardDetail.content} maxLength={100} size={16} />
-                    </div>
-                    <div class="regdate">
-                      작성일 {boardDetail.regDate}
-                    </div>
-
-                  </div>
-            );
-          }
-        })}
-            </Content>
-          </ScrollableDiv>
-          <center><h1>홍보 게시판</h1></center>
-          <center>지금 SOTI의 홍보글을 확인하세요!</center>
-          <div class="reg_button" onClick={handleRegpage}>등록</div>
-          <div class="gallery">
-          {paginatedData
-            .filter((boardDetail) => boardDetail.postType === "NORMAL")
-            .map((boardDetail, index) => {
-            if (loadtype === "" || (boardDetail[loadtype].includes(loaddata))) {
-                return (
-                  <div className="thumb" key={index} onClick={() => openModal(boardDetail)}>
-                    <div class="overlay"></div>
-                    <div class="title">
-                      <TruncateText text={boardDetail.title} maxLength={10} size={16} />
-                    </div>
-                    <div class="author">
-                      작성자 {boardDetail.writer}
-                    </div>
-                    <div class="content">
-                      <TruncateText text={boardDetail.content} maxLength={100} size={16} />
-                    </div>
-                    <div class="regdate">
-                      작성일 {boardDetail.regDate}
-                    </div>
-                  </div>
-            );
-          }
-        })}
-      {/* 모달 */}
-      {selectedBoard && (
-          <div className="modal">
-            {/* 모달 내용 */}
-            <div className="modal_text">
-              <h2>{selectedBoard.title}</h2>
-              <p>작성자: {selectedBoard.writer}asdfasdf</p>
-              <div dangerouslySetInnerHTML={{ __html: selectedBoard.content }}></div>
-              {/* 추가적인 내용 및 버튼 등을 원하는 대로 추가할 수 있습니다 */}
-              <button onClick={closeModal}>닫기</button>
+    <>
+      {loading ? (
+        <LoadingView/>
+      ) : (
+        <div className="flex min-h-screen flex-col items-center body-font bg-gradient-to-t from-gray-600 to-slate-900">
+          <div className="p-8"></div>
+          <div className="md:grid xl:grid-cols-7 md:grid-cols-3 sm:flex-col sm:flex">
+            <h1 className="text-5xl md:text-6xl font-bold text-white xl:col-start-4 md:col-start-2 text-center">
+              Posts
+            </h1>
+            <div className="col-start-7 items-center max-w-md mx-auto p-4 pt-6">
+            <a
+                onClick={handleWriteButtonClick}
+                href="#"
+                className="relative inline-flex items-center justify-center px-3 py-1 text-lg font-bold text-white transition-all duration-200 bg-gray-400 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                role="button"
+              >
+                글 작성
+              </a>
+              <ToastContainer
+                position="top-right"
+                limit={4}
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover={false}
+                theme="light"
+              />
             </div>
           </div>
-        )}
+          <div className="grid grid-cols-1 xl:grid-cols-3 md:grid-cols-2 py-10 m-6 gap-x-12 gap-y-16 border-t-2 border-gray-500">
+            {promoData.map((boardDetail) => (
+              <ProjectItem key={boardDetail.id} writer={boardDetail.writer} title={boardDetail.title} idx={boardDetail.postId}/>
+            ))}
           </div>
-          
-    </ContainerFragment>
-    </LoadingOverlay>
-
-    
+        </div>
+      )}
+    </>
   );
 };
 
-export default Board;
+export default SpecificPage;

@@ -1,8 +1,8 @@
 .board_list_wrap {
-    height: 100%;
+    height: auto;
     width: 70%;
     z-index: 5;
-    background-color: rgb(243, 238, 238);
+    background-color: rgb(255, 255, 255);
     opacity: 1;
     position: absolute;
     top: 50%;
@@ -50,30 +50,33 @@
 }
 
 .num {
-    width: 10%;
+    width: 10vw;
 }
 .titles {
-    width: 45%;
+    width: 45vw;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .writer {
-    width: 15%;
+    width: 15vw;
 }
 .date {
-    width: 25%;
+    width: 25vw;
 }
 .count {
-    width: 12%;
+    width: 12vw;
     text-align: center;
 }
 
 
 
 .board_title {
-    text-align: center;
+    text-align: left;
 }
 
 .board_middle {
-    text-align: center;
+    text-align: left;
     display: flex;
     justify-content: center;
 }

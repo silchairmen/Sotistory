@@ -9,6 +9,8 @@ import mback2 from '../../img/mback2.jpg';
 import mback3 from '../../img/mback3.jpg';
 import mback4 from '../../img/mback4.jpg';
 import styled from 'styled-components';
+import '../../css/ImageComponent.scss'
+import { useState } from 'react';
 
 const itemq = [
   {
@@ -71,6 +73,7 @@ const Carouselstyle = styled.div`
     left: 0;
     transition: transform 0.5s ease-in-out;
     backface-visibility: hidden;
+    z-index: 0;
   }
 
   .carousel-container .main_image_text {
@@ -105,30 +108,57 @@ const Carouselstyle = styled.div`
 `;
 
 const Mainslide = () => {
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+
   return (
     <Carouselstyle>
-      <Carousel className="carousel-container" interval={4000} zIndex={1} height={"100%"} autoPlay>
-      {isMobile ? (
-            mitemq.map((item, index) => (
+      <Carousel
+        className="carousel-container"
+        interval={4000}
+        zIndex={1}
+        height={'100%'}
+        autoPlay
+      >
+        {isMobile
+          ? mitemq.map((item, index) => (
               <Item key={index} item={item} />
             ))
-          ) : (
-            itemq.map((item, index) => (
+          : itemq.map((item, index) => (
               <Item key={index} item={item} />
-            ))
-          )}
+            ))}
       </Carousel>
     </Carouselstyle>
   );
 };
 
 const Item = ({ item }) => {
+  const [loading,setLoading] = useState(false)
+ const showimagehandle= () =>{
+    setLoading(true)
+ }
   return (
     <Paper>
-      <div className="main_image">
-        <img src={item.image} alt={item.name} />
-      </div>
+        <div className="main_image">
+          <div className='main_image_loaded'>
+          <img
+            src={item.image}
+            alt={item.name}
+            onLoad={() =>showimagehandle()}
+          />
+          </div>
+          <div className="loading" style={{ display: loading ? 'none' : 'block' }}>
+            <svg width="300px" height="200px" viewBox="0 0 187.3 93.7" preserveAspectRatio="xMidYMid meet">
+              <path id="infinity-outline" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" 
+                    d="M93.9,46.4c9.3,9.5,13.8,17.9,23.5,17.9s17.5-7.8,17.5-17.5s-7.8-17.6-17.5-17.5c-9.7,0.1-13.3,7.2-22.1,17.1 				c-8.9,8.8-15.7,17.9-25.4,17.9s-17.5-7.8-17.5-17.5s7.8-17.5,17.5-17.5S86.2,38.6,93.9,46.4z" />
+              <path id="infinity-bg" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" 
+                    d="M93.9,46.4c9.3,9.5,13.8,17.9,23.5,17.9s17.5-7.8,17.5-17.5s-7.8-17.6-17.5-17.5c-9.7,0.1-13.3,7.2-22.1,17.1 				c-8.9,8.8-15.7,17.9-25.4,17.9s-17.5-7.8-17.5-17.5s7.8-17.5,17.5-17.5S86.2,38.6,93.9,46.4z" />
+              </svg>
+            </div>
+        </div>
+        
     </Paper>
   );
 };

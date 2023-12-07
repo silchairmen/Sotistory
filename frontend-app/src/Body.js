@@ -6,12 +6,11 @@ import SignUp from "./routes/SignUp";
 import History from "./routes/History";
 import { Layout } from 'antd';
 import Intro from './routes/intro/index';
-import BoardEditor from "./components/board/BoardEditor";
-import TestPage from "./routes/TestPage";
-import Boardmodifier from "./components/board/Boardmodifier";
+import MyPage from "./routes/MyPage";
 import Noticeboard from "./routes/notice/noticeboard";
-import NoticeEditor from "./components/notice_board/BoardEditor";
-import Testboard from "./components/board/Testboard";
+import NoticeboardInfo from "./routes/notice/noticeboardInfo";
+import BoardWrite from "./components/board/BoardWrite";
+import Error404 from "./routes/Error404";
 const { Content } = Layout;
 const contentStyle = {
   textAlign: 'center',
@@ -36,16 +35,18 @@ function Body() {
           <Routes>
             <Route path="/Question" element={<Content style={contentStyle}><FreeBoard /></Content>} />
             <Route path="/Post" element={<Content style={contentStyle}><Noticeboard /></Content>} />
+            <Route path="/Post/:id" element={<Content style={contentStyle}><NoticeboardInfo /></Content>} />
             <Route path="/Question/:id" element={<Content style={contentStyle}><FreeBoardInfo /></Content>} />
             <Route path="/SignIn" element={<Content style={contentStyle}><SignIn /></Content>} />
             <Route path="/SignUp" element={<Content style={contentStyle}><SignUp /></Content>} />
             <Route path="/History" element={<History />} />
-            <Route path="/Question/Edit/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
-            <Route path="/Post/Edit/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
-            <Route path="/Question/modifier/:id" element={<Content style={contentStyle1}><Testboard/></Content>} />
+            <Route path="/Question/Edit/:id" element={<Content style={contentStyle1}><BoardWrite/></Content>} />
+            <Route path="/Post/Edit/:id" element={<Content style={contentStyle1}><BoardWrite/></Content>} />
+            <Route path="/Post/modifier/:id" element={<Content style={contentStyle1}><BoardWrite/></Content>} />
+            <Route path="/Question/modifier/:id" element={<Content style={contentStyle1}><BoardWrite/></Content>} />
             <Route path="/" element={<Content style={contentStyle}><Intro /></Content>} />
-            <Route path="/MyPage" element ={<Content style={contentStyle}><TestPage /></Content>} />
-            <Route path="/Test" element={<Content style={contentStyle1}><Testboard/></Content>}/>
+            <Route path="/MyPage" element ={<Content style={contentStyle}><MyPage /></Content>} />
+            <Route path="/*" element={<Error404/>}/>
           </Routes>
       </Layout>
     </BrowserRouter>

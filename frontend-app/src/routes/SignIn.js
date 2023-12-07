@@ -80,7 +80,6 @@ export default function SignIn() {
         // ... (에러 처리)
       }
     } catch (error) {
-      console.log("오류");
       setShowSuccessAlert('error');
       return 0;
       // ... (요청 실패 처리)
@@ -100,15 +99,15 @@ export default function SignIn() {
 
   const [senddata,setSendData]= React.useState("");
   
-  const handleEmailChange = (e) => {
+  const handleEmailChange = React.useMemo(() => (e) => {
     setEmail(e.target.value);
     setEmailError(!regEmail.test(e.target.value));
-  };
+  }, [setEmail, setEmailError, regEmail]);
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = React.useMemo(() => (e) => {
     setPassword(e.target.value);
     setPasswordError(!regPassword.test(e.target.value));
-  };
+  }, [setPassword, setPasswordError, regPassword]);
 
   return (
     <ThemeProvider theme={defaultTheme}>

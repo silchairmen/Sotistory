@@ -3,7 +3,6 @@ import { useEffect,useState} from 'react';
 import styled from 'styled-components';
 import '../css/commen.css';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import data from './AppData.json'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import axios, { all } from 'axios';
@@ -294,9 +293,9 @@ useEffect(() => {
         <p>SOTI {clickedImage.joinYear}기</p>
       </div>
 	  <div className="profile-card-social">
-      <a href={clickedImage.dreamhackAddr} className="profile-card-social__item instagram" target="_blank" rel="noopener noreferrer">
+      <a href={clickedImage.dreamhackAddr} className="profile-card-social__item dreamhack" target="_blank" rel="noopener noreferrer">
         <span className="icon-font">
-          <svg className="icon"><use xlinkHref="#icon-instagram"></use></svg>
+          <svg className="icon"><use xlinkHref="#icon-dreamhack"></use></svg>
         </span>
       </a>
 
@@ -393,9 +392,9 @@ useEffect(() => {
 	<path d="M12.128 26.4c0.032 0.128-0.096 0.256-0.288 0.288s-0.352-0.032-0.384-0.16c-0.032-0.128 0.096-0.256 0.288-0.288s0.352 0.032 0.384 0.16v0z"></path>
   </symbol>
 
-  <symbol id="icon-instagram" viewBox="0 0 32 32">
-	<title>instagram</title>
-	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><script xmlns=""/>
+  <symbol id="icon-dreamhack" viewBox="0 0 48 48">
+	<title>dreamhack</title>
+	<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"><script xmlns=""/>
 <g id="Group">
 <g id="Group_2">
 <path id="Vector" d="M23.0384 7.34726C17.444 1.75284 9.28399 -0.421377 1.64831 1.64831C-0.421377 9.28483 1.75284 17.444 7.34726 23.0384L7.39158 23.0827C15.0381 21.0105 21.0105 15.0373 23.0827 7.39158L23.0384 7.34726Z" fill="#8D98FF"/>

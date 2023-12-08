@@ -293,9 +293,9 @@
   text-decoration: none;
 }
 
-.profile-card-social__item.instagram {
-  background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
-  box-shadow: 0px 4px 30px rgba(120, 64, 190, 0.6);
+.profile-card-social__item.dreamhack {
+  background: linear-gradient(45deg, #ffffff, #a86aff, #7643ff, #a86aff, #7643ff);
+  box-shadow: 0px 4px 30px rgba(63, 65, 67, 0.6);
   text-decoration: none;
 }
 .profile-card-social__item.tistory {

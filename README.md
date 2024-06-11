@@ -1,2 +1,3 @@
 ## Security Club SOTI Website
-### Spring, React
+### 👑 Dev: Spring, React
+### 😗 Made by : SOTI 1th
